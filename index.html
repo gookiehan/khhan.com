@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Han Kuk-Hyun | 한국현</title>
+  <meta name="description" content="한국현 — 삼영기계(주) 사장, 순천향대학교 겸임교수, 前 삼성전자 Director, MIT Media Lab Visiting Scientist" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0f1117;
+      --bg2: #161b27;
+      --surface: #1e2435;
+      --border: #2a3045;
+      --accent: #4f8ef7;
+      --accent2: #7c6ff5;
+      --text: #e8eaf0;
+      --text-muted: #8892a4;
+      --text-dim: #5a6478;
+      --tag-bg: #1e2d4a;
+      --tag-color: #7eb8f7;
+      --radius: 12px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', 'Noto Sans KR', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      font-size: 15px;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: rgba(15, 17, 23, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 2rem;
+      height: 60px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-logo {
+      font-weight: 700; font-size: 1rem; color: var(--text);
+      text-decoration: none; letter-spacing: 0.02em;
+    }
+    .nav-logo span { color: var(--accent); }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      color: var(--text-muted); text-decoration: none;
+      font-size: 0.875rem; font-weight: 500; transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--text); }
+
+    /* LAYOUT */
+    .container { max-width: 860px; margin: 0 auto; padding: 0 1.5rem; }
+
+    section { padding: 5rem 0; }
+    section + section { border-top: 1px solid var(--border); }
+
+    /* HERO */
+    #hero {
+      padding-top: 120px; padding-bottom: 5rem;
+      min-height: 100vh;
+      display: flex; align-items: center;
+    }
+    .hero-inner { display: flex; gap: 3rem; align-items: center; flex-wrap: wrap; }
+    .hero-avatar {
+      width: 110px; height: 110px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2.5rem; font-weight: 700; color: #fff;
+      flex-shrink: 0;
+    }
+    .hero-text h1 {
+      font-size: 2.2rem; font-weight: 700; line-height: 1.2;
+      margin-bottom: 0.3rem;
+    }
+    .hero-text h1 span { color: var(--accent); }
+    .hero-subtitle {
+      font-size: 1rem; color: var(--text-muted);
+      margin-bottom: 1.2rem; font-weight: 400;
+    }
+    .hero-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.5rem; }
+    .tag {
+      background: var(--tag-bg); color: var(--tag-color);
+      padding: 0.25rem 0.75rem; border-radius: 999px;
+      font-size: 0.78rem; font-weight: 500; border: 1px solid #2a4070;
+    }
+    .hero-links { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      padding: 0.5rem 1.1rem; border-radius: 8px;
+      font-size: 0.85rem; font-weight: 600; text-decoration: none;
+      transition: all 0.2s;
+    }
+    .btn-primary { background: var(--accent); color: #fff; }
+    .btn-primary:hover { background: #3d7de8; }
+    .btn-outline { border: 1px solid var(--border); color: var(--text-muted); }
+    .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* SECTION HEADERS */
+    .section-label {
+      font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em;
+      color: var(--accent); text-transform: uppercase; margin-bottom: 0.5rem;
+    }
+    .section-title {
+      font-size: 1.6rem; font-weight: 700; margin-bottom: 2rem;
+      color: var(--text);
+    }
+
+    /* TIMELINE */
+    .timeline { display: flex; flex-direction: column; gap: 0; }
+    .tl-item {
+      display: grid; grid-template-columns: 140px 1fr;
+      gap: 1.5rem; padding: 1.5rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .tl-item:last-child { border-bottom: none; }
+    .tl-date {
+      font-size: 0.8rem; color: var(--text-dim); font-weight: 500;
+      padding-top: 0.15rem; line-height: 1.5;
+    }
+    .tl-content h3 {
+      font-size: 0.95rem; font-weight: 600; color: var(--text);
+      margin-bottom: 0.2rem;
+    }
+    .tl-content .tl-org {
+      font-size: 0.85rem; color: var(--accent); font-weight: 500;
+      margin-bottom: 0.3rem;
+    }
+    .tl-content p {
+      font-size: 0.85rem; color: var(--text-muted); line-height: 1.6;
+    }
+    .tl-badge {
+      display: inline-block; font-size: 0.7rem; font-weight: 600;
+      background: #1a2e1a; color: #5adb7a; border: 1px solid #2a4a2a;
+      padding: 0.15rem 0.55rem; border-radius: 999px; margin-left: 0.5rem;
+      vertical-align: middle;
+    }
+
+    /* AWARD GRID */
+    .award-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1rem;
+    }
+    .award-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 1.2rem;
+      transition: border-color 0.2s;
+    }
+    .award-card:hover { border-color: var(--accent); }
+    .award-year {
+      font-size: 0.72rem; color: var(--accent); font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.4rem;
+    }
+    .award-card h3 { font-size: 0.88rem; font-weight: 600; color: var(--text); margin-bottom: 0.3rem; }
+    .award-card p { font-size: 0.8rem; color: var(--text-muted); }
+
+    /* ACTIVITY GRID */
+    .activity-section { margin-bottom: 2.5rem; }
+    .activity-section h3 {
+      font-size: 0.85rem; font-weight: 700; color: var(--text-muted);
+      text-transform: uppercase; letter-spacing: 0.08em;
+      margin-bottom: 1rem; padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .activity-list { list-style: none; }
+    .activity-list li {
+      padding: 0.6rem 0; font-size: 0.875rem; color: var(--text-muted);
+      border-bottom: 1px solid rgba(42, 48, 69, 0.5);
+      display: flex; gap: 1rem; align-items: baseline;
+    }
+    .activity-list li:last-child { border-bottom: none; }
+    .activity-list .a-date {
+      font-size: 0.78rem; color: var(--text-dim); white-space: nowrap;
+      min-width: 80px;
+    }
+    .activity-list a { color: var(--accent); text-decoration: none; }
+    .activity-list a:hover { text-decoration: underline; }
+
+    /* HONORS */
+    .honors-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 0.75rem;
+    }
+    .honor-item {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 8px; padding: 0.9rem 1rem;
+    }
+    .honor-item p { font-size: 0.82rem; color: var(--text-muted); line-height: 1.5; }
+    .honor-item .honor-year { font-size: 0.72rem; color: var(--accent); font-weight: 700; margin-bottom: 0.25rem; }
+
+    /* CONTACT */
+    #contact { text-align: center; padding: 5rem 0 6rem; }
+    #contact .section-title { margin-bottom: 0.75rem; }
+    #contact p { color: var(--text-muted); margin-bottom: 2rem; font-size: 0.95rem; }
+    .contact-links { display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; }
+
+    /* FOOTER */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 1.5rem;
+      text-align: center;
+      font-size: 0.8rem; color: var(--text-dim);
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 640px) {
+      .tl-item { grid-template-columns: 1fr; gap: 0.3rem; }
+      .hero-text h1 { font-size: 1.7rem; }
+      nav .nav-links { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#hero">KH<span>.</span></a>
+  <ul class="nav-links">
+    <li><a href="#career">경력</a></li>
+    <li><a href="#awards">수상</a></li>
+    <li><a href="#activities">활동</a></li>
+    <li><a href="#honors">등재</a></li>
+    <li><a href="#contact">연락처</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="container">
+    <div class="hero-inner">
+      <div class="hero-avatar">한</div>
+      <div class="hero-text">
+        <h1>한국현 <span>/</span> Han Kuk-Hyun</h1>
+        <p class="hero-subtitle">삼영기계(주) 사장 · 순천향대학교 겸임교수 · 前 삼성전자 Director</p>
+        <div class="hero-tags">
+          <span class="tag">금속주조 &amp; 가공</span>
+          <span class="tag">스마트 제조</span>
+          <span class="tag">3D프린팅</span>
+          <span class="tag">UX / 혁신</span>
+          <span class="tag">KAIST Ph.D.</span>
+          <span class="tag">MIT Media Lab</span>
+        </div>
+        <div class="hero-links">
+          <a class="btn btn-primary" href="http://www.sym.co.kr/" target="_blank">삼영기계(주) →</a>
+          <a class="btn btn-outline" href="#contact">연락하기</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CAREER -->
+<section id="career">
+  <div class="container">
+    <p class="section-label">Career</p>
+    <h2 class="section-title">경력사항</h2>
+    <div class="timeline">
+
+      <div class="tl-item">
+        <div class="tl-date">2023.09 – 현재</div>
+        <div class="tl-content">
+          <h3>겸임교수 <span class="tl-badge">현직</span></h3>
+          <div class="tl-org"><a href="https://home.sch.ac.kr/factory/index.jsp" target="_blank">스마트팩토리공학과, 순천향대학교</a></div>
+        </div>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-date">2018.07 – 현재</div>
+        <div class="tl-content">
+          <h3>사장 / 연구소장 <span class="tl-badge">현직</span></h3>
+          <div class="tl-org"><a href="http://www.sym.co.kr/" target="_blank">삼영기계(주)</a></div>
+          <p>소재·부품·장비 강소기업 100 선정. 금속주조 및 기계가공 전문 제조기업. 3D프린팅 기반 주조 공정 혁신 주도.</p>
+        </div>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-date">2016.11 – 현재</div>
+        <div class="tl-content">
+          <h3>대표 <span class="tl-badge">현직</span></h3>
+          <div class="tl-org"><a href="http://lumoscandle.com/" target="_blank">루모스캔들(주)</a></div>
+        </div>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-date">2013.08 – 2018.06</div>
+        <div class="tl-content">
+          <h3>전무이사 / 연구소장</h3>
+          <div class="tl-org"><a href="http://www.sym.co.kr/" target="_blank">삼영기계(주)</a></div>
+        </div>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-date">2010.11 – 2013.07</div>
+        <div class="tl-content">
+          <h3>Director, User Experience Center America</h3>
+          <div class="tl-org">삼성전자(주) — 산호세, 미국</div>
+          <p>Mobile, VD, Display, Innovations 담당. <a href="https://thinktankteam.info/" target="_blank" style="color:var(--accent)">Think Tank Team</a> 리드.</p>
+        </div>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-date">2010.03 – 2013.08</div>
+        <div class="tl-content">
+          <h3>수석연구원</h3>
+          <div class="tl-org">DMC연구소, 삼성전자(주)</div>
+        </div>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-date">2006.02 – 2007.01</div>
+        <div class="tl-content">
+          <h3>Visiting Scientist</h3>
+          <div class="tl-org"><a href="http://www.media.mit.edu/" target="_blank">MIT Media Lab, Massachusetts Institute of Technology</a></div>
+        </div>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-date">2003.09 – 2010.02</div>
+        <div class="tl-content">
+          <h3>책임연구원</h3>
+          <div class="tl-org">DMC연구소, 삼성전자(주)</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- AWARDS -->
+<section id="awards">
+  <div class="container">
+    <p class="section-label">Awards</p>
+    <h2 class="section-title">수상경력</h2>
+    <div class="award-grid">
+
+      <div class="award-card">
+        <div class="award-year">2023</div>
+        <h3>제8회 3D프린팅 BIZCON 경진대회 최우수상</h3>
+        <p>특허청장상</p>
+      </div>
+      <div class="award-card">
+        <div class="award-year">2023</div>
+        <h3>뿌리산업 발전 유공자 표창</h3>
+        <p>산업통상자원부장관</p>
+      </div>
+      <div class="award-card">
+        <div class="award-year">2022</div>
+        <h3>3D프린팅 활용 우수사례 경진대회 최우수상</h3>
+        <p>과학기술정보통신부 장관상 (삼영기계)</p>
+      </div>
+      <div class="award-card">
+        <div class="award-year">2022</div>
+        <h3>한국의 산업을 이끈 산업기술성과 19선 선정</h3>
+        <p>한국공학한림원 (삼영기계)</p>
+      </div>
+      <div class="award-card">
+        <div class="award-year">2022</div>
+        <h3>전국뿌리기술경기대회(주조) 중소벤처기업부 장관상</h3>
+        <p>삼영기계</p>
+      </div>
+      <div class="award-card">
+        <div class="award-year">2021</div>
+        <h3>3D프린팅 산업발전 유공자 표창</h3>
+        <p>과학기술정보통신부장관</p>
+      </div>
+      <div class="award-card">
+        <div class="award-year">2021</div>
+        <h3>뿌리산업 혁신과 3D프린팅 확산 공로 표창</h3>
+        <p>국회 과학기술정보방송통신위원회 위원장</p>
+      </div>
+      <div class="award-card">
+        <div class="award-year">2021</div>
+        <h3>전국뿌리기술경기대회(주조) 중소벤처기업부 장관상</h3>
+        <p>삼영기계</p>
+      </div>
+      <div class="award-card">
+        <div class="award-year">2020</div>
+        <h3>3D프린팅 경진대회 Innovation Challenge 최우수상</h3>
+        <p>과학기술정보통신부 장관상 (삼영기계)</p>
+      </div>
+      <div class="award-card">
+        <div class="award-year">2020</div>
+        <h3>한국정밀공학회 2020 통합학술대회 최우수논문상</h3>
+        <p>한국정밀공학회</p>
+      </div>
+      <div class="award-card">
+        <div class="award-year">2019</div>
+        <h3>대한민국 기술사업화대전 산업통상자원부장관 표창</h3>
+        <p>기술사업화 부문</p>
+      </div>
+      <div class="award-card">
+        <div class="award-year">2019</div>
+        <h3>전국주조기술경기대회 단체전 1위</h3>
+        <p>국무총리상 (삼영기계)</p>
+      </div>
+      <div class="award-card">
+        <div class="award-year">2017</div>
+        <h3>3D프린팅 산업발전 대상 유공자 표창</h3>
+        <p>정보통신산업진흥원장</p>
+      </div>
+      <div class="award-card">
+        <div class="award-year">2015</div>
+        <h3>품질경영 유공자 도지사상</h3>
+        <p></p>
+      </div>
+      <div class="award-card">
+        <div class="award-year">2010</div>
+        <h3>삼성논문상 은상</h3>
+        <p>"Touch-and-Link: Inter-Device Interaction Associating Touched Points"</p>
+      </div>
+      <div class="award-card">
+        <div class="award-year">2003</div>
+        <h3>제9회 삼성 휴먼테크논문대상 금상</h3>
+        <p>"2상 양자 진화 알고리즘"</p>
+      </div>
+      <div class="award-card">
+        <div class="award-year">1992</div>
+        <h3>제38회 전국과학전람회 대통령상</h3>
+        <p>"격자에 의해 생기는 물결무늬의 해석과 그 응용에 관한 연구"</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ACTIVITIES -->
+<section id="activities">
+  <div class="container">
+    <p class="section-label">Activities</p>
+    <h2 class="section-title">기타활동</h2>
+
+    <div class="activity-section">
+      <h3>이사회 활동</h3>
+      <ul class="activity-list">
+        <li><span class="a-date">2023 – 현재</span> 부회장, <a href="http://www.kfs.or.kr/" target="_blank">한국주조공학회</a></li>
+        <li><span class="a-date">2022 – 현재</span> 전문이사, <a href="http://www.s4ira.or.kr/" target="_blank">스마트4차산업혁명협회</a></li>
+        <li><span class="a-date">2019 – 2022</span> 국제협력이사, 한국주조공학회</li>
+        <li><span class="a-date">2018 – 2021</span> 이사, <a href="https://www.nst.re.kr/" target="_blank">국가과학기술연구회</a>, 과학기술정보통신부</li>
+      </ul>
+    </div>
+
+    <div class="activity-section">
+      <h3>전문위원 활동</h3>
+      <ul class="activity-list">
+        <li><span class="a-date">2020 – 현재</span> 정책자문위원회 위원, <a href="https://www.kitech.re.kr/" target="_blank">한국생산기술연구원</a></li>
+        <li><span class="a-date">2020 – 현재</span> 경영자문위원회 위원, <a href="https://www.kimm.re.kr/" target="_blank">한국기계연구원</a></li>
+        <li><span class="a-date">2019 – 2020</span> 대한민국 과학기술 미래전략 2045 혁신생태계 분과위원회 위원, 과학기술정보통신부</li>
+        <li><span class="a-date">2018 – 현재</span> 의원, <a href="http://daejeoncci.korcham.net/" target="_blank">대전상공회의소</a></li>
+      </ul>
+    </div>
+
+    <div class="activity-section">
+      <h3>주요 초청강연</h3>
+      <ul class="activity-list">
+        <li><span class="a-date">2020.12</span> "직경 225㎜급 피스톤 일체형 중자의 DfAM 설계를 통한 제조 공정 혁신", 제2회 3D프린팅 기술확산 컨퍼런스</li>
+        <li><span class="a-date">2020.11</span> "주조 산업의 뉴노멀과 3D 프린팅 기술", 한국주조공학회 2020 추계대회</li>
+        <li><span class="a-date">2019.10</span> "샌드 3D프린팅을 활용한 주조 부품 제작 혁신", 해군 군수사 함정적용 신기술 설명회</li>
+        <li><span class="a-date">2018.07</span> "신사업 및 스타트업 추진기", 대전충남세종 글로벌 비즈니스클럽 워크샵, KOTRA</li>
+        <li><span class="a-date">2017.11</span> "Designing new things that you have never seen before", UNIST 디자인&인간공학부</li>
+        <li><span class="a-date">2007.06</span> "DTV – The 2nd Generation?", SIMPLICITY Open Media Event, MIT Media Lab</li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+<!-- HONORS -->
+<section id="honors">
+  <div class="container">
+    <p class="section-label">Honors</p>
+    <h2 class="section-title">국제 등재</h2>
+    <div class="honors-grid">
+      <div class="honor-item">
+        <div class="honor-year">2018</div>
+        <p>Albert Nelson Marquis Lifetime Achievement Award, Marquis Who's Who, USA</p>
+      </div>
+      <div class="honor-item">
+        <div class="honor-year">2012</div>
+        <p>TOP 100 Engineers, IBC, Cambridge, England</p>
+      </div>
+      <div class="honor-item">
+        <div class="honor-year">2012</div>
+        <p>Marquis Who's Who in Asia, 2nd ed., USA</p>
+      </div>
+      <div class="honor-item">
+        <div class="honor-year">2009</div>
+        <p>TOP 100 Engineers, IBC, Cambridge, England</p>
+      </div>
+      <div class="honor-item">
+        <div class="honor-year">2007–2009</div>
+        <p>Marquis Who's Who in the World (24th–26th ed.), USA</p>
+      </div>
+      <div class="honor-item">
+        <div class="honor-year">2007</div>
+        <p>Marquis Who's Who of Emerging Leaders, 1st ed., USA</p>
+      </div>
+      <div class="honor-item">
+        <div class="honor-year">2006</div>
+        <p>2000 Outstanding Intellectuals of the 21st Century, IBC, Cambridge</p>
+      </div>
+      <div class="honor-item">
+        <div class="honor-year">2006–2007</div>
+        <p>Marquis Who's Who in Science and Engineering, 9th ed., USA</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="container">
+    <p class="section-label">Contact</p>
+    <h2 class="section-title">연락처</h2>
+    <p>협력, 강연 초청, 문의는 아래로 연락 주세요.</p>
+    <div class="contact-links">
+      <a class="btn btn-primary" href="http://www.sym.co.kr/" target="_blank">삼영기계(주)</a>
+      <a class="btn btn-outline" href="http://lumoscandle.com/" target="_blank">루모스캔들(주)</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>© 2026 Han Kuk-Hyun · <a href="http://khhan.com" style="color:var(--text-dim)">khhan.com</a></p>
+</footer>
+
+</body>
+</html>
