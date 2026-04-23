@@ -1,0 +1,103 @@
+/* ============================================================
+   style.css  –  한국현 Personal Website
+   ============================================================ */
+:root {
+  --bg: #0f1117;
+  --surface: #1a1d27;
+  --card: #222633;
+  --accent: #4fc3f7;
+  --accent2: #81d4fa;
+  --text: #e0e0e0;
+  --muted: #9e9e9e;
+  --border: #333a4a;
+  --radius: 8px;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: 'Pretendard','Noto Sans KR', -apple-system, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; }
+
+/* ── NAV ── */
+nav { position: sticky; top: 0; z-index: 100; background: rgba(15,17,23,.92); backdrop-filter: blur(8px); border-bottom: 1px solid var(--border); }
+nav .inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; gap: 1rem; padding: .6rem 1.2rem; overflow-x: auto; }
+nav a { color: var(--muted); text-decoration: none; font-size: .85rem; white-space: nowrap; transition: color .2s; }
+nav a:hover, nav a.active { color: var(--accent); }
+nav .brand { font-weight: 700; color: var(--accent); font-size: 1rem; margin-right: auto; }
+
+/* ── HERO ── */
+.hero { text-align: center; padding: 3rem 1rem 2rem; }
+.hero h1 { font-size: 2rem; color: #fff; }
+.hero p { color: var(--muted); margin-top: .5rem; }
+
+/* ── SECTION ── */
+section { max-width: 1000px; margin: 0 auto 2rem; padding: 0 1.2rem; }
+section h2 { font-size: 1.3rem; color: var(--accent); border-bottom: 2px solid var(--accent); padding-bottom: .4rem; margin-bottom: 1rem; }
+section h3 { font-size: 1.05rem; color: var(--accent2); margin: 1.2rem 0 .5rem; }
+
+/* ── CARDS / ITEMS ── */
+.item { background: var(--card); border-radius: var(--radius); padding: .8rem 1rem; margin-bottom: .6rem; border-left: 3px solid var(--accent); }
+.item .period { font-size: .8rem; color: var(--muted); }
+.item .title { margin-top: .2rem; }
+.item .desc { font-size: .88rem; color: var(--muted); margin-top: .2rem; }
+.item a { color: var(--accent); text-decoration: none; }
+.item a:hover { text-decoration: underline; }
+
+/* ── FILE LINKS ── */
+.files { display: flex; flex-wrap: wrap; gap: .4rem; margin-top: .4rem; }
+.files a { display: inline-flex; align-items: center; gap: .2rem; font-size: .78rem; background: rgba(79,195,247,.12); color: var(--accent); padding: .15rem .5rem; border-radius: 4px; text-decoration: none; transition: background .2s; }
+.files a:hover { background: rgba(79,195,247,.25); }
+
+/* ── TAGS ── */
+.tags { display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: 1rem; }
+.tag { background: var(--card); color: var(--accent2); padding: .3rem .7rem; border-radius: 20px; font-size: .82rem; border: 1px solid var(--border); }
+
+/* ── COLLAPSIBLE ── */
+.collapse-btn { background: var(--card); color: var(--accent); border: 1px solid var(--border); padding: .45rem 1rem; border-radius: var(--radius); cursor: pointer; font-size: .88rem; margin-bottom: .6rem; transition: background .2s; display: inline-flex; align-items: center; gap: .4rem; }
+.collapse-btn:hover { background: var(--surface); }
+.collapse-btn::after { content: '▼'; font-size: .7rem; transition: transform .3s; }
+.collapse-btn.open::after { transform: rotate(180deg); }
+.collapsible { display: none; }
+.collapsible.show { display: block; }
+
+/* ── PATENT BTNS ── */
+.patent-btns { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: .5rem; }
+.patent-btns a { display: inline-block; background: var(--accent); color: var(--bg); padding: .4rem .9rem; border-radius: var(--radius); text-decoration: none; font-size: .82rem; font-weight: 600; transition: opacity .2s; }
+.patent-btns a:hover { opacity: .85; }
+
+/* ── SIMPLE LIST ── */
+.simple-list { list-style: disc; padding-left: 1.5rem; }
+.simple-list li { margin-bottom: .3rem; font-size: .9rem; }
+.simple-list li a { color: var(--accent); text-decoration: none; }
+
+/* ── ADMIN PANEL ── */
+.admin-panel { display: none; position: fixed; top: 0; right: 0; width: 50vw; height: 100vh; background: var(--surface); border-left: 2px solid var(--accent); z-index: 200; flex-direction: column; padding: 1rem; }
+.admin-panel.open { display: flex; }
+.admin-panel h3 { color: var(--accent); margin-bottom: .5rem; }
+.admin-panel textarea { flex: 1; background: var(--bg); color: var(--text); border: 1px solid var(--border); border-radius: var(--radius); padding: .5rem; font-family: 'Fira Code', monospace; font-size: .8rem; resize: none; }
+.admin-panel .btn-row { display: flex; gap: .5rem; margin-top: .5rem; }
+.admin-panel button { padding: .4rem 1rem; border-radius: var(--radius); border: none; cursor: pointer; font-weight: 600; }
+.admin-panel .btn-save { background: var(--accent); color: var(--bg); }
+.admin-panel .btn-close { background: var(--border); color: var(--text); }
+
+/* ── FOOTER ── */
+footer { text-align: center; padding: 2rem 1rem; color: var(--muted); font-size: .8rem; border-top: 1px solid var(--border); }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 600px) {
+  .hero h1 { font-size: 1.4rem; }
+  section h2 { font-size: 1.1rem; }
+  .admin-panel { width: 95vw; }
+}
+
+/* ── 기존 style.css 끝에 아래만 추가 ── */
+
+/* QEA Abstract */
+.qea-abstract {
+  background: var(--card);
+  border-left: 3px solid var(--accent);
+  border-radius: var(--radius);
+  padding: 1rem 1.2rem;
+  margin-bottom: 1rem;
+  font-size: .92rem;
+  line-height: 1.8;
+  color: var(--text);
+}
