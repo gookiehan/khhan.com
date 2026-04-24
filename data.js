@@ -127,14 +127,18 @@ const education = [
     title: "석사, 전자전산학과 전기및전자공학전공",
     org: "한국과학기술원 (KAIST)", orgUrl: "http://www.kaist.ac.kr/",
     desc: '(석사논문: "인터넷 기반 퍼스널 로봇 시스템의 제어 구조 설계")',
-    files: []
+    files: [
+      { url: F("2023/09/MSthesis.pdf"), icon: "📄", tip: "석사논문 PDF" }
+    ]
   },
   {
     period: "1993.03.~1997.02.",
     title: "학사, 전자전산학과 전기및전자공학전공",
     org: "한국과학기술원 (KAIST)", orgUrl: "http://www.kaist.ac.kr/",
     desc: '(졸업논문: "마이크로로봇의 설계와 지능적인 제어기의 구현")',
-    files: []
+    files: [
+      { url: F("2023/09/BSthesis.pdf"), icon: "📄", tip: "졸업논문 PDF" }
+    ]
   },
   {
     period: "1991.03.~1993.02.",
@@ -148,7 +152,13 @@ const education = [
     title: "KAIST 차세대 혁신리더 양성과정",
     org: "KAIST", orgUrl: "http://www.kaist.ac.kr/",
     desc: "",
-    files: []
+    files: [
+      { url: F("2023/09/KAIST_leader_certificate.pdf"), icon: "📄", tip: "수료증" },
+      { url: F("2023/09/KAIST_leader_award1.pdf"), icon: "📄", tip: "표창장" },
+      { url: F("2023/09/KAIST_leader_award2.pdf"), icon: "📄", tip: "우수상" },
+      { url: F("2023/09/KAIST_leader_ceremony1.jpg"), icon: "🖼️", tip: "수료식 1" },
+      { url: F("2023/09/KAIST_leader_ceremony2.jpg"), icon: "🖼️", tip: "수료식 2" }
+    ]
   },
   {
     period: "2013.01.~2013.05.",
@@ -156,7 +166,9 @@ const education = [
     org: "College of Engineering, University of California, Berkeley",
     orgUrl: "https://www.berkeley.edu/",
     desc: "",
-    files: []
+    files: [
+      { url: F("2023/09/UC-Berkeley_ELPP.jpg"), icon: "🖼️", tip: "Certificate" }
+    ]
   }
 ];
 
@@ -257,10 +269,21 @@ const projects = [
   { period: "2017.10.~2020.01.", title: "화장품 양산용 3D 프린터 개발", org: '<a href="https://www.mk.co.kr/news/business/view/2019/03/133007/">콜마코리아</a>', role: "총괄책임자", files: [{ url: "https://www.mk.co.kr/news/business/view/2019/03/133007/", icon: "📰", tip: "매경 기사" }] },
   { period: "2015.10.~2018.01.", title: "점성식 비틀림 진동 댐퍼(Viscous Torsional Vibration Damper) 개발", org: '<a href="https://www.smtech.go.kr/front/main/main.do">중소벤처기업부</a>', role: "총괄책임자", files: [] },
   { period: "2013.01.~2013.05.", title: "PRESTIGE 럭셔리 UX", org: '<a href="http://www.samsung.com/">삼성전자(주)</a>', role: "Project Lead", files: [] },
-  { period: "2010.01.~2010.11.", title: "Orsay 혁신 UX (스마트폰)", org: '<a href="http://www.samsung.com/">삼성전자(주)</a>', role: "Project Lead", files: [] },
+  { period: "2010.01.~2010.11.", title: "Orsay 혁신 UX (스마트폰)", org: '<a href="http://www.samsung.com/">삼성전자(주)</a>', role: "Project Lead", files: [
+      { url: "http://youtu.be/eAF4s3Xowqk", icon: "🎬", tip: "EmoLink" },
+      { url: F("2024/02/channeling.mp4"), icon: "🎬", tip: "Channeling" },
+      { url: "http://www.youtube.com/watch?v=jxFjMpe-iSg", icon: "🎬", tip: "Panning" },
+      { url: "https://www.youtube.com/shorts/fcVD9XbwE_Y", icon: "🎬", tip: "Shape Touch" },
+      { url: "http://www.youtube.com/watch?v=kE6rsJvORko", icon: "🎬", tip: "Palm Pause" }
+    ] },
   { period: "2008.12.~2009.12.", title: "iQ 인터랙션 솔루션", org: '<a href="http://www.samsung.com/">삼성전자(주)</a>', role: "Project Lead", files: [{ url: "https://www.youtube.com/watch?v=ZQqLKyy94Dw", icon: "🎬", tip: "YouTube" }, { url: "https://www.youtube.com/watch?v=H1SoYTCzB6A", icon: "🎬", tip: "YouTube" }] },
   { period: "2006.02.~2007.01.", title: 'The Huggable: Therapeutic Robotic Companion — <a href="http://www.media.mit.edu/">MIT Media Lab</a>', org: '<a href="http://www.mit.edu/">MIT</a>', role: "Visiting Scientist", files: [] },
   { period: "2006.02.~2007.01.", title: 'Consumer Electronics 2.0 (CE 2.0) — <a href="http://www.media.mit.edu/">MIT Media Lab</a>', org: '<a href="http://www.mit.edu/">MIT</a>, Samsung, Motorola, Toshiba', role: "Initiative Member", files: [] }
+,
+  { period: "2000.09.~2003.08.", title: "Development of Stereo Vision Head for Human-Robot Interaction", org: '<a href="http://www.kist.re.kr">KIST</a>', role: "Researcher", files: [{ url: F("2024/02/sample640.jpg"), icon: "🖼️", tip: "Sample 640" }, { url: F("2024/02/sample320.jpg"), icon: "🖼️", tip: "Sample 320" }, { url: F("2023/09/KAIST_stereo.jpg"), icon: "🖼️", tip: "KAIST Stereo" }] },
+  { period: "2000.04.~2000.12.", title: "Development of USB HUB plus LAN Device", org: "Withus & Innocom", role: "Developer", files: [{ url: F("2023/09/hublan1.jpg"), icon: "🖼️", tip: "HUB LAN" }, { url: F("2023/09/ino.jpg"), icon: "🖼️", tip: "INO" }] },
+  { period: "1998.09.~2000.08.", title: "Development of Internet-based Personal Robot", org: "IITA", role: "Researcher", files: [{ url: F("2023/09/gui.jpg"), icon: "🖼️", tip: "GUI" }, { url: F("2024/02/mybot.bmp"), icon: "🖼️", tip: "MyBot" }] },
+  { period: "1998.01.~2000.12.", title: "Development of the Optimizer for SMT", org: '<a href="http://www.mirae.co.kr/">Mirae Corporation</a>', role: "Researcher", files: [{ url: F("2024/02/smt.jpg"), icon: "🖼️", tip: "SMT" }] }
 ];
 
 /* ──────────── 수상경력 ──────────── */
@@ -444,13 +467,7 @@ const books = [
 /* ──────────── PATENTS ──────────── */
 const patentNote = "More than 100 Patents registered and pending (KAIST, Samsung, Samyoung and Lumos Candle)";
 const patentSearchUrls = [
-  { label: "Google Patents – 삼성전자 (한국현)", url: "https://patents.google.com/?inventor=%ED%95%9C%EA%B5%AD%ED%98%84&assignee=%EC%82%BC%EC%84%B1%EC%A0%84%EC%9E%90" },
-  { label: "Google Patents – Samsung (Kuk-Hyun Han)", url: "https://patents.google.com/?inventor=Kuk-Hyun+Han&assignee=Samsung" },
-  { label: "Google Patents – Samsung (Kuk Hyun Han)", url: "https://patents.google.com/?inventor=Kuk+Hyun+Han&assignee=Samsung" },
-  { label: "Google Patents – 삼영기계 (한국현)", url: "https://patents.google.com/?inventor=%ED%95%9C%EA%B5%AD%ED%98%84&assignee=%EC%82%BC%EC%98%81%EA%B8%B0%EA%B3%84" },
-  { label: "Google Patents – Samyoung Machinery (Kuk-Hyun Han)", url: "https://patents.google.com/?inventor=Kuk-Hyun+Han&assignee=Samyoung+Machinery" },
-  { label: "Google Patents – Samyoung Machinery (Kuk Hyun Han)", url: "https://patents.google.com/?inventor=Kuk+Hyun+Han&assignee=Samyoung+Machinery" },
-  { label: "Google Patents – KAIST (한국현)", url: "https://patents.google.com/?inventor=%ED%95%9C%EA%B5%AD%ED%98%84&assignee=KAIST" }
+  { label: "Google Patents – 전체 특허 검색 결과 보기 (All Patents)", url: "https://patents.google.com/?inventor=%ED%95%9C%EA%B5%AD%ED%98%84&inventor=Kuk-Hyun+Han&inventor=Kuk+Hyun+Han&assignee=%EC%82%BC%EC%84%B1%EC%A0%84%EC%9E%90&assignee=Samsung&assignee=%EC%82%BC%EC%98%81%EA%B8%B0%EA%B3%84&assignee=Samyoung+Machinery&assignee=KAIST&assignee=Lumos+Candle&assignee=%EB%A3%A8%EB%AA%A8%EC%8A%A4%EC%BA%94%EB%93%A4" }
 ];
 
 /* ──────────── HONORS ──────────── */
