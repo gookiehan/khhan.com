@@ -114,21 +114,6 @@ const qeaPatent = {
 /* ──────────── 학력사항 ──────────── */
 const education = [
   {
-    period: "2015.04.~2015.07.",
-    title: "KAIST 차세대 혁신리더 양성과정",
-    org: "KAIST", orgUrl: "http://www.kaist.ac.kr/",
-    desc: "",
-    files: []
-  },
-  {
-    period: "2013.01.~2013.05.",
-    title: "2013 Engineering Leadership Professional Program",
-    org: "College of Engineering, University of California, Berkeley",
-    orgUrl: "https://www.berkeley.edu/",
-    desc: "",
-    files: []
-  },
-  {
     period: "1999.03.~2003.08.",
     title: "박사, 전자전산학과 전기및전자공학전공",
     org: "한국과학기술원 (KAIST)", orgUrl: "http://www.kaist.ac.kr/",
@@ -155,6 +140,21 @@ const education = [
     period: "1991.03.~1993.02.",
     title: "대전과학고등학교",
     org: "과학영재학교 대전과학고등학교", orgUrl: "http://djshs.djsch.kr/main.do",
+    desc: "",
+    files: []
+  },
+{
+    period: "2015.04.~2015.07.",
+    title: "KAIST 차세대 혁신리더 양성과정",
+    org: "KAIST", orgUrl: "http://www.kaist.ac.kr/",
+    desc: "",
+    files: []
+  },
+  {
+    period: "2013.01.~2013.05.",
+    title: "2013 Engineering Leadership Professional Program",
+    org: "College of Engineering, University of California, Berkeley",
+    orgUrl: "https://www.berkeley.edu/",
     desc: "",
     files: []
   }
