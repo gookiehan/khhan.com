@@ -239,3 +239,42 @@ Validation:
 Build:
 
 - `npm run build`: passed
+
+## Content validation script
+
+Added validation script:
+
+- `scripts/validate-content.mjs`
+
+Added npm scripts:
+
+- `npm run validate:content` -> runs YAML/content integrity validation.
+- `npm run validate` -> currently aliases `validate:content`.
+
+Validation rules enforced:
+
+- All `src/data/*.yml` files must parse.
+- Section totals must match baseline:
+  - qea 18, education 6, career 8, research 34, awards 33, activities 52,
+    publications 51, patents 2, honors 13, ta 9, clubs 1, total 227.
+- Any item with `files[]` must have `file.url` for each file entry.
+- `file.label` is optional.
+- Local asset URLs are counted only when URL starts with `assets/` or `/assets/`.
+- Empty arrays are allowed.
+- `null`/`undefined` array entries are treated as validation errors.
+
+Execution results:
+
+| Command | Result |
+| --- | --- |
+| `npm run validate:content` | Pass |
+| `npm run validate` | Pass |
+| `npm run build` | Pass |
+
+Runtime metrics from validation/build check:
+
+- Total content items: 227
+- `files[]` link entries: 177
+- Unique URLs: 146
+- Unique local asset URLs: 109
+- Missing local assets in `dist/`: 0

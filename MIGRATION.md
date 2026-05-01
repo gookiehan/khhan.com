@@ -114,6 +114,12 @@ Componentization pass 1:
 - Kept section order, content meaning, and layout unchanged.
 - Validation remained matched: total 227, `files[]` 177, unique URLs 146, local asset URLs 109, `dist` missing 0.
 
+Content validation script:
+
+- Added `scripts/validate-content.mjs` and npm commands `validate:content` / `validate`.
+- Current validation status: pass (total 227, `files[]` 177, unique URLs 146, local assets 109, missing in `dist` 0).
+- `npm run build` remains passing after validator integration.
+
 ## Phase 2: Content Model
 
 - [ ] Split `data.js` into section-specific content files.
