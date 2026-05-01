@@ -438,7 +438,13 @@ const clubsItems = clubs.map((c) => ({
       }
       if (location.search.includes('edit')) {
         document.getElementById('admin-panel').classList.add('open');
-        fetch('data.js').then(r => r.text()).then(t => { document.getElementById('admin-editor').value = t; });
+        const editor = document.getElementById('admin-editor');
+        editor.value = 'YAML-based structure is active. Legacy editor is disabled. Please update content in src/data/*.yml.';
+        editor.setAttribute('readonly', 'readonly');
+        document.querySelectorAll('#admin-panel .btn-save').forEach((btn) => {
+          btn.disabled = true;
+          btn.title = 'Legacy editor is disabled after YAML migration.';
+        });
       }
     </script>
   </body>
