@@ -106,6 +106,7 @@ YAML rendering migration:
 - `src/pages/index.astro` now renders from `src/data/*.yml` (server-side) instead of client-side section population from `data.js`.
 - Content parity checks remain matched: total 227, `files[]` links 177, unique URLs 146.
 - `public/data.js` is now a cleanup candidate for rendering flow, but retained for the legacy admin-panel helper path.
+- Final YAML rendering verification passed: section totals, link counts, and `dist` asset checks all match baseline values.
 
 ## Phase 2: Content Model
 
