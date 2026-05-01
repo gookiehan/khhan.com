@@ -1,0 +1,26 @@
+---
+interface FileLink {
+  url: string;
+  icon?: string;
+  tip?: string;
+}
+
+interface Props {
+  files?: FileLink[];
+}
+
+const { files = [] } = Astro.props as Props;
+---
+
+{
+  files.length > 0 && (
+    <div class="files">
+      {files.map((f) => (
+        <a href={f.url} target="_blank" title={f.tip || ''}>
+          {f.icon || '🔗'} {f.tip || '링크'}
+        </a>
+      ))}
+    </div>
+  )
+}
+
