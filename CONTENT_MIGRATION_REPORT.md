@@ -78,3 +78,50 @@ This report verifies that the first Astro reproduction of the current `khhan.com
 ## Result
 
 No content-count differences were found between the current `data.js` baseline and the Astro-rendered page structure. No local asset references are missing from the generated `dist/` output.
+
+## YAML conversion draft
+
+Generated YAML files under `src/data/` from `data.js` without changing field values, order, links, HTML strings, date/period formats, or icon/tip/url values.
+
+Created files:
+
+- `src/data/qea.yml`
+- `src/data/education.yml`
+- `src/data/career.yml`
+- `src/data/research.yml`
+- `src/data/awards.yml`
+- `src/data/activities.yml`
+- `src/data/publications.yml`
+- `src/data/patents.yml`
+- `src/data/honors.yml`
+- `src/data/ta.yml`
+- `src/data/clubs.yml`
+- `src/data/profile.yml`
+
+Section count verification:
+
+| Section | Expected | YAML draft | Result |
+| --- | ---: | ---: | --- |
+| qea | 18 | 18 | Pass |
+| education | 6 | 6 | Pass |
+| career | 8 | 8 | Pass |
+| research | 34 | 34 | Pass |
+| awards | 33 | 33 | Pass |
+| activities | 52 | 52 | Pass |
+| publications | 51 | 51 | Pass |
+| patents | 2 | 2 | Pass |
+| honors | 13 | 13 | Pass |
+| ta | 9 | 9 | Pass |
+| clubs | 1 | 1 | Pass |
+| total | 227 | 227 | Pass |
+
+Link-count verification:
+
+| Metric | Expected | YAML draft | Result |
+| --- | ---: | ---: | --- |
+| `files[]` link entries | 177 | 177 | Pass |
+| Unique URLs | 146 | 146 | Pass |
+
+YAML parse verification:
+
+- All generated YAML files parse successfully with `js-yaml`.

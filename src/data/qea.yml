@@ -1,0 +1,115 @@
+qeaAbstract: A quantum computer exploits the inherent parallelism that is provided by the superposition of quantum states. All states can be represented using probabilistic methods in parallel processing, and the act of observing the quantum computer produces a single state. A novel evolutionary computing algorithm called the Quantum-inspired Evolutionary Algorithm (QEA) was proposed and pursued. QEA is characterized by principles of quantum computing including concepts of qubits and superposition of states. QEA uses a Q-bit representation instead of binary, numeric or symbolic representations. QEA can imitate parallel computation in classical computers.
+qeaThesis:
+  citation: <b>Kuk-Hyun Han</b>, <i>Quantum-inspired Evolutionary Algorithm</i>. Ph.D thesis, Electrical Engineering and Computer Science, Korea Advanced Institute of Science and Technology (KAIST), June 2003.
+  files:
+    - url: assets/docs/PhDthesis_QEA.pdf
+      icon: 📄
+      tip: 박사논문 PDF
+qeaJournals:
+  - citation: Jun-Su Jang, <b>Kuk-Hyun Han</b> and Jong-Hwan Kim, "Evolutionary algorithm-based face verification," <i>Pattern Recognition Letters</i>, Elsevier B. V., Vol. 25, No. 16, pp. 1857-1865, December 2004.
+    files:
+      - url: assets/docs/PRL2004_Face.pdf
+        icon: 📄
+        tip: PDF
+  - citation: <b>Kuk-Hyun Han</b> and Jong-Hwan Kim, "Quantum-inspired Evolutionary Algorithms with a New Termination Criterion, Hε Gate, and Two Phase Scheme," <i>IEEE Transactions on Evolutionary Computation</i>, IEEE Press, Vol. 8, No. 2, pp. 156-169, April 2004.
+    files:
+      - url: assets/docs/TEVC2004_V8N2.pdf
+        icon: 📄
+        tip: PDF
+      - url: assets/docs/knapsack_data.zip
+        icon: 📦
+        tip: Knapsack Data
+  - citation: Kyung-Ho Kim, Joo-Young Hwang, <b>Kuk-Hyun Han</b>, Jong-Hwan Kim and Kyu-Ho Park, "A Quantum-inspired Evolutionary Computing Algorithm for Disk Allocation Method," <i>IEICE Transactions on Information and Systems</i>, IEICE Press, Vol. E86-D, No. 3, pp. 645-649, March 2003.
+    files:
+      - url: assets/docs/IEICE_QDM2003.pdf
+        icon: 📄
+        tip: PDF
+  - citation: <b>Kuk-Hyun Han</b> and Jong-Hwan Kim, "Quantum-inspired Evolutionary Algorithm for a Class of Combinatorial Optimization," <i>IEEE Transactions on Evolutionary Computation</i>, IEEE Press, Vol. 6, No. 6, pp. 580-593, December 2002.
+    files:
+      - url: assets/docs/TEVC2002_V6N6.pdf
+        icon: 📄
+        tip: PDF
+      - url: assets/docs/knapsack_data.zip
+        icon: 📦
+        tip: Knapsack Data
+qeaConferences:
+  - citation: <b>Kuk-Hyun Han</b> and Jong-Hwan Kim, "On the Analysis of the Quantum-inspired Evolutionary Algorithm with a Single Individual," in <i>Proceedings of the 2006 IEEE Congress on Evolutionary Computation</i>, IEEE Press, pp. 9172-9179, July 2006.
+    files:
+      - url: assets/docs/CEC2006_QEAanalysis.pdf
+        icon: 📄
+        tip: PDF
+  - citation: Yehoon Kim, Jong-Hwan Kim and <b>Kuk-Hyun Han</b>, "Quantum-inspired Multiobjective Evolutionary Algorithm for Multiobjective 0/1 Knapsack Problems," in <i>Proceedings of the 2006 IEEE Congress on Evolutionary Computation</i>, IEEE Press, pp. 9151-9156, July 2006.
+    files:
+      - url: assets/docs/CEC2006_QMEA.pdf
+        icon: 📄
+        tip: PDF
+  - citation: Jun-Su Jang, <b>Kuk-Hyun Han</b> and Jong-Hwan Kim, "Face Detection using Quantum-inspired Evolutionary Algorithm," in <i>Proceedings of the 2004 IEEE Congress on Evolutionary Computation</i>, IEEE Press, pp. 2100-2106, June 2004.
+    files:
+      - url: assets/docs/CEC2004_Face.pdf
+        icon: 📄
+        tip: PDF
+  - citation: <b>Kuk-Hyun Han</b> and Jong-Hwan Kim, "On Setting the Parameters of Quantum-inspired Evolutionary Algorithm for Practical Applications," in <i>Proceedings of the 2003 IEEE Congress on Evolutionary Computation</i>, IEEE Press, pp. 178-184, December 2003.
+    files:
+      - url: assets/docs/CEC2003-QEA.pdf
+        icon: 📄
+        tip: PDF
+  - citation: "Jun-Su Jang, <b>Kuk-Hyun Han</b> and Jong-Hwan Kim, \"Quantum-inspired Evolutionary Algorithm-based Face Verification,\" <i>Lecture Notes in Computer Science (GECCO 2003)</i>, eds. E. Cantu-Paz et al., Berlin Heidelberg: Springer-Verlag, Vol. 2724, pp. 2147-2156, July 2003."
+    files:
+      - url: assets/docs/GECCO2003_FACE.pdf
+        icon: 📄
+        tip: PDF
+      - url: assets/images/gecco2003_UIUC.jpg
+        icon: 🖼️
+        tip: GECCO UIUC
+  - citation: "<b>Kuk-Hyun Han</b> and Jong-Hwan Kim, \"On Setting the Parameters of QEA for Practical Applications: Some Guidelines based on Empirical Evidence,\" <i>Lecture Notes in Computer Science (GECCO 2003)</i>, eds. E. Cantu-Paz et al., Berlin Heidelberg: Springer-Verlag, Vol. 2723, pp. 427-428, July 2003."
+    files:
+      - url: assets/docs/GECCO2003_QEA.pdf
+        icon: 📄
+        tip: PDF
+      - url: assets/images/gecco2003chicago.jpg
+        icon: 🖼️
+        tip: Chicago
+  - citation: <b>Kuk-Hyun Han</b> and Jong-Hwan Kim, "Introduction of Quantum-inspired Evolutionary Algorithm," in <i>Proceedings of the 2002 FIRA Robot World Congress</i>, pp. 243-248, May 2002.
+    files:
+      - url: assets/docs/QEAFIRA.pdf
+        icon: 📄
+        tip: PDF
+  - citation: <b>Kuk-Hyun Han</b> and Jong-Hwan Kim, "Analysis of Quantum-inspired Evolutionary Algorithm," in <i>Proceedings of the 2001 International Conference on Artificial Intelligence</i>, CSREA Press, Vol. 2, pp. 727-730, June 2001.
+    files:
+      - url: assets/docs/IC-AI2001.pdf
+        icon: 📄
+        tip: PDF
+      - url: assets/images/icai1.jpg
+        icon: 🖼️
+        tip: 사진 1
+      - url: assets/images/icai2.jpg
+        icon: 🖼️
+        tip: 사진 2
+  - citation: <b>Kuk-Hyun Han</b>, Kui-Hong Park, Chi-Ho Lee and Jong-Hwan Kim, "Parallel Quantum-inspired Genetic Algorithm for Combinatorial Optimization Problem," in <i>Proceedings of the 2001 IEEE Congress on Evolutionary Computation</i>, IEEE Press, pp. 1422-1429, May 2001.
+    files:
+      - url: assets/docs/CEC2001.pdf
+        icon: 📄
+        tip: PDF
+      - url: assets/images/cec2001.jpg
+        icon: 🖼️
+        tip: 사진
+  - citation: <b>Kuk-Hyun Han</b> and Jong-Hwan Kim, "Genetic Quantum Algorithm and its Application to Combinatorial Optimization Problem," in <i>Proceedings of the 2000 IEEE Congress on Evolutionary Computation</i>, IEEE Press, pp. 1354-1360, July 2000.
+    files:
+      - url: assets/docs/cec2000.pdf
+        icon: 📄
+        tip: PDF
+      - url: assets/docs/knapsack_data.zip
+        icon: 📦
+        tip: Knapsack Data
+      - url: assets/images/cec2000.jpg
+        icon: 🖼️
+        tip: 사진
+qeaDomestic:
+  - citation: Yehoon Kim, Jong-Hwan Kim and <b>Kuk-Hyun Han</b>, "Quantum-inspired Multiobjective Evolutionary Algorithm," in <i>Proceedings of the KACC</i>, ICASE, October 2005. (Korean)
+    files:
+      - url: assets/docs/QMOEAKACC05.pdf
+        icon: 📄
+        tip: PDF
+qeaPatent:
+  citation: Jong-Hwan Kim and <b>Kuk-Hyun Han</b>, "Genetic Quantum Algorithm using quantum computing concept," Patent Number 0350233, Korea (2000.3.27 / 2002.8.13)
+  files: []

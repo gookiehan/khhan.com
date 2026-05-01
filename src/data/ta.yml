@@ -1,0 +1,31 @@
+taActivities:
+  - period: 2002.03.~2002.06.
+    title: 지능시스템 (EE481)
+    files: []
+  - period: 2001.09.~2001.12.
+    title: 기초전자공학실습 (EE103)
+    files:
+      - url: assets/images/mirorobot.gif
+        icon: 🖼️
+        tip: MiroRobot
+  - period: 2001.03.~2001.06.
+    title: 제어시스템공학 (EE381)
+    files: []
+  - period: 2000.09.~2000.12.
+    title: 기초전자공학실습 (EE103)
+    files: []
+  - period: 2000.03.~2000.06.
+    title: 기초전자공학실습 (EE103)
+    files: []
+  - period: 1999.09.~1999.12.
+    title: 계측개론 (CC522)
+    files: []
+  - period: 1999.03.~1999.06.
+    title: 회로이론 (EE201)
+    files: []
+  - period: 1998.09.~1998.12.
+    title: 전자공학실험 II (EE208)
+    files: []
+  - period: 1998.03.~1998.06.
+    title: 전자공학실험 III (EE307)
+    files: []

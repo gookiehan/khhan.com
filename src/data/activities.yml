@@ -1,0 +1,140 @@
+activities:
+  board:
+    - period: 2023. 01. – 현재
+      title: 부회장, <a href="http://www.kfs.or.kr/html/?pmode=introduce">한국주조공학회</a>
+    - period: 2022. 01. – 현재
+      title: 전문이사, <a href="http://www.s4ira.or.kr/">스마트4차산업혁명협회</a>
+    - period: 2019. 01. – 2022. 12.
+      title: 국제협력이사, <a href="http://www.kfs.or.kr/html/?pmode=introduce">한국주조공학회</a>
+    - period: 2018. 09. – 2021. 09.
+      title: 이사, <a href="https://www.nst.re.kr/nst/about/06_01.jsp">국가과학기술연구회</a>, <a href="https://www.msit.go.kr/index.do">과학기술정보통신부</a>
+  committee:
+    - period: 2020. 11. – 현재
+      title: 정책자문위원회 위원, <a href="https://www.kitech.re.kr/main/">한국생산기술연구원</a>
+    - period: 2020. 07. – 현재
+      title: 경영자문위원회 위원, <a href="https://www.kimm.re.kr/">한국기계연구원</a>
+    - period: 2019. 04. – 2020. 02
+      title: 대한민국 과학기술 미래전략 2045 – 혁신생태계 분과위원회 위원, <a href="http://english.msip.go.kr/web/main/main.do">과학기술정보통신부</a>
+    - period: 2018. 03. – 현재
+      title: 의원, <a href="http://daejeoncci.korcham.net/front/contents/exepageList.do?exeGbn=2">대전상공회의소</a>
+  standardization:
+    - period: 2006.09.~2007.01
+      title: Initiative Member, <i>Consumer Electronics (CE) 2.0</i>, <a href="http://www.media.mit.edu/">The MIT Media Lab</a>, Samsung, Motorola, Toshiba
+  invitedTalks:
+    - date: 2020.12.01.
+      title: "\"직경 225㎜급 피스톤 일체형 중자의 DfAM 설계를 통한 제조 공정 혁신\", 제2회 3D프린팅 기술확산 컨퍼런스, <a href=\"http://www.3dpro.or.kr/html/main/main.html\">3D프린팅연구조합</a>, <a href=\"https://www.nipa.kr/\">정보통신산업진흥원</a>"
+      files: []
+    - date: 2020.11.19.
+      title: "\"주조 산업의 뉴노멀과 3D 프린팅 기술\", 기술강연, 한국주조공학회 2020 추계대회, <a href=\"http://www.kfs.or.kr/html/\">한국주조공학회</a>"
+      files: []
+    - date: 2020.11.18.
+      title: "\"3D프린팅 기술을 이용한 제조 공정 혁신\", <a href=\"http://inside3dprinting.co.kr/2020/p1.php\">인사이드 3D프린팅 컨퍼런스</a>"
+      files: []
+    - date: 2020.10.27.
+      title: "\"3D프린팅 기반 제조 혁신: 양산공정 개선 및 적용분야 확대 사례\", <a href=\"https://nipa3dprinting.imweb.me/88\">중소기업 최고 CEO 3D프린팅 경영혁신 웨비나</a>, <a href=\"http://www.3dpro.or.kr/html/main/main.html\">3D프린팅연구조합</a>"
+      files: []
+    - date: 2020.07.23.
+      title: "\"삼영기계 소개 및 3D 프린팅을 통한 제조 혁신\", <a href=\"https://vmspace.com/report/report_view.html?base_seq=MTE1NA%3D%3D\">세운 글로벌 포럼 – 신제조업 시리즈</a>, <a href=\"https://www.facebook.com/SewoonCampus/\">서울시립대학교 베타시티센터</a>"
+      files: []
+    - date: 2020.07.20.
+      title: "\"3D 프린팅을 통한 산업별 혁신: 시제품에서 양산품으로, 제조 산업에서 다양한 산업으로의 확대\", 총괄워크샵 키노트 강연, <a href=\"https://www.k3ders.org/index.php\">첨단 신소재 기반 3D프린팅 전문인력양성 사업단</a>, <a href=\"http://www.motie.go.kr/www/main.do\">산업통상자원부</a>"
+      files: []
+    - date: 2019.11.07.
+      title: "\"샌드 3D 프린팅 적용을 통한 주조 제품 디자인 자유도 혁신\", 기술강연, 한국주조공학회 2019 추계대회, <a href=\"http://www.kfs.or.kr/html/\">한국주조공학회</a>"
+      files: []
+    - date: 2019.10.08.
+      title: "\"샌드 3D프린팅을 활용한 주조 부품 제작 혁신 기술 소개\", 해군 군수사 함정적용 신기술 설명회, <a href=\"https://www.navy.mil.kr/mbshome/mbs/navy/index.do\">대한민국 해군</a>"
+      files: []
+    - date: 2019.07.11.
+      title: "\"샌드 3D프린팅 기술 접목을 통한 주조품 양산 공정 혁신 및 생산성 개선 사례 연구\", 기술강연, 한국주조공학회 2019 하계대회, <a href=\"http://www.kfs.or.kr/html/\">한국주조공학회</a>"
+      files: []
+    - date: 2019.04.11.
+      title: "\"샌드 3D프린팅을 이용한 주조품 시제품 개발 혁신 및 알루미늄, 주철, 주강 주조품 적용 사례\", 기술강연, 한국주조공학회 2019 춘계대회, <a href=\"http://www.kfs.or.kr/html/\">한국주조공학회</a>"
+      files: []
+    - date: 2018.11.08.
+      title: "\"설계 자유도 향상을 위한 금형이 필요 없는 주조용 샌드 3D프린팅 솔루션\", 기술강연, 한국주조공학회 2018 추계대회, <a href=\"http://www.kfs.or.kr/html/\">한국주조공학회</a>"
+      files: []
+    - date: 2018.07.04.
+      title: "\"신사업 및 스타트업 추진기\", 대전충남세종 글로벌 비즈니스클럽 워크샵, <a href=\"https://www.kotra.or.kr/kh/main/KHMIUI010M.html\">KOTRA</a>"
+      files: []
+    - date: 2018.04.02.
+      title: "\"융합프로젝트 이야기\", <a href=\"http://celt.kaist.ac.kr/html/main.php\">교수학습혁신센터</a>, <a href=\"http://www.kaist.ac.kr/html/kr/index.html\">KAIST</a>"
+      files:
+        - url: assets/images/convergence_talk_KAIST_2018.jpg
+          icon: 🖼️
+          tip: 사진
+    - date: 2017.11.06.
+      title: "\"Designing new things that you have never seen before,\" <a href=\"http://dhe.unist.ac.kr/\">School of Design & Human Engineering Seminar</a>, <a href=\"http://www.unist.ac.kr/\">UNIST</a>"
+      files:
+        - url: assets/docs/UNIST_talk_201708.pdf
+          icon: 📄
+          tip: 발표자료 PDF
+    - date: 2017.09.21.
+      title: "\"창의 디자인 노하우\", <a href=\"http://smpd.hongik.ac.kr/community/notice_view/96/page/40?\">산업체 전문가 특강</a>, <a href=\"http://www.hongik.ac.kr/index.do\">홍익대학교</a>"
+      files: []
+    - date: 2017.08.21.
+      title: "\"융합에 대한 고찰: 융합 노하우\", <a href=\"http://cde.unist.ac.kr/bbs/board.php?bo_table=news&wr_id=44&page=1\">제4회 전국 대학생 창의 디자인-공학 경진대회</a>, <a href=\"http://unist.ac.kr/\">UNIST</a>"
+      files: []
+    - date: 2017.06.12.
+      title: "\"융합\", <a href=\"https://orip.hongik.ac.kr/\">디자이니어 양성 사업단</a>, <a href=\"http://www.hongik.ac.kr/index.do\">홍익대학교</a>"
+      files: []
+    - date: 2016.08.27.
+      title: "\"돌파구 노트\", 기업가정신 캠프, <a href=\"http://djshs.djsch.kr/main.do\">과학영재학교 대전과학고등학교</a>"
+      files:
+        - url: http://hellodd.com/?md=news&mt=view&pid=59042
+          icon: 📰
+          tip: HelloDD 기사
+    - date: 2014.05.07.
+      title: "\"도전과 창의\", 전기및전자공학과 KEY Seminar, <a href=\"http://www.kaist.ac.kr/\">KAIST</a>"
+      files:
+        - url: https://ee.kaist.ac.kr/alumnus/11070/
+          icon: 🌐
+          tip: KAIST EE
+    - date: 2013.11.29.
+      title: "\"창의적 도전\", 대학원 세미나, <a href=\"http://www.cnu.ac.kr/\">충남대학교</a>"
+      files: []
+    - date: 2007.04.12.
+      title: "\"A New Type of Robotic Companion,\" 문화기술대학원, <a href=\"http://www.kaist.ac.kr/\">KAIST</a>"
+      files: []
+    - date: 2006.09.19.
+      title: "\"A New Type of Robotic Companion,\" <a href=\"http://irrc.kaist.ac.kr/\">ITRC-IRRC</a>, <a href=\"http://www.kaist.ac.kr/\">KAIST</a>"
+      files: []
+    - date: 2006.07.12.
+      title: "\"DTV – The 2nd Generation?,\" <a href=\"http://wiki.media.mit.edu/bin/view/Simplicity\">SIMPLICITY</a> Open Media Event, <a href=\"http://www.media.mit.edu/\">Media Lab</a>, <a href=\"http://www.mit.edu/\">MIT</a>"
+      files: []
+  teaching:
+    - date: 2020.11.26.
+      title: "\"샌드 3D 프린팅 기술의 활용\", 3D프린팅 단기교육(2일), <a href=\"https://www.k3ders.org/index.php\">첨단 신소재 기반 3D프린팅 전문인력양성 사업단</a>, <a href=\"http://www.motie.go.kr/www/main.do\">산업통상자원부</a>"
+    - date: 2020.09.22.
+      title: "\"샌드 3D 프린팅을 통한 주조산업 혁신\", 주조아카데미 온라인 교육, <a href=\"http://www.kfs.or.kr/html/\">한국주조공학회</a>"
+    - date: 2019.09.26.
+      title: "\"샌드 3D프린팅을 활용한 주조 혁신\", 한국주조공학회 대경지부 기술교육, <a href=\"http://www.kfs.or.kr/html/\">한국주조공학회</a>"
+    - date: 2005.06.14.
+      title: "\"컴퓨터 구조 & 알고리즘 (2)\", 디지털미디어 연구소, 삼성전자(주)"
+    - date: 2005.04.12.
+      title: "\"Tornado2 and VxWorks Training Workshop\", 소프트웨어 교육 센터, 삼성전자(주)"
+    - date: 2005.02.25.
+      title: "\"컴퓨터 구조 & 알고리즘 (1)\", 디지털미디어 연구소, 삼성전자(주)"
+    - date: 2004.10.18.
+      title: "\"VxWorks 입문 교육\", 소프트웨어 교육 센터, 삼성전자(주)"
+    - date: 2004.09.13.
+      title: "\"Tornado2 and VxWorks Training Workshop\", 첨단기술연수소, 삼성전자(주)"
+    - date: 2003.03.14.
+      title: "\"양자 진화 알고리즘 (QEA)\", <a href=\"http://www.mrdec.org/\">마이크로로봇 설계 교육 센터 (MRDEC)</a>, <a href=\"http://www.kaist.ac.kr/\">KAIST</a>"
+  judges:
+    - period: 2006.03.~2006.11.
+      title: Program Committee Member, <a href="http://cis2006.gdut.edu.cn/">The 2006 International Conference on Computational Intelligence and Security (CIS 06)</a>
+    - period: 2005.12.~2006.02.
+      title: 제 12회 삼성 휴먼테크 논문대상, Signal Processing 분과 간사/심사위원
+    - period: 2004.12.~2005.02.
+      title: 제 11회 삼성 휴먼테크 논문대상, 멀티미디어 분과 간사/심사위원
+    - period: 2003.12.~2004.02.
+      title: 제 10회 삼성 휴먼테크 논문대상, 멀티미디어 분과 소간사/심사위원
+  reviewers:
+    - IEEE Transactions on Evolutionary Computation, IEEE Press
+    - IEEE Transactions on Systems, Man and Cybernetics – Part B, IEEE Press
+    - Autonomous Agents and Multi-Agent Systems, Kluwer
+    - Neurocomputing, Elsevier
+    - Journal of Advanced Computational Intelligence and Intelligent Informatics, Fuji Technology Press
+    - International Journal on Artificial Intelligence Tools, World Scientific
+    - International Journal of Electronic Business, Inderscience

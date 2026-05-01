@@ -1,0 +1,74 @@
+career:
+  - period: 2023.09.~현재
+    title: 겸임교수, <a href="https://home.sch.ac.kr/factory/index.jsp">스마트팩토리공학과</a>, <a href="https://home.sch.ac.kr/sch/">순천향대학교</a>
+    files: []
+  - period: 2018.07.~현재
+    title: 사장 / 연구소장, <a href="http://www.sym.co.kr/">삼영기계(주)</a>
+    desc: <a href="https://news.naver.com/main/read.nhn?mode=LSD&mid=sec&oid=469&aid=0000452091&sid1=001">소재 부품 장비 강소기업100 선정</a>
+    files:
+      - url: assets/docs/HiddenChampion100.pdf
+        icon: 📄
+        tip: 강소기업100 PDF
+      - url: https://www.hankyung.com/article/2023101619191
+        icon: 📰
+        tip: 한경 기사
+      - url: https://www.hellot.net/news/article.html?no=66688
+        icon: 📰
+        tip: 헬로티 기사
+      - url: https://amenews.kr/news/view.php?idx=48504
+        icon: 📰
+        tip: AM뉴스 기사
+      - url: https://www.sandgraphy.com/
+        icon: 🌐
+        tip: Sandgraphy
+      - url: http://www.youtube.com/watch?v=LiQt_dgDXw8
+        icon: 🎬
+        tip: YouTube
+      - url: https://www.youtube.com/watch?v=eKLZ2haWy_M
+        icon: 🎬
+        tip: YouTube
+      - url: https://www.youtube.com/watch?v=v7GARnDWtIM
+        icon: 🎬
+        tip: YouTube
+  - period: 2016.11.~현재
+    title: 대표, <a href="http://lumoscandle.com/">루모스캔들(주)</a>
+    files:
+      - url: http://www.cnet.co.kr/view/100165247
+        icon: 📰
+        tip: CNET 기사
+      - url: http://hellodd.com/?md=news&mt=view&pid=61278
+        icon: 📰
+        tip: HelloDD 기사
+      - url: https://www.wadiz.kr/web/wcampaign/search?keyword=%EB%A3%A8%EB%AA%A8%EC%8A%A4
+        icon: 🌐
+        tip: Wadiz
+      - url: https://youtu.be/Q6eReTQys2o
+        icon: 🎬
+        tip: YouTube
+      - url: https://www.youtube.com/watch?v=dtwzdyadi3o
+        icon: 🎬
+        tip: YouTube
+  - period: 2013.08.~2018.06.
+    title: 전무이사 / 연구소장, <a href="http://www.sym.co.kr/">삼영기계(주)</a>
+    files:
+      - url: http://news.donga.com/List/3/01/20130911/57592832/1
+        icon: 📰
+        tip: 동아일보 기사
+  - period: 2010.11.~2013.07.
+    title: Director, User Experience Center America (Mobile, VD, Display, Innovations) & <a href="https://thinktankteam.info/">Think Tank Team</a>, 삼성전자(주), 산호세, 미국
+    files:
+      - url: https://www.youtube.com/user/tttsamsung
+        icon: 🎬
+        tip: TTT YouTube
+      - url: https://www.youtube.com/watch?v=2v0YtNOckEY
+        icon: 🎬
+        tip: YouTube
+  - period: 2010.03.~2013.08.
+    title: 수석연구원, DMC연구소, <a href="http://www.sec.co.kr/">삼성전자(주)</a>
+    files: []
+  - period: 2006.02.~2007.01.
+    title: Visiting Scientist, <a href="http://www.media.mit.edu/">미디어랩</a>, <a href="http://www.mit.edu/">Massachusetts Institute of Technology (MIT)</a>
+    files: []
+  - period: 2003.09.~2010.02.
+    title: 책임연구원, DMC연구소, <a href="http://www.sec.co.kr/">삼성전자(주)</a>
+    files: []
