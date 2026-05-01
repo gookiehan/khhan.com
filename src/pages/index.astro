@@ -257,7 +257,7 @@ const clubsItems = clubs.map((c) => ({
       <div id="honors-list" class="collapsible">
         {honors.map((h) => (
           <div class="item">
-            <div class="title">{h.title}</div>
+            <div class="title" set:html={h.title}></div>
             <FileLinks files={h.files} />
           </div>
         ))}
