@@ -1,0 +1,137 @@
+# Astro Migration Checklist
+
+This document tracks the planned migration from the current static `index.html` + `data.js` site to an Astro-based content-managed static site.
+
+## Working Branch
+
+- Target branch: `feature/astro-migration`
+- Current rule for this checkpoint: do not write Astro code yet.
+- Preserve the current source files until the migration implementation starts:
+  - `index.html`
+  - `data.js`
+  - `style.css`
+
+## Current Checkpoint
+
+- Baseline source: `data.js`
+- Total content items: 227
+- `files[]` link entries: 177
+- Unique `files[]` URLs: 146
+- Missing referenced local assets: 8
+  - `KAIST_stereo.jpg`
+  - `gui.jpg`
+  - `hublan1.jpg`
+  - `ino.jpg`
+  - `mybot.bmp`
+  - `sample320.jpg`
+  - `sample640.jpg`
+  - `smt.jpg`
+
+## Pre-Migration Backup Tag
+
+Create a stable restore point before replacing the current site structure.
+
+```powershell
+git switch main
+git status --short
+git tag -a before-astro-migration -m "Backup before Astro migration"
+git push origin before-astro-migration
+git switch feature/astro-migration
+```
+
+If the tag already exists, verify it before reusing or replacing it:
+
+```powershell
+git show before-astro-migration
+```
+
+## Phase 0: Baseline Freeze
+
+- [ ] Confirm the current site runs locally:
+
+  ```powershell
+  python -m http.server 8000
+  ```
+
+- [ ] Confirm the current production custom domain still resolves to the expected GitHub Pages site.
+- [ ] Create the `before-astro-migration` tag.
+- [ ] Capture before screenshots for desktop and mobile viewport comparison.
+- [ ] Keep `CONTENT_INVENTORY.md` as the baseline content count and link inventory.
+
+## Phase 1: Astro Project Scaffold
+
+- [ ] Add Astro project files without changing content semantics.
+- [ ] Keep GitHub Pages compatibility.
+- [ ] Preserve custom domain handling by keeping `CNAME` in the published output.
+- [ ] Move or expose static assets under Astro's public asset path.
+- [ ] Add local commands:
+  - `npm run dev`
+  - `npm run build`
+  - `npm run preview`
+
+## Phase 2: Content Model
+
+- [ ] Split `data.js` into section-specific content files.
+- [ ] Prefer structured data files for repeated records:
+  - profile
+  - education
+  - career
+  - research
+  - qea
+  - awards
+  - activities
+  - publications
+  - patents
+  - honors
+  - ta
+  - clubs
+- [ ] Define schemas for required fields, optional descriptions, dates, links, and local file references.
+- [ ] Preserve existing HTML-rich citation fields or replace them with a safer structured citation model.
+- [ ] Decide whether QEA entries duplicated in Publications should remain duplicated or become shared references.
+
+## Phase 3: Component Migration
+
+- [ ] Convert the current page skeleton into Astro layout and components.
+- [ ] Create reusable components:
+  - section wrapper
+  - item card
+  - citation card
+  - file links
+  - collapsible section
+  - navigation
+- [ ] Preserve current anchor IDs so existing links keep working.
+- [ ] Preserve the current visual style before attempting design improvements.
+
+## Phase 4: Validation
+
+- [ ] Match section item counts against `CONTENT_INVENTORY.md`.
+- [ ] Match `files[]` links against `CONTENT_INVENTORY.md`.
+- [ ] Check all local asset references exist.
+- [ ] Resolve or intentionally document the missing local assets listed in `CONTENT_INVENTORY.md`.
+- [ ] Verify external links are preserved.
+- [ ] Build successfully with no schema errors.
+- [ ] Test desktop and mobile layouts.
+
+## Phase 5: Deployment
+
+- [ ] Add GitHub Actions workflow for Astro build and GitHub Pages deploy.
+- [ ] Confirm GitHub Pages source is set to GitHub Actions.
+- [ ] Confirm custom domain `khhan.com` remains configured.
+- [ ] Confirm generated output contains `CNAME`.
+- [ ] Deploy from `feature/astro-migration` to a preview path or test branch first if possible.
+
+## Phase 6: Cutover
+
+- [ ] Compare before and after pages against the baseline screenshots.
+- [ ] Confirm content counts, links, and assets.
+- [ ] Confirm production domain after merge.
+- [ ] Keep `before-astro-migration` tag as a rollback point.
+- [ ] Document the new content editing workflow in `README.md`.
+
+## Known Risks Before Implementation
+
+- Some `files[]` local image references in `data.js` do not exist in the current asset tree.
+- Several content fields contain inline HTML; schemas and renderers must handle this deliberately.
+- Some external links use old `http://` URLs and may be unstable.
+- Large media files should remain static assets and should not be imported into bundled client code.
+- The current admin panel in `index.html?edit` is preview/download only; replacing it is not part of the first Astro migration unless explicitly scoped.
