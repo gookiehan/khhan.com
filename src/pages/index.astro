@@ -1,0 +1,445 @@
+---
+import fs from 'node:fs';
+import path from 'node:path';
+import yaml from 'js-yaml';
+import Section from '../components/Section.astro';
+import FileLinks from '../components/FileLinks.astro';
+import ListSection from '../components/ListSection.astro';
+
+function loadYaml(fileName) {
+  const fullPath = path.join(process.cwd(), 'src', 'data', fileName);
+  const source = fs.readFileSync(fullPath, 'utf8');
+  return yaml.load(source);
+}
+
+const qeaData = loadYaml('qea.yml');
+const educationData = loadYaml('education.yml');
+const careerData = loadYaml('career.yml');
+const researchData = loadYaml('research.yml');
+const awardsData = loadYaml('awards.yml');
+const activitiesData = loadYaml('activities.yml');
+const publicationsData = loadYaml('publications.yml');
+const patentsData = loadYaml('patents.yml');
+const honorsData = loadYaml('honors.yml');
+const taData = loadYaml('ta.yml');
+const clubsData = loadYaml('clubs.yml');
+const profileData = loadYaml('profile.yml');
+
+const qeaAbstract = qeaData.qeaAbstract;
+const qeaThesis = qeaData.qeaThesis;
+const qeaJournals = qeaData.qeaJournals;
+const qeaConferences = qeaData.qeaConferences;
+const qeaDomestic = qeaData.qeaDomestic;
+const qeaPatent = qeaData.qeaPatent;
+
+const education = educationData.education;
+const career = careerData.career;
+const researchInterests = researchData.researchInterests;
+const projects = researchData.projects;
+const awards = awardsData.awards;
+const activities = activitiesData.activities;
+const phdThesis = publicationsData.phdThesis;
+const intlJournals = publicationsData.intlJournals;
+const intlConferences = publicationsData.intlConferences;
+const domesticPapers = publicationsData.domesticPapers;
+const magazineArticles = publicationsData.magazineArticles;
+const books = publicationsData.books;
+const patentNote = patentsData.patentNote;
+const patentSearchUrls = patentsData.patentSearchUrls;
+const honors = honorsData.honors;
+const taActivities = taData.taActivities;
+const clubs = clubsData.clubs;
+const scholarUrl = profileData.scholarUrl;
+
+function escapeHtml(value) {
+  return String(value)
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#39;');
+}
+
+const educationItems = education.map((e) => ({
+  period: e.period,
+  titleHtml: `${e.title}, <a href="${e.orgUrl}" target="_blank">${e.org}</a>`,
+  descHtml: e.desc,
+  files: e.files,
+}));
+
+const careerItems = career.map((c) => ({
+  period: c.period,
+  titleHtml: c.title,
+  descHtml: c.desc || '',
+  files: c.files,
+}));
+
+const projectsItems = projects.map((p) => ({
+  period: p.period,
+  titleHtml: p.title,
+  descHtml: `${p.org} / ${p.role}`,
+  files: p.files,
+}));
+
+const awardsItems = awards.map((a) => ({
+  period: a.date,
+  titleHtml: a.title,
+  descHtml: '',
+  files: a.files,
+}));
+
+const boardItems = activities.board.map((b) => ({
+  period: b.period,
+  titleHtml: b.title,
+  descHtml: '',
+  files: [],
+}));
+
+const committeeItems = activities.committee.map((c) => ({
+  period: c.period,
+  titleHtml: c.title,
+  descHtml: '',
+  files: [],
+}));
+
+const standardizationItems = activities.standardization.map((s) => ({
+  period: s.period,
+  titleHtml: s.title,
+  descHtml: '',
+  files: [],
+}));
+
+const talksItems = activities.invitedTalks.map((t) => ({
+  period: t.date,
+  titleHtml: t.title,
+  descHtml: '',
+  files: t.files,
+}));
+
+const teachingItems = activities.teaching.map((t) => ({
+  period: t.date,
+  titleHtml: t.title,
+  descHtml: '',
+  files: [],
+}));
+
+const judgesItems = activities.judges.map((j) => ({
+  period: j.period,
+  titleHtml: j.title,
+  descHtml: '',
+  files: [],
+}));
+
+const taItems = taActivities.map((t) => ({
+  period: t.period,
+  titleHtml: t.title,
+  descHtml: '',
+  files: t.files,
+}));
+
+const clubsItems = clubs.map((c) => ({
+  period: '',
+  titleHtml: c.title,
+  descHtml: c.desc,
+  files: [],
+}));
+---
+
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>한국현 – Kuk-Hyun Han</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+  </head>
+
+  <body>
+    <!-- NAV -->
+    <nav>
+      <div class="inner">
+        <a class="brand" href="#">khhan.com</a>
+        <a href="#education">학력</a>
+        <a href="#career">경력</a>
+        <a href="#research">연구</a>
+        <a href="#qea">QEA</a>
+        <a href="#awards">수상</a>
+        <a href="#activities">활동</a>
+        <a href="#publications">논문·저서</a>
+        <a href="#patents">특허</a>
+        <a href="#contact">링크</a>
+      </div>
+    </nav>
+
+    <!-- HERO -->
+    <div class="hero">
+      <h1>한국현 (Kuk-Hyun Han, Ph.D.)</h1>
+      <p><a href="https://www.sym.co.kr" target="_blank" style="color:#4fc3f7;">삼영기계</a> 사장·연구소장 &nbsp;|&nbsp; 순천향대학교 겸임교수
+        &nbsp;|&nbsp; 한국주조공학회 부회장 &nbsp;|&nbsp; 한국정밀공학회 이사</p>
+      <p style="margin-top:.5rem;">
+        <a href={scholarUrl} target="_blank" style="color:#4fc3f7;">Google Scholar</a>
+      </p>
+    </div>
+
+    <!-- SECTIONS -->
+    <Section id="education" title="학력사항">
+      <div id="edu-list">
+        <ListSection items={educationItems} />
+      </div>
+    </Section>
+    <Section id="career" title="경력사항">
+      <div id="career-list">
+        <ListSection items={careerItems} />
+      </div>
+    </Section>
+
+    <section id="research">
+      <h2>연구</h2>
+      <h3>관심분야</h3>
+      <div id="interest-tags" class="tags" set:html={researchInterests.map((t) => `<span class="tag">${escapeHtml(t)}</span>`).join('')}></div>
+      <h3>주요 연구과제 (프로젝트)</h3>
+      <button class="collapse-btn" data-target="projects-list">연구과제 펼치기 / 접기</button>
+      <div id="projects-list" class="collapsible">
+        <ListSection items={projectsItems} />
+      </div>
+    </section>
+
+    <!-- ★ QEA SECTION (NEW) -->
+    <section id="qea">
+      <h2>QEA – Quantum-inspired Evolutionary Algorithm</h2>
+      <div class="qea-abstract" id="qea-abstract">{qeaAbstract}</div>
+      <h3>Ph.D Thesis</h3>
+      <div id="qea-thesis">
+        <div class="item">
+          <div class="title" set:html={qeaThesis.citation}></div>
+          <FileLinks files={qeaThesis.files} />
+        </div>
+      </div>
+      <h3>International Journal Papers (QEA)</h3>
+      <div id="qea-journals">
+        {qeaJournals.map((p) => (
+          <div class="item">
+            <div class="title" set:html={p.citation}></div>
+            <FileLinks files={p.files} />
+          </div>
+        ))}
+      </div>
+      <h3>International Conference Papers (QEA)</h3>
+      <button class="collapse-btn" data-target="qea-conferences">QEA Conference Papers 펼치기 / 접기</button>
+      <div id="qea-conferences" class="collapsible">
+        {qeaConferences.map((p) => (
+          <div class="item">
+            <div class="title" set:html={p.citation}></div>
+            <FileLinks files={p.files} />
+          </div>
+        ))}
+      </div>
+      <h3>Domestic Conference Paper (QEA)</h3>
+      <div id="qea-domestic">
+        {qeaDomestic.map((p) => (
+          <div class="item">
+            <div class="title" set:html={p.citation}></div>
+            <FileLinks files={p.files} />
+          </div>
+        ))}
+      </div>
+      <h3>Patent (QEA)</h3>
+      <div id="qea-patent">
+        <div class="item">
+          <div class="title" set:html={qeaPatent.citation}></div>
+          <FileLinks files={qeaPatent.files} />
+        </div>
+      </div>
+    </section>
+
+    <section id="awards">
+      <h2>수상경력</h2>
+      <div id="awards-list">
+        <ListSection items={awardsItems} />
+      </div>
+    </section>
+
+    <section id="activities">
+      <h2>기타활동</h2>
+      <h3>이사회 활동</h3>
+      <div id="board-list">
+        <ListSection items={boardItems} />
+      </div>
+      <h3>전문위원 활동</h3>
+      <div id="committee-list">
+        <ListSection items={committeeItems} />
+      </div>
+      <h3>표준화</h3>
+      <div id="std-list">
+        <ListSection items={standardizationItems} />
+      </div>
+      <h3>초청강연</h3>
+      <button class="collapse-btn" data-target="talks-list">초청강연 펼치기 / 접기</button>
+      <div id="talks-list" class="collapsible">
+        <ListSection items={talksItems} />
+      </div>
+      <!-- ★ 강의: 접이식으로 변경 -->
+      <h3>강의</h3>
+      <button class="collapse-btn" data-target="teaching-list">강의 펼치기 / 접기</button>
+      <div id="teaching-list" class="collapsible">
+        <ListSection items={teachingItems} />
+      </div>
+      <!-- ★ 심사위원: 접이식으로 변경 -->
+      <h3>심사위원</h3>
+      <button class="collapse-btn" data-target="judges-list">심사위원 펼치기 / 접기</button>
+      <div id="judges-list" class="collapsible">
+        <ListSection items={judgesItems} />
+      </div>
+      <!-- ★ 저널 리뷰어: 접이식으로 변경 -->
+      <h3>저널 리뷰어</h3>
+      <button class="collapse-btn" data-target="reviewers-wrapper">저널 리뷰어 펼치기 / 접기</button>
+      <div id="reviewers-wrapper" class="collapsible">
+        <ul id="reviewers-list" class="simple-list" set:html={activities.reviewers.map((r) => `<li>${escapeHtml(r)}</li>`).join('')}></ul>
+      </div>
+    </section>
+
+    <section id="publications">
+      <h2>논문·저서</h2>
+      <h3>Ph.D Thesis</h3>
+      <div id="phd-list">
+        <div class="item">
+          <div class="title" set:html={phdThesis.citation}></div>
+          <FileLinks files={phdThesis.files} />
+        </div>
+      </div>
+      <h3>International Journal Papers</h3>
+      <div id="intl-journal-list">
+        {intlJournals.map((p) => (
+          <div class="item">
+            <div class="title" set:html={p.citation}></div>
+            <FileLinks files={p.files} />
+          </div>
+        ))}
+      </div>
+      <h3>International Conference Papers</h3>
+      <button class="collapse-btn" data-target="intl-conf-list">International Conference Papers 펼치기 / 접기</button>
+      <div id="intl-conf-list" class="collapsible">
+        {intlConferences.map((p) => (
+          <div class="item">
+            <div class="title" set:html={p.citation}></div>
+            <FileLinks files={p.files} />
+          </div>
+        ))}
+      </div>
+      <h3>Domestic Conference & Journal Papers</h3>
+      <button class="collapse-btn" data-target="domestic-list">Domestic Papers 펼치기 / 접기</button>
+      <div id="domestic-list" class="collapsible">
+        {domesticPapers.map((p) => (
+          <div class="item">
+            <div class="title" set:html={p.citation}></div>
+            <FileLinks files={p.files} />
+          </div>
+        ))}
+      </div>
+      <h3>Magazine Articles</h3>
+      <button class="collapse-btn" data-target="magazine-list">Magazine Articles 펼치기 / 접기</button>
+      <div id="magazine-list" class="collapsible">
+        {magazineArticles.map((p) => (
+          <div class="item">
+            <div class="title" set:html={p.citation}></div>
+            <FileLinks files={p.files} />
+          </div>
+        ))}
+      </div>
+      <h3>Books</h3>
+      <div id="books-list">
+        {books.map((p) => (
+          <div class="item">
+            <div class="title" set:html={p.citation}></div>
+            <FileLinks files={p.files} />
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section id="patents">
+      <h2>특허 (Patents)</h2>
+      <p id="patent-note">{patentNote}</p>
+      <div id="patent-buttons" class="patent-btns" set:html={patentSearchUrls.map((p) => `<a href="${escapeHtml(p.url)}" target="_blank">${escapeHtml(p.label)}</a>`).join('')}></div>
+    </section>
+
+    <!-- ★ Honors: 접이식으로 변경 -->
+    <section id="honors">
+      <h2>Honors</h2>
+      <button class="collapse-btn" data-target="honors-list">Honors 펼치기 / 접기</button>
+      <div id="honors-list" class="collapsible">
+        {honors.map((h) => (
+          <div class="item">
+            <div class="title">{h.title}</div>
+            <FileLinks files={h.files} />
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- ★ 조교활동: 접이식으로 변경 -->
+    <section id="ta">
+      <h2>조교활동</h2>
+      <button class="collapse-btn" data-target="ta-list">조교활동 펼치기 / 접기</button>
+      <div id="ta-list" class="collapsible">
+        <ListSection items={taItems} />
+      </div>
+    </section>
+
+    <section id="clubs">
+      <h2>동아리활동</h2>
+      <div id="clubs-list">
+        <ListSection items={clubsItems} />
+      </div>
+    </section>
+
+    <!-- ★ Contact: 이메일 삭제 -->
+    <section id="contact">
+      <h2>링크</h2>
+      <p><a href="http://www.sym.co.kr/" target="_blank" style="color:var(--accent);">삼영기계(주)</a> &nbsp;|&nbsp; <a
+          href="http://lumoscandle.com/" target="_blank" style="color:var(--accent);">루모스캔들(주)</a> &nbsp;|&nbsp; <a
+          href="https://brunch.co.kr/@breakthrough" target="_blank" style="color:var(--accent);">브런치</a> &nbsp;|&nbsp; <a
+          href="https://www.facebook.com/kukhyun.han" target="_blank" style="color:var(--accent);">Facebook</a></p>
+    </section>
+
+    <footer>© 2026 한국현 (Kuk-Hyun Han). All rights reserved.</footer>
+
+    <!-- ADMIN PANEL -->
+    <div class="admin-panel" id="admin-panel">
+      <h3>📝 data.js 편집기</h3>
+      <p style="font-size:.78rem;color:var(--muted);margin-bottom:.5rem;">data.js 내용을 직접 편집 후 미리보기·다운로드할 수 있습니다.</p>
+      <textarea id="admin-editor"></textarea>
+      <div class="btn-row">
+        <button class="btn-save" onclick="applyEdit()">미리보기 적용</button>
+        <button class="btn-save" onclick="downloadDataJs()">data.js 다운로드</button>
+        <button class="btn-close" onclick="toggleAdmin()">닫기</button>
+      </div>
+    </div>
+
+    <script is:inline>
+      document.querySelectorAll('.collapse-btn').forEach((btn) => {
+        btn.addEventListener('click', function () {
+          const target = document.getElementById(this.dataset.target);
+          target.classList.toggle('show');
+          this.classList.toggle('open');
+        });
+      });
+
+      function toggleAdmin() { document.getElementById('admin-panel').classList.toggle('open'); }
+      function applyEdit() {
+        try { const code = document.getElementById('admin-editor').value; const s = document.createElement('script'); s.textContent = code; document.head.appendChild(s); location.reload(); } catch (e) { alert('오류: ' + e.message); }
+      }
+      function downloadDataJs() {
+        const text = document.getElementById('admin-editor').value;
+        const blob = new Blob([text], { type: 'text/javascript' });
+        const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'data.js'; a.click();
+      }
+      if (location.search.includes('edit')) {
+        document.getElementById('admin-panel').classList.add('open');
+        fetch('data.js').then(r => r.text()).then(t => { document.getElementById('admin-editor').value = t; });
+      }
+    </script>
+  </body>
+</html>

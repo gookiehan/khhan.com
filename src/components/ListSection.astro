@@ -1,0 +1,33 @@
+---
+import FileLinks from './FileLinks.astro';
+
+interface FileLink {
+  url: string;
+  icon?: string;
+  tip?: string;
+}
+
+interface ListItem {
+  period?: string;
+  titleHtml: string;
+  descHtml?: string;
+  files?: FileLink[];
+}
+
+interface Props {
+  items: ListItem[];
+}
+
+const { items } = Astro.props as Props;
+---
+
+{
+  items.map((item) => (
+    <div class="item">
+      <div class="period">{item.period || ''}</div>
+      <div class="title" set:html={item.titleHtml}></div>
+      {item.descHtml ? <div class="desc" set:html={item.descHtml}></div> : null}
+      <FileLinks files={item.files} />
+    </div>
+  ))
+}

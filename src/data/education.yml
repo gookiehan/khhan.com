@@ -1,0 +1,64 @@
+education:
+  - period: 1999.03.~2003.08.
+    title: 박사, 전자전산학과 전기및전자공학전공
+    org: 한국과학기술원 (KAIST)
+    orgUrl: http://www.kaist.ac.kr/
+    desc: "(박사논문: \"양자개념을 도입한 진화 알고리즘\"&ensp;—&ensp;Quantum-inspired Evolutionary Algorithm)"
+    files:
+      - url: assets/docs/PhDthesis_QEA.pdf
+        icon: 📄
+        tip: 박사논문 PDF
+  - period: 1997.03.~1999.02.
+    title: 석사, 전자전산학과 전기및전자공학전공
+    org: 한국과학기술원 (KAIST)
+    orgUrl: http://www.kaist.ac.kr/
+    desc: "(석사논문: \"인터넷 기반 퍼스널 로봇 시스템의 제어 구조 설계\")"
+    files:
+      - url: assets/docs/MSthesis.pdf
+        icon: 📄
+        tip: 석사논문 PDF
+  - period: 1993.03.~1997.02.
+    title: 학사, 전자전산학과 전기및전자공학전공
+    org: 한국과학기술원 (KAIST)
+    orgUrl: http://www.kaist.ac.kr/
+    desc: "(졸업논문: \"마이크로로봇의 설계와 지능적인 제어기의 구현\")"
+    files:
+      - url: assets/docs/BSthesis.pdf
+        icon: 📄
+        tip: 졸업논문 PDF
+  - period: 1991.03.~1993.02.
+    title: 대전과학고등학교
+    org: 과학영재학교 대전과학고등학교
+    orgUrl: http://djshs.djsch.kr/main.do
+    desc: ""
+    files: []
+  - period: 2015.04.~2015.07.
+    title: KAIST 차세대 혁신리더 양성과정
+    org: KAIST
+    orgUrl: http://www.kaist.ac.kr/
+    desc: ""
+    files:
+      - url: assets/docs/KAIST_leader_certificate.pdf
+        icon: 📄
+        tip: 수료증
+      - url: assets/docs/KAIST_leader_award1.pdf
+        icon: 📄
+        tip: 표창장
+      - url: assets/docs/KAIST_leader_award2.pdf
+        icon: 📄
+        tip: 우수상
+      - url: assets/images/KAIST_leader_ceremony1.jpg
+        icon: 🖼️
+        tip: 수료식 1
+      - url: assets/images/KAIST_leader_ceremony2.jpg
+        icon: 🖼️
+        tip: 수료식 2
+  - period: 2013.01.~2013.05.
+    title: 2013 Engineering Leadership Professional Program
+    org: College of Engineering, University of California, Berkeley
+    orgUrl: https://www.berkeley.edu/
+    desc: ""
+    files:
+      - url: assets/images/UC-Berkeley_ELPP.jpg
+        icon: 🖼️
+        tip: Certificate
