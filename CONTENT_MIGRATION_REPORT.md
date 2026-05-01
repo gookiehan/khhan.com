@@ -125,3 +125,46 @@ Link-count verification:
 YAML parse verification:
 
 - All generated YAML files parse successfully with `js-yaml`.
+
+## YAML rendering migration
+
+`src/pages/index.astro` now renders from `src/data/*.yml` server-side instead of client-side section population through `data.js`.
+
+Verification summary:
+
+| Check | Expected | YAML-rendered result | Result |
+| --- | ---: | ---: | --- |
+| Total content items | 227 | 227 | Pass |
+| `files[]` link entries | 177 | 177 | Pass |
+| Unique URLs | 146 | 146 | Pass |
+| Unique local asset URLs | 109 | 109 | Pass |
+| Missing local assets in `dist/` | 0 | 0 | Pass |
+
+Section totals:
+
+| Section | Expected | YAML-rendered result | Result |
+| --- | ---: | ---: | --- |
+| qea | 18 | 18 | Pass |
+| education | 6 | 6 | Pass |
+| career | 8 | 8 | Pass |
+| research | 34 | 34 | Pass |
+| awards | 33 | 33 | Pass |
+| activities | 52 | 52 | Pass |
+| publications | 51 | 51 | Pass |
+| patents | 2 | 2 | Pass |
+| honors | 13 | 13 | Pass |
+| ta | 9 | 9 | Pass |
+| clubs | 1 | 1 | Pass |
+| total | 227 | 227 | Pass |
+
+Build and output checks:
+
+- `npm run build`: passed (sandbox in this environment still requires escalation for reliable verification)
+- `dist/CNAME`: present
+- `dist/style.css`: present
+- `dist/assets/`: present
+
+Note:
+
+- `public/data.js` is no longer required for section rendering.
+- `public/data.js` remains a cleanup candidate because the legacy admin-panel helper (`?edit`) still fetches `data.js`.
