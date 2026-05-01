@@ -406,18 +406,6 @@ const clubsItems = clubs.map((c) => ({
 
     <footer>© 2026 한국현 (Kuk-Hyun Han). All rights reserved.</footer>
 
-    <!-- ADMIN PANEL -->
-    <div class="admin-panel" id="admin-panel">
-      <h3>📝 data.js 편집기</h3>
-      <p style="font-size:.78rem;color:var(--muted);margin-bottom:.5rem;">data.js 내용을 직접 편집 후 미리보기·다운로드할 수 있습니다.</p>
-      <textarea id="admin-editor"></textarea>
-      <div class="btn-row">
-        <button class="btn-save" onclick="applyEdit()">미리보기 적용</button>
-        <button class="btn-save" onclick="downloadDataJs()">data.js 다운로드</button>
-        <button class="btn-close" onclick="toggleAdmin()">닫기</button>
-      </div>
-    </div>
-
     <script is:inline>
       document.querySelectorAll('.collapse-btn').forEach((btn) => {
         btn.addEventListener('click', function () {
@@ -426,26 +414,6 @@ const clubsItems = clubs.map((c) => ({
           this.classList.toggle('open');
         });
       });
-
-      function toggleAdmin() { document.getElementById('admin-panel').classList.toggle('open'); }
-      function applyEdit() {
-        try { const code = document.getElementById('admin-editor').value; const s = document.createElement('script'); s.textContent = code; document.head.appendChild(s); location.reload(); } catch (e) { alert('오류: ' + e.message); }
-      }
-      function downloadDataJs() {
-        const text = document.getElementById('admin-editor').value;
-        const blob = new Blob([text], { type: 'text/javascript' });
-        const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'data.js'; a.click();
-      }
-      if (location.search.includes('edit')) {
-        document.getElementById('admin-panel').classList.add('open');
-        const editor = document.getElementById('admin-editor');
-        editor.value = 'YAML-based structure is active. Legacy editor is disabled. Please update content in src/data/*.yml.';
-        editor.setAttribute('readonly', 'readonly');
-        document.querySelectorAll('#admin-panel .btn-save').forEach((btn) => {
-          btn.disabled = true;
-          btn.title = 'Legacy editor is disabled after YAML migration.';
-        });
-      }
     </script>
   </body>
 </html>
