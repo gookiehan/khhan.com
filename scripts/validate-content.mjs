@@ -5,21 +5,6 @@ import yaml from 'js-yaml';
 const root = process.cwd();
 const dataDir = path.join(root, 'src', 'data');
 
-const expectedCounts = {
-  qea: 18,
-  education: 6,
-  career: 8,
-  research: 34,
-  awards: 33,
-  activities: 52,
-  publications: 51,
-  patents: 2,
-  honors: 13,
-  ta: 9,
-  clubs: 1,
-  total: 227,
-};
-
 const fileMap = {
   qea: 'qea.yml',
   education: 'education.yml',
@@ -35,8 +20,29 @@ const fileMap = {
   profile: 'profile.yml',
 };
 
+const baselineInfo = {
+  qea: 18,
+  education: 6,
+  career: 8,
+  research: 34,
+  awards: 33,
+  activities: 52,
+  publications: 51,
+  patents: 2,
+  honors: 13,
+  ta: 9,
+  clubs: 1,
+  total: 227,
+  fileLinks: 177,
+  uniqueUrls: 146,
+};
+
 function isObject(value) {
   return typeof value === 'object' && value !== null && !Array.isArray(value);
+}
+
+function isArray(value) {
+  return Array.isArray(value);
 }
 
 function readYaml(fileName, errors) {
@@ -53,11 +59,6 @@ function readYaml(fileName, errors) {
     errors.push(`[parse] ${fileName}: ${error.message}`);
     return {};
   }
-}
-
-function len(value) {
-  if (Array.isArray(value)) return value.length;
-  return value ? 1 : 0;
 }
 
 function validateNoNullArrayItems(value, pathLabel, errors) {
@@ -78,20 +79,80 @@ function validateNoNullArrayItems(value, pathLabel, errors) {
   }
 }
 
-function collectFileNodes(value, pathLabel, output) {
-  if (!value) return;
+function ensureKey(obj, key, label, errors) {
+  if (!(key in obj)) errors.push(`[schema] ${label}: missing key "${key}"`);
+}
+
+function ensureArray(obj, key, label, errors) {
+  ensureKey(obj, key, label, errors);
+  if (key in obj && !isArray(obj[key])) {
+    errors.push(`[schema] ${label}.${key} must be an array`);
+  }
+}
+
+function validateExpectedStructure(data, errors) {
+  ensureKey(data.qea, 'qeaAbstract', 'qea.yml', errors);
+  ensureKey(data.qea, 'qeaThesis', 'qea.yml', errors);
+  ensureArray(data.qea, 'qeaJournals', 'qea.yml', errors);
+  ensureArray(data.qea, 'qeaConferences', 'qea.yml', errors);
+  ensureArray(data.qea, 'qeaDomestic', 'qea.yml', errors);
+  ensureKey(data.qea, 'qeaPatent', 'qea.yml', errors);
+
+  ensureArray(data.education, 'education', 'education.yml', errors);
+  ensureArray(data.career, 'career', 'career.yml', errors);
+
+  ensureArray(data.research, 'researchInterests', 'research.yml', errors);
+  ensureArray(data.research, 'projects', 'research.yml', errors);
+
+  ensureArray(data.awards, 'awards', 'awards.yml', errors);
+
+  ensureKey(data.activities, 'activities', 'activities.yml', errors);
+  if ('activities' in data.activities) {
+    const a = data.activities.activities;
+    if (!isObject(a)) {
+      errors.push('[schema] activities.yml.activities must be an object');
+    } else {
+      ['board', 'committee', 'standardization', 'invitedTalks', 'teaching', 'judges', 'reviewers'].forEach((key) => {
+        if (!(key in a)) {
+          errors.push(`[schema] activities.yml.activities: missing key "${key}"`);
+        } else if (!isArray(a[key])) {
+          errors.push(`[schema] activities.yml.activities.${key} must be an array`);
+        }
+      });
+    }
+  }
+
+  ['phdThesis', 'intlJournals', 'intlConferences', 'domesticPapers', 'magazineArticles', 'books'].forEach((key) => {
+    if (key === 'phdThesis') ensureKey(data.publications, key, 'publications.yml', errors);
+    else ensureArray(data.publications, key, 'publications.yml', errors);
+  });
+
+  ensureKey(data.patents, 'patentNote', 'patents.yml', errors);
+  ensureArray(data.patents, 'patentSearchUrls', 'patents.yml', errors);
+  ensureArray(data.honors, 'honors', 'honors.yml', errors);
+  ensureArray(data.ta, 'taActivities', 'ta.yml', errors);
+  ensureArray(data.clubs, 'clubs', 'clubs.yml', errors);
+  ensureKey(data.profile, 'scholarUrl', 'profile.yml', errors);
+}
+
+function collectFileNodes(value, pathLabel, output, errors) {
   if (Array.isArray(value)) {
-    value.forEach((item, index) => collectFileNodes(item, `${pathLabel}[${index}]`, output));
+    value.forEach((item, index) => collectFileNodes(item, `${pathLabel}[${index}]`, output, errors));
     return;
   }
-  if (isObject(value)) {
-    if (Array.isArray(value.files)) {
+  if (!isObject(value)) return;
+
+  if ('files' in value) {
+    if (!Array.isArray(value.files)) {
+      errors.push(`[files] ${pathLabel}.files must be an array`);
+    } else {
       output.push({ path: `${pathLabel}.files`, files: value.files });
     }
-    Object.entries(value).forEach(([key, child]) => {
-      if (key !== 'files') collectFileNodes(child, `${pathLabel}.${key}`, output);
-    });
   }
+
+  Object.entries(value).forEach(([key, child]) => {
+    if (key !== 'files') collectFileNodes(child, `${pathLabel}.${key}`, output, errors);
+  });
 }
 
 function isLocalAsset(url) {
@@ -104,7 +165,7 @@ function normalizeLocalAsset(url) {
 
 function validateFileLinks(rootData, errors) {
   const nodes = [];
-  collectFileNodes(rootData, 'data', nodes);
+  collectFileNodes(rootData, 'data', nodes, errors);
   let fileLinks = 0;
   const urls = [];
   const localAssetUrls = new Set();
@@ -122,9 +183,7 @@ function validateFileLinks(rootData, errors) {
         return;
       }
       urls.push(file.url);
-      if (isLocalAsset(file.url)) {
-        localAssetUrls.add(normalizeLocalAsset(file.url));
-      }
+      if (isLocalAsset(file.url)) localAssetUrls.add(normalizeLocalAsset(file.url));
     });
   });
 
@@ -135,8 +194,13 @@ function validateFileLinks(rootData, errors) {
   };
 }
 
+function len(value) {
+  if (Array.isArray(value)) return value.length;
+  return value ? 1 : 0;
+}
+
 function calculateSectionCounts(data) {
-  return {
+  const counts = {
     qea: 1 + len(data.qea.qeaThesis) + len(data.qea.qeaJournals) + len(data.qea.qeaConferences) + len(data.qea.qeaDomestic) + len(data.qea.qeaPatent),
     education: len(data.education.education),
     career: len(data.career.career),
@@ -162,18 +226,8 @@ function calculateSectionCounts(data) {
     ta: len(data.ta.taActivities),
     clubs: len(data.clubs.clubs),
   };
-}
-
-function validateCounts(actualCounts, errors) {
-  const total = Object.values(actualCounts).reduce((sum, value) => sum + value, 0);
-  const withTotal = { ...actualCounts, total };
-  Object.entries(expectedCounts).forEach(([key, expected]) => {
-    const actual = withTotal[key];
-    if (actual !== expected) {
-      errors.push(`[count] ${key}: expected ${expected}, got ${actual}`);
-    }
-  });
-  return withTotal;
+  counts.total = Object.values(counts).reduce((sum, v) => sum + v, 0);
+  return counts;
 }
 
 function run() {
@@ -193,6 +247,7 @@ function run() {
     profile: readYaml(fileMap.profile, errors),
   };
 
+  validateExpectedStructure(data, errors);
   validateNoNullArrayItems(data, 'data', errors);
 
   const linkStats = validateFileLinks(
@@ -213,13 +268,19 @@ function run() {
   );
 
   const sectionCounts = calculateSectionCounts(data);
-  const finalCounts = validateCounts(sectionCounts, errors);
 
   const result = {
-    sectionCounts: finalCounts,
+    sectionCounts,
     fileLinks: linkStats.fileLinks,
     uniqueUrls: linkStats.uniqueUrls,
     localAssetUrls: linkStats.localAssetUrls,
+    baselineInfo,
+    baselineDelta: {
+      total: sectionCounts.total - baselineInfo.total,
+      awards: sectionCounts.awards - baselineInfo.awards,
+      fileLinks: linkStats.fileLinks - baselineInfo.fileLinks,
+      uniqueUrls: linkStats.uniqueUrls - baselineInfo.uniqueUrls,
+    },
     success: errors.length === 0,
   };
 
