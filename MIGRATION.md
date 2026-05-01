@@ -171,11 +171,17 @@ Link validation script:
 
 ## Phase 5: Deployment
 
-- [ ] Add GitHub Actions workflow for Astro build and GitHub Pages deploy.
+- [x] Add GitHub Actions workflow for Astro build and GitHub Pages deploy.
 - [ ] Confirm GitHub Pages source is set to GitHub Actions.
 - [ ] Confirm custom domain `khhan.com` remains configured.
 - [ ] Confirm generated output contains `CNAME`.
 - [ ] Deploy from `feature/astro-migration` to a preview path or test branch first if possible.
+
+Workflow added:
+
+- `.github/workflows/deploy.yml`
+- PR: runs `npm ci`, `npm run validate`, `npm run build` only (no deploy).
+- `main` push: runs validate/build, verifies `dist/CNAME == khhan.com`, uploads Pages artifact, then deploys.
 
 ## Phase 6: Cutover
 
