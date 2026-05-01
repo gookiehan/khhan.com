@@ -42,3 +42,16 @@ Classification summary:
 - `npm run validate:links`: passed
 - `npm run validate`: passed (`validate:content` + `validate:links`)
 - `npm run build`: passed
+
+## Operations-mode policy update
+
+- `validate:links` now treats baseline link counts as informational only.
+- Growth in link counts during normal content updates does not fail validation by itself:
+  - `files[]` entries
+  - unique URLs
+  - unique local asset URLs
+- Baseline values and deltas are printed in script output for monitoring.
+- Fail conditions remain strict for:
+  - missing/empty `files[].url`
+  - unsupported URL scheme/format
+  - missing local file for `assets/...` and `/assets/...` URLs
