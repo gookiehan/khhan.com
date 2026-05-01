@@ -92,6 +92,15 @@ Current static site reproduction:
 - `data.js`, `style.css`, `CNAME`, and `assets/` remain source files at the repository root.
 - `npm run dev` and `npm run build` run `scripts/sync-static.mjs` first, copying those root static files into `public/` so Astro serves and builds the existing relative paths.
 
+Content migration verification:
+
+- `CONTENT_MIGRATION_REPORT.md` confirms the Astro-rendered structure matches the current `data.js` baseline.
+- Total content items: 227 expected / 227 rendered.
+- `files[]` link entries: 177.
+- Unique `files[]` URLs: 146.
+- Local asset URLs in `dist/`: 109 checked, 0 missing.
+- `npm run build` passed after the content migration comparison.
+
 ## Phase 2: Content Model
 
 - [ ] Split `data.js` into section-specific content files.
