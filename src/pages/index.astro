@@ -5,6 +5,7 @@ import yaml from 'js-yaml';
 import Section from '../components/Section.astro';
 import FileLinks from '../components/FileLinks.astro';
 import ListSection from '../components/ListSection.astro';
+import QeaSection from '../components/QeaSection.astro';
 
 function loadYaml(fileName) {
   const fullPath = path.join(process.cwd(), 'src', 'data', fileName);
@@ -206,53 +207,14 @@ const clubsItems = clubs.map((c) => ({
       </div>
     </section>
 
-    <!-- ★ QEA SECTION (NEW) -->
-    <section id="qea">
-      <h2>QEA – Quantum-inspired Evolutionary Algorithm</h2>
-      <div class="qea-abstract" id="qea-abstract">{qeaAbstract}</div>
-      <h3>Ph.D Thesis</h3>
-      <div id="qea-thesis">
-        <div class="item">
-          <div class="title" set:html={qeaThesis.citation}></div>
-          <FileLinks files={qeaThesis.files} />
-        </div>
-      </div>
-      <h3>International Journal Papers (QEA)</h3>
-      <div id="qea-journals">
-        {qeaJournals.map((p) => (
-          <div class="item">
-            <div class="title" set:html={p.citation}></div>
-            <FileLinks files={p.files} />
-          </div>
-        ))}
-      </div>
-      <h3>International Conference Papers (QEA)</h3>
-      <button class="collapse-btn" data-target="qea-conferences">QEA Conference Papers 펼치기 / 접기</button>
-      <div id="qea-conferences" class="collapsible">
-        {qeaConferences.map((p) => (
-          <div class="item">
-            <div class="title" set:html={p.citation}></div>
-            <FileLinks files={p.files} />
-          </div>
-        ))}
-      </div>
-      <h3>Domestic Conference Paper (QEA)</h3>
-      <div id="qea-domestic">
-        {qeaDomestic.map((p) => (
-          <div class="item">
-            <div class="title" set:html={p.citation}></div>
-            <FileLinks files={p.files} />
-          </div>
-        ))}
-      </div>
-      <h3>Patent (QEA)</h3>
-      <div id="qea-patent">
-        <div class="item">
-          <div class="title" set:html={qeaPatent.citation}></div>
-          <FileLinks files={qeaPatent.files} />
-        </div>
-      </div>
-    </section>
+    <QeaSection
+      qeaAbstract={qeaAbstract}
+      qeaThesis={qeaThesis}
+      qeaJournals={qeaJournals}
+      qeaConferences={qeaConferences}
+      qeaDomestic={qeaDomestic}
+      qeaPatent={qeaPatent}
+    />
 
     <section id="awards">
       <h2>수상경력</h2>
