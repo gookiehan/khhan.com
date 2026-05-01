@@ -38,7 +38,7 @@ function escapeHtml(value: string) {
 
 <section id="activities">
   <h2>기타활동</h2>
-  <h3>이사회 활동</h3>
+  <h3>이사 등 활동</h3>
   <div id="board-list">
     <ListSection items={boardItems} />
   </div>
@@ -65,8 +65,8 @@ function escapeHtml(value: string) {
   <div id="judges-list" class="collapsible">
     <ListSection items={judgesItems} />
   </div>
-  <h3>대외 리뷰어</h3>
-  <button class="collapse-btn" data-target="reviewers-wrapper">대외 리뷰어 펼치기 / 접기</button>
+  <h3>저널 리뷰어</h3>
+  <button class="collapse-btn" data-target="reviewers-wrapper">저널 리뷰어 펼치기 / 접기</button>
   <div id="reviewers-wrapper" class="collapsible">
     <ul id="reviewers-list" class="simple-list" set:html={reviewers.map((r) => `<li>${escapeHtml(r)}</li>`).join('')}></ul>
   </div>
