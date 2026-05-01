@@ -1,10 +1,13 @@
----
+﻿---
 import fs from 'node:fs';
 import path from 'node:path';
 import yaml from 'js-yaml';
 import Section from '../components/Section.astro';
 import FileLinks from '../components/FileLinks.astro';
 import ListSection from '../components/ListSection.astro';
+import QeaSection from '../components/QeaSection.astro';
+import PublicationsSection from '../components/PublicationsSection.astro';
+import ActivitiesSection from '../components/ActivitiesSection.astro';
 
 function loadYaml(fileName) {
   const fullPath = path.join(process.cwd(), 'src', 'data', fileName);
@@ -150,7 +153,7 @@ const clubsItems = clubs.map((c) => ({
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>한국현 – Kuk-Hyun Han</title>
+    <title>?쒓뎅????Kuk-Hyun Han</title>
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
@@ -161,214 +164,96 @@ const clubsItems = clubs.map((c) => ({
     <nav>
       <div class="inner">
         <a class="brand" href="#">khhan.com</a>
-        <a href="#education">학력</a>
-        <a href="#career">경력</a>
-        <a href="#research">연구</a>
+        <a href="#education">?숇젰</a>
+        <a href="#career">寃쎈젰</a>
+        <a href="#research">?곌뎄</a>
         <a href="#qea">QEA</a>
-        <a href="#awards">수상</a>
-        <a href="#activities">활동</a>
-        <a href="#publications">논문·저서</a>
-        <a href="#patents">특허</a>
-        <a href="#contact">링크</a>
+        <a href="#awards">?섏긽</a>
+        <a href="#activities">?쒕룞</a>
+        <a href="#publications">?쇰Ц쨌???/a>
+        <a href="#patents">?뱁뿀</a>
+        <a href="#contact">留곹겕</a>
       </div>
     </nav>
 
     <!-- HERO -->
     <div class="hero">
-      <h1>한국현 (Kuk-Hyun Han, Ph.D.)</h1>
-      <p><a href="https://www.sym.co.kr" target="_blank" style="color:#4fc3f7;">삼영기계</a> 사장·연구소장 &nbsp;|&nbsp; 순천향대학교 겸임교수
-        &nbsp;|&nbsp; 한국주조공학회 부회장 &nbsp;|&nbsp; 한국정밀공학회 이사</p>
+      <h1>?쒓뎅??(Kuk-Hyun Han, Ph.D.)</h1>
+      <p><a href="https://www.sym.co.kr" target="_blank" style="color:#4fc3f7;">?쇱쁺湲곌퀎</a> ?ъ옣쨌?곌뎄?뚯옣 &nbsp;|&nbsp; ?쒖쿇?λ??숆탳 寃몄엫援먯닔
+        &nbsp;|&nbsp; ?쒓뎅二쇱“怨듯븰??遺?뚯옣 &nbsp;|&nbsp; ?쒓뎅?뺣?怨듯븰???댁궗</p>
       <p style="margin-top:.5rem;">
         <a href={scholarUrl} target="_blank" style="color:#4fc3f7;">Google Scholar</a>
       </p>
     </div>
 
     <!-- SECTIONS -->
-    <Section id="education" title="학력사항">
+    <Section id="education" title="?숇젰?ы빆">
       <div id="edu-list">
         <ListSection items={educationItems} />
       </div>
     </Section>
-    <Section id="career" title="경력사항">
+    <Section id="career" title="寃쎈젰?ы빆">
       <div id="career-list">
         <ListSection items={careerItems} />
       </div>
     </Section>
 
     <section id="research">
-      <h2>연구</h2>
-      <h3>관심분야</h3>
+      <h2>?곌뎄</h2>
+      <h3>愿?щ텇??/h3>
       <div id="interest-tags" class="tags" set:html={researchInterests.map((t) => `<span class="tag">${escapeHtml(t)}</span>`).join('')}></div>
-      <h3>주요 연구과제 (프로젝트)</h3>
-      <button class="collapse-btn" data-target="projects-list">연구과제 펼치기 / 접기</button>
+      <h3>二쇱슂 ?곌뎄怨쇱젣 (?꾨줈?앺듃)</h3>
+      <button class="collapse-btn" data-target="projects-list">?곌뎄怨쇱젣 ?쇱튂湲?/ ?묎린</button>
       <div id="projects-list" class="collapsible">
         <ListSection items={projectsItems} />
       </div>
     </section>
 
-    <!-- ★ QEA SECTION (NEW) -->
-    <section id="qea">
-      <h2>QEA – Quantum-inspired Evolutionary Algorithm</h2>
-      <div class="qea-abstract" id="qea-abstract">{qeaAbstract}</div>
-      <h3>Ph.D Thesis</h3>
-      <div id="qea-thesis">
-        <div class="item">
-          <div class="title" set:html={qeaThesis.citation}></div>
-          <FileLinks files={qeaThesis.files} />
-        </div>
-      </div>
-      <h3>International Journal Papers (QEA)</h3>
-      <div id="qea-journals">
-        {qeaJournals.map((p) => (
-          <div class="item">
-            <div class="title" set:html={p.citation}></div>
-            <FileLinks files={p.files} />
-          </div>
-        ))}
-      </div>
-      <h3>International Conference Papers (QEA)</h3>
-      <button class="collapse-btn" data-target="qea-conferences">QEA Conference Papers 펼치기 / 접기</button>
-      <div id="qea-conferences" class="collapsible">
-        {qeaConferences.map((p) => (
-          <div class="item">
-            <div class="title" set:html={p.citation}></div>
-            <FileLinks files={p.files} />
-          </div>
-        ))}
-      </div>
-      <h3>Domestic Conference Paper (QEA)</h3>
-      <div id="qea-domestic">
-        {qeaDomestic.map((p) => (
-          <div class="item">
-            <div class="title" set:html={p.citation}></div>
-            <FileLinks files={p.files} />
-          </div>
-        ))}
-      </div>
-      <h3>Patent (QEA)</h3>
-      <div id="qea-patent">
-        <div class="item">
-          <div class="title" set:html={qeaPatent.citation}></div>
-          <FileLinks files={qeaPatent.files} />
-        </div>
-      </div>
-    </section>
+    <QeaSection
+      qeaAbstract={qeaAbstract}
+      qeaThesis={qeaThesis}
+      qeaJournals={qeaJournals}
+      qeaConferences={qeaConferences}
+      qeaDomestic={qeaDomestic}
+      qeaPatent={qeaPatent}
+    />
 
     <section id="awards">
-      <h2>수상경력</h2>
+      <h2>?섏긽寃쎈젰</h2>
       <div id="awards-list">
         <ListSection items={awardsItems} />
       </div>
     </section>
 
-    <section id="activities">
-      <h2>기타활동</h2>
-      <h3>이사회 활동</h3>
-      <div id="board-list">
-        <ListSection items={boardItems} />
-      </div>
-      <h3>전문위원 활동</h3>
-      <div id="committee-list">
-        <ListSection items={committeeItems} />
-      </div>
-      <h3>표준화</h3>
-      <div id="std-list">
-        <ListSection items={standardizationItems} />
-      </div>
-      <h3>초청강연</h3>
-      <button class="collapse-btn" data-target="talks-list">초청강연 펼치기 / 접기</button>
-      <div id="talks-list" class="collapsible">
-        <ListSection items={talksItems} />
-      </div>
-      <!-- ★ 강의: 접이식으로 변경 -->
-      <h3>강의</h3>
-      <button class="collapse-btn" data-target="teaching-list">강의 펼치기 / 접기</button>
-      <div id="teaching-list" class="collapsible">
-        <ListSection items={teachingItems} />
-      </div>
-      <!-- ★ 심사위원: 접이식으로 변경 -->
-      <h3>심사위원</h3>
-      <button class="collapse-btn" data-target="judges-list">심사위원 펼치기 / 접기</button>
-      <div id="judges-list" class="collapsible">
-        <ListSection items={judgesItems} />
-      </div>
-      <!-- ★ 저널 리뷰어: 접이식으로 변경 -->
-      <h3>저널 리뷰어</h3>
-      <button class="collapse-btn" data-target="reviewers-wrapper">저널 리뷰어 펼치기 / 접기</button>
-      <div id="reviewers-wrapper" class="collapsible">
-        <ul id="reviewers-list" class="simple-list" set:html={activities.reviewers.map((r) => `<li>${escapeHtml(r)}</li>`).join('')}></ul>
-      </div>
-    </section>
+    <ActivitiesSection
+      boardItems={boardItems}
+      committeeItems={committeeItems}
+      standardizationItems={standardizationItems}
+      talksItems={talksItems}
+      teachingItems={teachingItems}
+      judgesItems={judgesItems}
+      reviewers={activities.reviewers}
+    />
 
-    <section id="publications">
-      <h2>논문·저서</h2>
-      <h3>Ph.D Thesis</h3>
-      <div id="phd-list">
-        <div class="item">
-          <div class="title" set:html={phdThesis.citation}></div>
-          <FileLinks files={phdThesis.files} />
-        </div>
-      </div>
-      <h3>International Journal Papers</h3>
-      <div id="intl-journal-list">
-        {intlJournals.map((p) => (
-          <div class="item">
-            <div class="title" set:html={p.citation}></div>
-            <FileLinks files={p.files} />
-          </div>
-        ))}
-      </div>
-      <h3>International Conference Papers</h3>
-      <button class="collapse-btn" data-target="intl-conf-list">International Conference Papers 펼치기 / 접기</button>
-      <div id="intl-conf-list" class="collapsible">
-        {intlConferences.map((p) => (
-          <div class="item">
-            <div class="title" set:html={p.citation}></div>
-            <FileLinks files={p.files} />
-          </div>
-        ))}
-      </div>
-      <h3>Domestic Conference & Journal Papers</h3>
-      <button class="collapse-btn" data-target="domestic-list">Domestic Papers 펼치기 / 접기</button>
-      <div id="domestic-list" class="collapsible">
-        {domesticPapers.map((p) => (
-          <div class="item">
-            <div class="title" set:html={p.citation}></div>
-            <FileLinks files={p.files} />
-          </div>
-        ))}
-      </div>
-      <h3>Magazine Articles</h3>
-      <button class="collapse-btn" data-target="magazine-list">Magazine Articles 펼치기 / 접기</button>
-      <div id="magazine-list" class="collapsible">
-        {magazineArticles.map((p) => (
-          <div class="item">
-            <div class="title" set:html={p.citation}></div>
-            <FileLinks files={p.files} />
-          </div>
-        ))}
-      </div>
-      <h3>Books</h3>
-      <div id="books-list">
-        {books.map((p) => (
-          <div class="item">
-            <div class="title" set:html={p.citation}></div>
-            <FileLinks files={p.files} />
-          </div>
-        ))}
-      </div>
-    </section>
+    <PublicationsSection
+      phdThesis={phdThesis}
+      intlJournals={intlJournals}
+      intlConferences={intlConferences}
+      domesticPapers={domesticPapers}
+      magazineArticles={magazineArticles}
+      books={books}
+    />
 
     <section id="patents">
-      <h2>특허 (Patents)</h2>
+      <h2>?뱁뿀 (Patents)</h2>
       <p id="patent-note">{patentNote}</p>
       <div id="patent-buttons" class="patent-btns" set:html={patentSearchUrls.map((p) => `<a href="${escapeHtml(p.url)}" target="_blank">${escapeHtml(p.label)}</a>`).join('')}></div>
     </section>
 
-    <!-- ★ Honors: 접이식으로 변경 -->
+    <!-- ??Honors: ?묒씠?앹쑝濡?蹂寃?-->
     <section id="honors">
       <h2>Honors</h2>
-      <button class="collapse-btn" data-target="honors-list">Honors 펼치기 / 접기</button>
+      <button class="collapse-btn" data-target="honors-list">Honors ?쇱튂湲?/ ?묎린</button>
       <div id="honors-list" class="collapsible">
         {honors.map((h) => (
           <div class="item">
@@ -379,32 +264,32 @@ const clubsItems = clubs.map((c) => ({
       </div>
     </section>
 
-    <!-- ★ 조교활동: 접이식으로 변경 -->
+    <!-- ??議곌탳?쒕룞: ?묒씠?앹쑝濡?蹂寃?-->
     <section id="ta">
-      <h2>조교활동</h2>
-      <button class="collapse-btn" data-target="ta-list">조교활동 펼치기 / 접기</button>
+      <h2>議곌탳?쒕룞</h2>
+      <button class="collapse-btn" data-target="ta-list">議곌탳?쒕룞 ?쇱튂湲?/ ?묎린</button>
       <div id="ta-list" class="collapsible">
         <ListSection items={taItems} />
       </div>
     </section>
 
     <section id="clubs">
-      <h2>동아리활동</h2>
+      <h2>?숈븘由ы솢??/h2>
       <div id="clubs-list">
         <ListSection items={clubsItems} />
       </div>
     </section>
 
-    <!-- ★ Contact: 이메일 삭제 -->
+    <!-- ??Contact: ?대찓????젣 -->
     <section id="contact">
-      <h2>링크</h2>
-      <p><a href="http://www.sym.co.kr/" target="_blank" style="color:var(--accent);">삼영기계(주)</a> &nbsp;|&nbsp; <a
-          href="http://lumoscandle.com/" target="_blank" style="color:var(--accent);">루모스캔들(주)</a> &nbsp;|&nbsp; <a
-          href="https://brunch.co.kr/@breakthrough" target="_blank" style="color:var(--accent);">브런치</a> &nbsp;|&nbsp; <a
+      <h2>留곹겕</h2>
+      <p><a href="http://www.sym.co.kr/" target="_blank" style="color:var(--accent);">?쇱쁺湲곌퀎(二?</a> &nbsp;|&nbsp; <a
+          href="http://lumoscandle.com/" target="_blank" style="color:var(--accent);">猷⑤え?ㅼ틪??二?</a> &nbsp;|&nbsp; <a
+          href="https://brunch.co.kr/@breakthrough" target="_blank" style="color:var(--accent);">釉뚮윴移?/a> &nbsp;|&nbsp; <a
           href="https://www.facebook.com/kukhyun.han" target="_blank" style="color:var(--accent);">Facebook</a></p>
     </section>
 
-    <footer>© 2026 한국현 (Kuk-Hyun Han). All rights reserved.</footer>
+    <footer>짤 2026 ?쒓뎅??(Kuk-Hyun Han). All rights reserved.</footer>
 
     <script is:inline>
       document.querySelectorAll('.collapse-btn').forEach((btn) => {

@@ -1,0 +1,66 @@
+---
+import FileLinks from './FileLinks.astro';
+
+interface QeaItem {
+  citation: string;
+  files?: Array<{ url: string; icon?: string; tip?: string }>;
+}
+
+interface Props {
+  qeaAbstract: string;
+  qeaThesis: QeaItem;
+  qeaJournals: QeaItem[];
+  qeaConferences: QeaItem[];
+  qeaDomestic: QeaItem[];
+  qeaPatent: QeaItem;
+}
+
+const { qeaAbstract, qeaThesis, qeaJournals, qeaConferences, qeaDomestic, qeaPatent } = Astro.props as Props;
+---
+
+<section id="qea">
+  <h2>QEA – Quantum-inspired Evolutionary Algorithm</h2>
+  <div class="qea-abstract" id="qea-abstract">{qeaAbstract}</div>
+  <h3>Ph.D Thesis</h3>
+  <div id="qea-thesis">
+    <div class="item">
+      <div class="title" set:html={qeaThesis.citation}></div>
+      <FileLinks files={qeaThesis.files} />
+    </div>
+  </div>
+  <h3>International Journal Papers (QEA)</h3>
+  <div id="qea-journals">
+    {qeaJournals.map((p) => (
+      <div class="item">
+        <div class="title" set:html={p.citation}></div>
+        <FileLinks files={p.files} />
+      </div>
+    ))}
+  </div>
+  <h3>International Conference Papers (QEA)</h3>
+  <button class="collapse-btn" data-target="qea-conferences">QEA Conference Papers 펼치기/ 접기</button>
+  <div id="qea-conferences" class="collapsible">
+    {qeaConferences.map((p) => (
+      <div class="item">
+        <div class="title" set:html={p.citation}></div>
+        <FileLinks files={p.files} />
+      </div>
+    ))}
+  </div>
+  <h3>Domestic Conference Paper (QEA)</h3>
+  <div id="qea-domestic">
+    {qeaDomestic.map((p) => (
+      <div class="item">
+        <div class="title" set:html={p.citation}></div>
+        <FileLinks files={p.files} />
+      </div>
+    ))}
+  </div>
+  <h3>Patent (QEA)</h3>
+  <div id="qea-patent">
+    <div class="item">
+      <div class="title" set:html={qeaPatent.citation}></div>
+      <FileLinks files={qeaPatent.files} />
+    </div>
+  </div>
+</section>
