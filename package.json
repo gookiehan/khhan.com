@@ -5,6 +5,8 @@
   "type": "module",
   "scripts": {
     "sync:static": "node scripts/sync-static.mjs",
+    "validate:content": "node scripts/validate-content.mjs",
+    "validate": "npm run validate:content",
     "dev": "npm run sync:static && astro dev",
     "build": "npm run sync:static && astro build",
     "preview": "astro preview"
