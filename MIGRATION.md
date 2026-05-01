@@ -64,7 +64,7 @@ git show before-astro-migration
 - [x] Add Astro project files without changing content semantics.
 - [x] Keep GitHub Pages compatibility.
 - [x] Preserve custom domain handling by keeping `CNAME` in the published output.
-- [ ] Move or expose static assets under Astro's public asset path.
+- [x] Move or expose static assets under Astro's public asset path.
 - [x] Add local commands:
   - `npm run dev`
   - `npm run build`
@@ -85,6 +85,12 @@ Build verification:
 
 - `npm run build` passed with Astro 5.18.1.
 - Generated output includes `dist/CNAME`.
+
+Current static site reproduction:
+
+- `src/pages/index.astro` mirrors the current `index.html` structure.
+- `data.js`, `style.css`, `CNAME`, and `assets/` remain source files at the repository root.
+- `npm run dev` and `npm run build` run `scripts/sync-static.mjs` first, copying those root static files into `public/` so Astro serves and builds the existing relative paths.
 
 ## Phase 2: Content Model
 
