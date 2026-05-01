@@ -126,6 +126,27 @@ Link validation script:
 - `validate` now runs `validate:content` + `validate:links`.
 - Link validation status: pass (`files[]` 177, unique URLs 146, local assets 109, missing local assets 0).
 
+## Final pre-PR checklist
+
+Final verification run completed on `feature/astro-migration` before PR creation.
+
+- [x] `git status` checked.
+- [x] `npm run validate:content` passed.
+- [x] `npm run validate:links` passed.
+- [x] `npm run validate` passed.
+- [x] `npm run build` passed.
+- [x] `dist/CNAME` confirmed as `khhan.com`.
+- [x] Total content items: 227 (maintained).
+- [x] `files[]` link entries: 177 (maintained).
+- [x] Unique URLs: 146 (maintained).
+- [x] Unique local asset URLs: 109 (maintained).
+- [x] Missing local assets in `dist`: 0 (maintained).
+- [x] GitHub Pages workflow confirmed:
+  - PR: validate/build only, no deploy.
+  - `main` push: validate/build + artifact upload + deploy.
+- [x] `README.md` reflects current YAML/Astro structure and commands.
+- [x] `MIGRATION.md`, `CONTENT_MIGRATION_REPORT.md`, `LINK_VALIDATION_REPORT.md` are updated and consistent with current baseline.
+
 ## Phase 2: Content Model
 
 - [ ] Split `data.js` into section-specific content files.
