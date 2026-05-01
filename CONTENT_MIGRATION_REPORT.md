@@ -278,3 +278,10 @@ Runtime metrics from validation/build check:
 - Unique URLs: 146
 - Unique local asset URLs: 109
 - Missing local assets in `dist/`: 0
+
+## Link validation script
+
+- Added `scripts/validate-links.mjs` to validate every `files[].url` from `src/data/*.yml`.
+- Local links (`assets/...`, `/assets/...`) are checked against repository root and `public/`.
+- External links are format-validated only (`http://`, `https://`) without network requests.
+- Current status: pass (`files[]` 177, unique URLs 146, unique local asset URLs 109, missing local assets 0).

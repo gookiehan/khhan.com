@@ -6,7 +6,8 @@
   "scripts": {
     "sync:static": "node scripts/sync-static.mjs",
     "validate:content": "node scripts/validate-content.mjs",
-    "validate": "npm run validate:content",
+    "validate:links": "node scripts/validate-links.mjs",
+    "validate": "npm run validate:content && npm run validate:links",
     "dev": "npm run sync:static && astro dev",
     "build": "npm run sync:static && astro build",
     "preview": "astro preview"
