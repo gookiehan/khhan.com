@@ -17,15 +17,16 @@ This document tracks the planned migration from the current static `index.html` 
 - Total content items: 227
 - `files[]` link entries: 177
 - Unique `files[]` URLs: 146
-- Missing referenced local assets: 8
-  - `KAIST_stereo.jpg`
-  - `gui.jpg`
-  - `hublan1.jpg`
-  - `ino.jpg`
-  - `mybot.bmp`
-  - `sample320.jpg`
-  - `sample640.jpg`
-  - `smt.jpg`
+- Missing referenced local assets: 0
+- Restored local assets verified: 8
+  - `assets/images/KAIST_stereo.jpg`
+  - `assets/images/gui.jpg`
+  - `assets/images/hublan1.jpg`
+  - `assets/images/ino.jpg`
+  - `assets/images/mybot.bmp`
+  - `assets/images/sample320.jpg`
+  - `assets/images/sample640.jpg`
+  - `assets/images/smt.jpg`
 
 ## Pre-Migration Backup Tag
 
@@ -130,7 +131,7 @@ git show before-astro-migration
 
 ## Known Risks Before Implementation
 
-- Some `files[]` local image references in `data.js` do not exist in the current asset tree.
+- Previously missing `files[]` local image references have been restored and verified in `assets/images`.
 - Several content fields contain inline HTML; schemas and renderers must handle this deliberately.
 - Some external links use old `http://` URLs and may be unstable.
 - Large media files should remain static assets and should not be imported into bundled client code.

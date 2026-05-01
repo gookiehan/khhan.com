@@ -10,7 +10,7 @@ Generated from `data.js` before the Astro migration. Counts reflect top-level da
 - Unique `files[]` URLs: 146
 - Unique local asset URLs: 109
 - Unique external URLs in `files[]`: 37
-- Missing referenced local assets: 8
+- Missing referenced local assets: 0
 
 ## Section Counts
 
@@ -29,6 +29,10 @@ Generated from `data.js` before the Astro migration. Counts reflect top-level da
 | Clubs | 1 | clubs: 1 | 0 |
 
 ## Referenced Local Assets Not Found
+
+- None
+
+## Restored Local Assets Verified
 
 - `assets/images/KAIST_stereo.jpg`
 - `assets/images/gui.jpg`
