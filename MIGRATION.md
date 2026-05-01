@@ -108,6 +108,12 @@ YAML rendering migration:
 - `public/data.js` is now a cleanup candidate for rendering flow, but retained for the legacy admin-panel helper path.
 - Final YAML rendering verification passed: section totals, link counts, and `dist` asset checks all match baseline values.
 
+Componentization pass 1:
+
+- Added minimal common components only: `Section.astro`, `FileLinks.astro`, `ListSection.astro`.
+- Kept section order, content meaning, and layout unchanged.
+- Validation remained matched: total 227, `files[]` 177, unique URLs 146, local asset URLs 109, `dist` missing 0.
+
 ## Phase 2: Content Model
 
 - [ ] Split `data.js` into section-specific content files.

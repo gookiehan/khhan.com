@@ -203,3 +203,39 @@ Build verification:
 
 - `npm run build`: passed
 - In this environment, sandboxed execution may show intermittent `spawn EPERM`; escalation run completed successfully.
+
+## Componentization pass 1
+
+Scope:
+
+- Added only minimal common components:
+  - `src/components/Section.astro`
+  - `src/components/FileLinks.astro`
+  - `src/components/ListSection.astro`
+- Did not add `QeaSection.astro`, `PublicationsSection.astro`, or `ActivitiesSection.astro`.
+- Kept existing section order, copy, CSS classes, and link structure.
+
+Validation:
+
+| Metric | Baseline | Pass 1 result | Result |
+| --- | ---: | ---: | --- |
+| qea | 18 | 18 | Pass |
+| education | 6 | 6 | Pass |
+| career | 8 | 8 | Pass |
+| research | 34 | 34 | Pass |
+| awards | 33 | 33 | Pass |
+| activities | 52 | 52 | Pass |
+| publications | 51 | 51 | Pass |
+| patents | 2 | 2 | Pass |
+| honors | 13 | 13 | Pass |
+| ta | 9 | 9 | Pass |
+| clubs | 1 | 1 | Pass |
+| total | 227 | 227 | Pass |
+| `files[]` link entries | 177 | 177 | Pass |
+| unique URLs | 146 | 146 | Pass |
+| unique local asset URLs | 109 | 109 | Pass |
+| missing local assets in `dist/` | 0 | 0 | Pass |
+
+Build:
+
+- `npm run build`: passed

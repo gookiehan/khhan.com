@@ -2,6 +2,9 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import yaml from 'js-yaml';
+import Section from '../components/Section.astro';
+import FileLinks from '../components/FileLinks.astro';
+import ListSection from '../components/ListSection.astro';
 
 function loadYaml(fileName) {
   const fullPath = path.join(process.cwd(), 'src', 'data', fileName);
@@ -57,18 +60,89 @@ function escapeHtml(value) {
     .replaceAll("'", '&#39;');
 }
 
-function filesHtml(files) {
-  if (!files || files.length === 0) return '';
-  return `<div class="files">${files.map((f) => `<a href="${escapeHtml(f.url)}" target="_blank" title="${escapeHtml(f.tip || '')}">${f.icon || '🔗'} ${escapeHtml(f.tip || '링크')}</a>`).join('')}</div>`;
-}
+const educationItems = education.map((e) => ({
+  period: e.period,
+  titleHtml: `${e.title}, <a href="${e.orgUrl}" target="_blank">${e.org}</a>`,
+  descHtml: e.desc,
+  files: e.files,
+}));
 
-function renderItem(period, titleHtml, descHtml, files) {
-  return `<div class="item"><div class="period">${escapeHtml(period || '')}</div><div class="title">${titleHtml}</div>${descHtml ? `<div class="desc">${descHtml}</div>` : ''}${filesHtml(files)}</div>`;
-}
+const careerItems = career.map((c) => ({
+  period: c.period,
+  titleHtml: c.title,
+  descHtml: c.desc || '',
+  files: c.files,
+}));
 
-function renderCitation(citationHtml, files) {
-  return `<div class="item"><div class="title">${citationHtml}</div>${filesHtml(files)}</div>`;
-}
+const projectsItems = projects.map((p) => ({
+  period: p.period,
+  titleHtml: p.title,
+  descHtml: `${p.org} / ${p.role}`,
+  files: p.files,
+}));
+
+const awardsItems = awards.map((a) => ({
+  period: a.date,
+  titleHtml: a.title,
+  descHtml: '',
+  files: a.files,
+}));
+
+const boardItems = activities.board.map((b) => ({
+  period: b.period,
+  titleHtml: b.title,
+  descHtml: '',
+  files: [],
+}));
+
+const committeeItems = activities.committee.map((c) => ({
+  period: c.period,
+  titleHtml: c.title,
+  descHtml: '',
+  files: [],
+}));
+
+const standardizationItems = activities.standardization.map((s) => ({
+  period: s.period,
+  titleHtml: s.title,
+  descHtml: '',
+  files: [],
+}));
+
+const talksItems = activities.invitedTalks.map((t) => ({
+  period: t.date,
+  titleHtml: t.title,
+  descHtml: '',
+  files: t.files,
+}));
+
+const teachingItems = activities.teaching.map((t) => ({
+  period: t.date,
+  titleHtml: t.title,
+  descHtml: '',
+  files: [],
+}));
+
+const judgesItems = activities.judges.map((j) => ({
+  period: j.period,
+  titleHtml: j.title,
+  descHtml: '',
+  files: [],
+}));
+
+const taItems = taActivities.map((t) => ({
+  period: t.period,
+  titleHtml: t.title,
+  descHtml: '',
+  files: t.files,
+}));
+
+const clubsItems = clubs.map((c) => ({
+  period: '',
+  titleHtml: c.title,
+  descHtml: c.desc,
+  files: [],
+}));
 ---
 
 <!DOCTYPE html>
@@ -110,14 +184,16 @@ function renderCitation(citationHtml, files) {
     </div>
 
     <!-- SECTIONS -->
-    <section id="education">
-      <h2>학력사항</h2>
-      <div id="edu-list" set:html={education.map((e) => renderItem(e.period, `${e.title}, <a href="${e.orgUrl}" target="_blank">${e.org}</a>`, e.desc, e.files)).join('')}></div>
-    </section>
-    <section id="career">
-      <h2>경력사항</h2>
-      <div id="career-list" set:html={career.map((c) => renderItem(c.period, c.title, c.desc || '', c.files)).join('')}></div>
-    </section>
+    <Section id="education" title="학력사항">
+      <div id="edu-list">
+        <ListSection items={educationItems} />
+      </div>
+    </Section>
+    <Section id="career" title="경력사항">
+      <div id="career-list">
+        <ListSection items={careerItems} />
+      </div>
+    </Section>
 
     <section id="research">
       <h2>연구</h2>
@@ -125,7 +201,9 @@ function renderCitation(citationHtml, files) {
       <div id="interest-tags" class="tags" set:html={researchInterests.map((t) => `<span class="tag">${escapeHtml(t)}</span>`).join('')}></div>
       <h3>주요 연구과제 (프로젝트)</h3>
       <button class="collapse-btn" data-target="projects-list">연구과제 펼치기 / 접기</button>
-      <div id="projects-list" class="collapsible" set:html={projects.map((p) => renderItem(p.period, p.title, `${p.org} / ${p.role}`, p.files)).join('')}></div>
+      <div id="projects-list" class="collapsible">
+        <ListSection items={projectsItems} />
+      </div>
     </section>
 
     <!-- ★ QEA SECTION (NEW) -->
@@ -133,42 +211,87 @@ function renderCitation(citationHtml, files) {
       <h2>QEA – Quantum-inspired Evolutionary Algorithm</h2>
       <div class="qea-abstract" id="qea-abstract">{qeaAbstract}</div>
       <h3>Ph.D Thesis</h3>
-      <div id="qea-thesis" set:html={renderCitation(qeaThesis.citation, qeaThesis.files)}></div>
+      <div id="qea-thesis">
+        <div class="item">
+          <div class="title" set:html={qeaThesis.citation}></div>
+          <FileLinks files={qeaThesis.files} />
+        </div>
+      </div>
       <h3>International Journal Papers (QEA)</h3>
-      <div id="qea-journals" set:html={qeaJournals.map((p) => renderCitation(p.citation, p.files)).join('')}></div>
+      <div id="qea-journals">
+        {qeaJournals.map((p) => (
+          <div class="item">
+            <div class="title" set:html={p.citation}></div>
+            <FileLinks files={p.files} />
+          </div>
+        ))}
+      </div>
       <h3>International Conference Papers (QEA)</h3>
       <button class="collapse-btn" data-target="qea-conferences">QEA Conference Papers 펼치기 / 접기</button>
-      <div id="qea-conferences" class="collapsible" set:html={qeaConferences.map((p) => renderCitation(p.citation, p.files)).join('')}></div>
+      <div id="qea-conferences" class="collapsible">
+        {qeaConferences.map((p) => (
+          <div class="item">
+            <div class="title" set:html={p.citation}></div>
+            <FileLinks files={p.files} />
+          </div>
+        ))}
+      </div>
       <h3>Domestic Conference Paper (QEA)</h3>
-      <div id="qea-domestic" set:html={qeaDomestic.map((p) => renderCitation(p.citation, p.files)).join('')}></div>
+      <div id="qea-domestic">
+        {qeaDomestic.map((p) => (
+          <div class="item">
+            <div class="title" set:html={p.citation}></div>
+            <FileLinks files={p.files} />
+          </div>
+        ))}
+      </div>
       <h3>Patent (QEA)</h3>
-      <div id="qea-patent" set:html={renderCitation(qeaPatent.citation, qeaPatent.files)}></div>
+      <div id="qea-patent">
+        <div class="item">
+          <div class="title" set:html={qeaPatent.citation}></div>
+          <FileLinks files={qeaPatent.files} />
+        </div>
+      </div>
     </section>
 
     <section id="awards">
       <h2>수상경력</h2>
-      <div id="awards-list" set:html={awards.map((a) => renderItem(a.date, a.title, '', a.files)).join('')}></div>
+      <div id="awards-list">
+        <ListSection items={awardsItems} />
+      </div>
     </section>
 
     <section id="activities">
       <h2>기타활동</h2>
       <h3>이사회 활동</h3>
-      <div id="board-list" set:html={activities.board.map((b) => renderItem(b.period, b.title, '', [])).join('')}></div>
+      <div id="board-list">
+        <ListSection items={boardItems} />
+      </div>
       <h3>전문위원 활동</h3>
-      <div id="committee-list" set:html={activities.committee.map((c) => renderItem(c.period, c.title, '', [])).join('')}></div>
+      <div id="committee-list">
+        <ListSection items={committeeItems} />
+      </div>
       <h3>표준화</h3>
-      <div id="std-list" set:html={activities.standardization.map((s) => renderItem(s.period, s.title, '', [])).join('')}></div>
+      <div id="std-list">
+        <ListSection items={standardizationItems} />
+      </div>
       <h3>초청강연</h3>
       <button class="collapse-btn" data-target="talks-list">초청강연 펼치기 / 접기</button>
-      <div id="talks-list" class="collapsible" set:html={activities.invitedTalks.map((t) => renderItem(t.date, t.title, '', t.files)).join('')}></div>
+      <div id="talks-list" class="collapsible">
+        <ListSection items={talksItems} />
+      </div>
       <!-- ★ 강의: 접이식으로 변경 -->
       <h3>강의</h3>
       <button class="collapse-btn" data-target="teaching-list">강의 펼치기 / 접기</button>
-      <div id="teaching-list" class="collapsible" set:html={activities.teaching.map((t) => renderItem(t.date, t.title, '', [])).join('')}></div>
+      <div id="teaching-list" class="collapsible">
+        <ListSection items={teachingItems} />
+      </div>
       <!-- ★ 심사위원: 접이식으로 변경 -->
       <h3>심사위원</h3>
       <button class="collapse-btn" data-target="judges-list">심사위원 펼치기 / 접기</button>
-      <div id="judges-list" class="collapsible" set:html={activities.judges.map((j) => renderItem(j.period, j.title, '', [])).join('')}></div>
+      <div id="judges-list" class="collapsible">
+        <ListSection items={judgesItems} />
+      </div>
       <!-- ★ 저널 리뷰어: 접이식으로 변경 -->
       <h3>저널 리뷰어</h3>
       <button class="collapse-btn" data-target="reviewers-wrapper">저널 리뷰어 펼치기 / 접기</button>
@@ -180,20 +303,60 @@ function renderCitation(citationHtml, files) {
     <section id="publications">
       <h2>논문·저서</h2>
       <h3>Ph.D Thesis</h3>
-      <div id="phd-list" set:html={renderCitation(phdThesis.citation, phdThesis.files)}></div>
+      <div id="phd-list">
+        <div class="item">
+          <div class="title" set:html={phdThesis.citation}></div>
+          <FileLinks files={phdThesis.files} />
+        </div>
+      </div>
       <h3>International Journal Papers</h3>
-      <div id="intl-journal-list" set:html={intlJournals.map((p) => renderCitation(p.citation, p.files)).join('')}></div>
+      <div id="intl-journal-list">
+        {intlJournals.map((p) => (
+          <div class="item">
+            <div class="title" set:html={p.citation}></div>
+            <FileLinks files={p.files} />
+          </div>
+        ))}
+      </div>
       <h3>International Conference Papers</h3>
       <button class="collapse-btn" data-target="intl-conf-list">International Conference Papers 펼치기 / 접기</button>
-      <div id="intl-conf-list" class="collapsible" set:html={intlConferences.map((p) => renderCitation(p.citation, p.files)).join('')}></div>
+      <div id="intl-conf-list" class="collapsible">
+        {intlConferences.map((p) => (
+          <div class="item">
+            <div class="title" set:html={p.citation}></div>
+            <FileLinks files={p.files} />
+          </div>
+        ))}
+      </div>
       <h3>Domestic Conference & Journal Papers</h3>
       <button class="collapse-btn" data-target="domestic-list">Domestic Papers 펼치기 / 접기</button>
-      <div id="domestic-list" class="collapsible" set:html={domesticPapers.map((p) => renderCitation(p.citation, p.files)).join('')}></div>
+      <div id="domestic-list" class="collapsible">
+        {domesticPapers.map((p) => (
+          <div class="item">
+            <div class="title" set:html={p.citation}></div>
+            <FileLinks files={p.files} />
+          </div>
+        ))}
+      </div>
       <h3>Magazine Articles</h3>
       <button class="collapse-btn" data-target="magazine-list">Magazine Articles 펼치기 / 접기</button>
-      <div id="magazine-list" class="collapsible" set:html={magazineArticles.map((p) => renderCitation(p.citation, p.files)).join('')}></div>
+      <div id="magazine-list" class="collapsible">
+        {magazineArticles.map((p) => (
+          <div class="item">
+            <div class="title" set:html={p.citation}></div>
+            <FileLinks files={p.files} />
+          </div>
+        ))}
+      </div>
       <h3>Books</h3>
-      <div id="books-list" set:html={books.map((p) => renderCitation(p.citation, p.files)).join('')}></div>
+      <div id="books-list">
+        {books.map((p) => (
+          <div class="item">
+            <div class="title" set:html={p.citation}></div>
+            <FileLinks files={p.files} />
+          </div>
+        ))}
+      </div>
     </section>
 
     <section id="patents">
@@ -206,19 +369,30 @@ function renderCitation(citationHtml, files) {
     <section id="honors">
       <h2>Honors</h2>
       <button class="collapse-btn" data-target="honors-list">Honors 펼치기 / 접기</button>
-      <div id="honors-list" class="collapsible" set:html={honors.map((h) => `<div class="item"><div class="title">${h.title}</div>${filesHtml(h.files)}</div>`).join('')}></div>
+      <div id="honors-list" class="collapsible">
+        {honors.map((h) => (
+          <div class="item">
+            <div class="title">{h.title}</div>
+            <FileLinks files={h.files} />
+          </div>
+        ))}
+      </div>
     </section>
 
     <!-- ★ 조교활동: 접이식으로 변경 -->
     <section id="ta">
       <h2>조교활동</h2>
       <button class="collapse-btn" data-target="ta-list">조교활동 펼치기 / 접기</button>
-      <div id="ta-list" class="collapsible" set:html={taActivities.map((t) => renderItem(t.period, t.title, '', t.files)).join('')}></div>
+      <div id="ta-list" class="collapsible">
+        <ListSection items={taItems} />
+      </div>
     </section>
 
     <section id="clubs">
       <h2>동아리활동</h2>
-      <div id="clubs-list" set:html={clubs.map((c) => renderItem('', c.title, c.desc, [])).join('')}></div>
+      <div id="clubs-list">
+        <ListSection items={clubsItems} />
+      </div>
     </section>
 
     <!-- ★ Contact: 이메일 삭제 -->
