@@ -120,6 +120,12 @@ Content validation script:
 - Current validation status: pass (total 227, `files[]` 177, unique URLs 146, local assets 109, missing in `dist` 0).
 - `npm run build` remains passing after validator integration.
 
+Link validation script:
+
+- Added `scripts/validate-links.mjs` and npm command `validate:links`.
+- `validate` now runs `validate:content` + `validate:links`.
+- Link validation status: pass (`files[]` 177, unique URLs 146, local assets 109, missing local assets 0).
+
 ## Phase 2: Content Model
 
 - [ ] Split `data.js` into section-specific content files.
