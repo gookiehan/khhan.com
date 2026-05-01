@@ -134,6 +134,14 @@ Legacy data.js runtime cleanup (pass 1):
 - Verification: `npm run validate` pass, `npm run build` pass, `dist/data.js` not generated, `dist/style.css`/`dist/assets/`/`dist/CNAME` preserved.
 - Rollback: restore previous behavior by reverting `src/pages/index.astro` and `scripts/sync-static.mjs` to the commit before this cleanup.
 
+Final legacy cleanup:
+
+- Removed unused root files: `index.html`, `data.js`.
+- Removed one-time conversion script: `scripts/export-data-to-yaml.mjs`.
+- Removed legacy admin panel markup/JS from `src/pages/index.astro` (including `?edit` handling).
+- Runtime/build pipeline remains YAML-based only (`src/data/*.yml`).
+- Verification target: no `dist/data.js`, no legacy editor strings in `dist/index.html`, while `dist/style.css`, `dist/assets/`, `dist/CNAME` remain present.
+
 ## Final pre-PR checklist
 
 Final verification run completed on `feature/astro-migration` before PR creation.

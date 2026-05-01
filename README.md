@@ -31,7 +31,7 @@ npm run dev
 - TA: `src/data/ta.yml`
 - 동아리: `src/data/clubs.yml`
 
-참고: `?edit` 레거시 editor는 YAML 전환 이후 비활성화되었습니다. 콘텐츠 수정은 `src/data/*.yml`에서 진행해야 합니다.
+참고: `?edit` 레거시 editor는 제거되었습니다. 콘텐츠 수정은 `src/data/*.yml`에서 진행해야 합니다.
 
 ## 4) 새 논문 추가 방법
 
@@ -113,8 +113,8 @@ git switch -c hotfix/rollback-main main
   - 보고 형식 명시 (변경 파일 목록, 실행 결과, 커밋 메시지)
 - 콘텐츠 수정 작업에서는 “자동 수정 금지, 오류는 보고만” 조건을 함께 주는 것을 권장합니다.
 
-## 13) 기존 `index.html`, `data.js`, `style.css`가 남아 있는 이유
+## 13) 레거시 정리 상태
 
-- 현재 파일들은 **비교/롤백 기준선**입니다.
-- 마이그레이션 중 출력 차이 확인, 긴급 복구, 레거시 보조 경로(`?edit`) 확인에 사용됩니다.
-- 즉시 삭제 대상이 아니라, 정리 시점 합의 후 제거하는 안전장치입니다.
+- 루트 `index.html`, `data.js`, `scripts/export-data-to-yaml.mjs`는 최종 정리 단계에서 제거되었습니다.
+- 현재 운영 기준 콘텐츠 소스는 `src/data/*.yml`입니다.
+- 렌더링/배포에 필요한 정적 리소스는 `style.css`, `assets/`, `CNAME`입니다.

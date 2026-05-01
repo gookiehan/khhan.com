@@ -316,3 +316,28 @@ Verification:
 Notes:
 
 - Root `index.html` and `data.js` remain in repository as legacy rollback/comparison artifacts.
+
+## Final legacy cleanup
+
+Completed final removal of legacy runtime artifacts:
+
+- Deleted root `index.html`.
+- Deleted root `data.js`.
+- Deleted `scripts/export-data-to-yaml.mjs`.
+- Removed admin panel UI/logic from `src/pages/index.astro`:
+  - `admin-panel`
+  - `admin-editor`
+  - `toggleAdmin`
+  - `applyEdit`
+  - `downloadDataJs`
+  - `?edit` handling block
+
+Post-cleanup verification:
+
+- `npm run validate`: pass
+- `npm run build`: pass
+- `dist/data.js`: not generated
+- `dist/index.html`: no `fetch('data.js')`, `data.js` editor, `admin-editor`, `admin-panel`
+- `dist/style.css`: present
+- `dist/assets/`: present
+- `dist/CNAME`: present (`khhan.com`)
