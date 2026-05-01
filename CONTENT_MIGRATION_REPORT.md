@@ -168,3 +168,38 @@ Note:
 
 - `public/data.js` is no longer required for section rendering.
 - `public/data.js` remains a cleanup candidate because the legacy admin-panel helper (`?edit`) still fetches `data.js`.
+
+## YAML rendering verification
+
+Final verification after YAML-based server rendering in `src/pages/index.astro`.
+
+Section comparison:
+
+| Section | Baseline (`data.js`) | YAML source count | Astro rendering usage count | Result |
+| --- | ---: | ---: | ---: | --- |
+| qea | 18 | 18 | 18 | Pass |
+| education | 6 | 6 | 6 | Pass |
+| career | 8 | 8 | 8 | Pass |
+| research | 34 | 34 | 34 | Pass |
+| awards | 33 | 33 | 33 | Pass |
+| activities | 52 | 52 | 52 | Pass |
+| publications | 51 | 51 | 51 | Pass |
+| patents | 2 | 2 | 2 | Pass |
+| honors | 13 | 13 | 13 | Pass |
+| ta | 9 | 9 | 9 | Pass |
+| clubs | 1 | 1 | 1 | Pass |
+| total | 227 | 227 | 227 | Pass |
+
+Link and asset comparison:
+
+| Metric | Baseline (`data.js`) | YAML verification result | Result |
+| --- | ---: | ---: | --- |
+| `files[]` link entries | 177 | 177 | Pass |
+| Unique URLs | 146 | 146 | Pass |
+| Unique local asset URLs | 109 | 109 | Pass |
+| Missing local assets in `dist/` | 0 | 0 | Pass |
+
+Build verification:
+
+- `npm run build`: passed
+- In this environment, sandboxed execution may show intermittent `spawn EPERM`; escalation run completed successfully.
