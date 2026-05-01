@@ -126,6 +126,12 @@ Link validation script:
 - `validate` now runs `validate:content` + `validate:links`.
 - Link validation status: pass (`files[]` 177, unique URLs 146, local assets 109, missing local assets 0).
 
+Validation policy update (operations mode):
+
+- `validate:content` was changed from fixed baseline-count enforcement to schema/structure validation.
+- Content growth (new publications/awards/links) no longer fails validation only because counts increase.
+- Baseline counts are still printed as informational deltas for monitoring.
+
 Legacy data.js runtime cleanup (pass 1):
 
 - Removed `?edit` runtime `fetch('data.js')` dependency in `src/pages/index.astro`.
