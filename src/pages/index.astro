@@ -6,6 +6,7 @@ import Section from '../components/Section.astro';
 import FileLinks from '../components/FileLinks.astro';
 import ListSection from '../components/ListSection.astro';
 import QeaSection from '../components/QeaSection.astro';
+import PublicationsSection from '../components/PublicationsSection.astro';
 
 function loadYaml(fileName) {
   const fullPath = path.join(process.cwd(), 'src', 'data', fileName);
@@ -262,64 +263,14 @@ const clubsItems = clubs.map((c) => ({
       </div>
     </section>
 
-    <section id="publications">
-      <h2>논문·저서</h2>
-      <h3>Ph.D Thesis</h3>
-      <div id="phd-list">
-        <div class="item">
-          <div class="title" set:html={phdThesis.citation}></div>
-          <FileLinks files={phdThesis.files} />
-        </div>
-      </div>
-      <h3>International Journal Papers</h3>
-      <div id="intl-journal-list">
-        {intlJournals.map((p) => (
-          <div class="item">
-            <div class="title" set:html={p.citation}></div>
-            <FileLinks files={p.files} />
-          </div>
-        ))}
-      </div>
-      <h3>International Conference Papers</h3>
-      <button class="collapse-btn" data-target="intl-conf-list">International Conference Papers 펼치기 / 접기</button>
-      <div id="intl-conf-list" class="collapsible">
-        {intlConferences.map((p) => (
-          <div class="item">
-            <div class="title" set:html={p.citation}></div>
-            <FileLinks files={p.files} />
-          </div>
-        ))}
-      </div>
-      <h3>Domestic Conference & Journal Papers</h3>
-      <button class="collapse-btn" data-target="domestic-list">Domestic Papers 펼치기 / 접기</button>
-      <div id="domestic-list" class="collapsible">
-        {domesticPapers.map((p) => (
-          <div class="item">
-            <div class="title" set:html={p.citation}></div>
-            <FileLinks files={p.files} />
-          </div>
-        ))}
-      </div>
-      <h3>Magazine Articles</h3>
-      <button class="collapse-btn" data-target="magazine-list">Magazine Articles 펼치기 / 접기</button>
-      <div id="magazine-list" class="collapsible">
-        {magazineArticles.map((p) => (
-          <div class="item">
-            <div class="title" set:html={p.citation}></div>
-            <FileLinks files={p.files} />
-          </div>
-        ))}
-      </div>
-      <h3>Books</h3>
-      <div id="books-list">
-        {books.map((p) => (
-          <div class="item">
-            <div class="title" set:html={p.citation}></div>
-            <FileLinks files={p.files} />
-          </div>
-        ))}
-      </div>
-    </section>
+    <PublicationsSection
+      phdThesis={phdThesis}
+      intlJournals={intlJournals}
+      intlConferences={intlConferences}
+      domesticPapers={domesticPapers}
+      magazineArticles={magazineArticles}
+      books={books}
+    />
 
     <section id="patents">
       <h2>특허 (Patents)</h2>
