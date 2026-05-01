@@ -285,3 +285,34 @@ Runtime metrics from validation/build check:
 - Local links (`assets/...`, `/assets/...`) are checked against repository root and `public/`.
 - External links are format-validated only (`http://`, `https://`) without network requests.
 - Current status: pass (`files[]` 177, unique URLs 146, unique local asset URLs 109, missing local assets 0).
+
+## Legacy data.js dependency cleanup
+
+Scope:
+
+- Remove runtime dependency on `data.js` from Astro page behavior while keeping legacy files for rollback reference.
+
+Changes:
+
+- `src/pages/index.astro`:
+  - Removed `?edit` path `fetch('data.js')` call.
+  - `?edit` now opens a disabled/readonly legacy editor notice:
+    - "YAML-based structure is active. Legacy editor is disabled. Please update content in src/data/*.yml."
+- `scripts/sync-static.mjs`:
+  - Removed root `data.js` -> `public/data.js` copy.
+  - Added cleanup for stale `public/data.js` before sync.
+
+Verification:
+
+| Check | Result |
+| --- | --- |
+| `npm run validate` | Pass |
+| `npm run build` | Pass |
+| `dist/data.js` | Not generated |
+| `dist/style.css` | Present |
+| `dist/assets/` | Present |
+| `dist/CNAME` | Present (`khhan.com`) |
+
+Notes:
+
+- Root `index.html` and `data.js` remain in repository as legacy rollback/comparison artifacts.

@@ -31,6 +31,8 @@ npm run dev
 - TA: `src/data/ta.yml`
 - 동아리: `src/data/clubs.yml`
 
+참고: `?edit` 레거시 editor는 YAML 전환 이후 비활성화되었습니다. 콘텐츠 수정은 `src/data/*.yml`에서 진행해야 합니다.
+
 ## 4) 새 논문 추가 방법
 
 1. `src/data/publications.yml`에서 맞는 섹션(`intlJournals`, `intlConferences`, `domesticPapers` 등)을 찾습니다.
