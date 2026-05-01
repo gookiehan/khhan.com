@@ -153,7 +153,7 @@ const clubsItems = clubs.map((c) => ({
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>?쒓뎅????Kuk-Hyun Han</title>
+    <title>한국현 – Kuk-Hyun Han</title>
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
@@ -164,46 +164,46 @@ const clubsItems = clubs.map((c) => ({
     <nav>
       <div class="inner">
         <a class="brand" href="#">khhan.com</a>
-        <a href="#education">?숇젰</a>
-        <a href="#career">寃쎈젰</a>
-        <a href="#research">?곌뎄</a>
+        <a href="#education">학력</a>
+        <a href="#career">경력</a>
+        <a href="#research">연구</a>
         <a href="#qea">QEA</a>
-        <a href="#awards">?섏긽</a>
-        <a href="#activities">?쒕룞</a>
-        <a href="#publications">?쇰Ц쨌???/a>
-        <a href="#patents">?뱁뿀</a>
-        <a href="#contact">留곹겕</a>
+        <a href="#awards">수상</a>
+        <a href="#activities">활동</a>
+        <a href="#publications">논문·저서</a>
+        <a href="#patents">특허</a>
+        <a href="#contact">링크</a>
       </div>
     </nav>
 
     <!-- HERO -->
     <div class="hero">
-      <h1>?쒓뎅??(Kuk-Hyun Han, Ph.D.)</h1>
-      <p><a href="https://www.sym.co.kr" target="_blank" style="color:#4fc3f7;">?쇱쁺湲곌퀎</a> ?ъ옣쨌?곌뎄?뚯옣 &nbsp;|&nbsp; ?쒖쿇?λ??숆탳 寃몄엫援먯닔
-        &nbsp;|&nbsp; ?쒓뎅二쇱“怨듯븰??遺?뚯옣 &nbsp;|&nbsp; ?쒓뎅?뺣?怨듯븰???댁궗</p>
+      <h1>한국현 (Kuk-Hyun Han, Ph.D.)</h1>
+      <p><a href="https://www.sym.co.kr" target="_blank" style="color:#4fc3f7;">삼영기계</a> 사장·연구소장 &nbsp;|&nbsp; 순천향대학교 겸임교수
+        &nbsp;|&nbsp; 한국주조공학회 부회장 &nbsp;|&nbsp; 한국정밀공학회 이사</p>
       <p style="margin-top:.5rem;">
         <a href={scholarUrl} target="_blank" style="color:#4fc3f7;">Google Scholar</a>
       </p>
     </div>
 
     <!-- SECTIONS -->
-    <Section id="education" title="?숇젰?ы빆">
+    <Section id="education" title="학력사항">
       <div id="edu-list">
         <ListSection items={educationItems} />
       </div>
     </Section>
-    <Section id="career" title="寃쎈젰?ы빆">
+    <Section id="career" title="경력사항">
       <div id="career-list">
         <ListSection items={careerItems} />
       </div>
     </Section>
 
     <section id="research">
-      <h2>?곌뎄</h2>
-      <h3>愿?щ텇??/h3>
+      <h2>연구</h2>
+      <h3>관심분야</h3>
       <div id="interest-tags" class="tags" set:html={researchInterests.map((t) => `<span class="tag">${escapeHtml(t)}</span>`).join('')}></div>
-      <h3>二쇱슂 ?곌뎄怨쇱젣 (?꾨줈?앺듃)</h3>
-      <button class="collapse-btn" data-target="projects-list">?곌뎄怨쇱젣 ?쇱튂湲?/ ?묎린</button>
+      <h3>주요 연구과제 (프로젝트)</h3>
+      <button class="collapse-btn" data-target="projects-list">연구과제 펼치기 / 접기</button>
       <div id="projects-list" class="collapsible">
         <ListSection items={projectsItems} />
       </div>
@@ -219,7 +219,7 @@ const clubsItems = clubs.map((c) => ({
     />
 
     <section id="awards">
-      <h2>?섏긽寃쎈젰</h2>
+      <h2>수상경력</h2>
       <div id="awards-list">
         <ListSection items={awardsItems} />
       </div>
@@ -245,7 +245,7 @@ const clubsItems = clubs.map((c) => ({
     />
 
     <section id="patents">
-      <h2>?뱁뿀 (Patents)</h2>
+      <h2>특허 (Patents)</h2>
       <p id="patent-note">{patentNote}</p>
       <div id="patent-buttons" class="patent-btns" set:html={patentSearchUrls.map((p) => `<a href="${escapeHtml(p.url)}" target="_blank">${escapeHtml(p.label)}</a>`).join('')}></div>
     </section>
@@ -253,7 +253,7 @@ const clubsItems = clubs.map((c) => ({
     <!-- ??Honors: ?묒씠?앹쑝濡?蹂寃?-->
     <section id="honors">
       <h2>Honors</h2>
-      <button class="collapse-btn" data-target="honors-list">Honors ?쇱튂湲?/ ?묎린</button>
+      <button class="collapse-btn" data-target="honors-list">Honors 펼치기 / 접기</button>
       <div id="honors-list" class="collapsible">
         {honors.map((h) => (
           <div class="item">
@@ -266,15 +266,15 @@ const clubsItems = clubs.map((c) => ({
 
     <!-- ??議곌탳?쒕룞: ?묒씠?앹쑝濡?蹂寃?-->
     <section id="ta">
-      <h2>議곌탳?쒕룞</h2>
-      <button class="collapse-btn" data-target="ta-list">議곌탳?쒕룞 ?쇱튂湲?/ ?묎린</button>
+      <h2>조교활동</h2>
+      <button class="collapse-btn" data-target="ta-list">조교활동 펼치기 / 접기</button>
       <div id="ta-list" class="collapsible">
         <ListSection items={taItems} />
       </div>
     </section>
 
     <section id="clubs">
-      <h2>?숈븘由ы솢??/h2>
+      <h2>동아리활동</h2>
       <div id="clubs-list">
         <ListSection items={clubsItems} />
       </div>
@@ -282,14 +282,14 @@ const clubsItems = clubs.map((c) => ({
 
     <!-- ??Contact: ?대찓????젣 -->
     <section id="contact">
-      <h2>留곹겕</h2>
-      <p><a href="http://www.sym.co.kr/" target="_blank" style="color:var(--accent);">?쇱쁺湲곌퀎(二?</a> &nbsp;|&nbsp; <a
-          href="http://lumoscandle.com/" target="_blank" style="color:var(--accent);">猷⑤え?ㅼ틪??二?</a> &nbsp;|&nbsp; <a
-          href="https://brunch.co.kr/@breakthrough" target="_blank" style="color:var(--accent);">釉뚮윴移?/a> &nbsp;|&nbsp; <a
+      <h2>링크</h2>
+      <p><a href="http://www.sym.co.kr/" target="_blank" style="color:var(--accent);">삼영기계(주)</a> &nbsp;|&nbsp; <a
+          href="http://lumoscandle.com/" target="_blank" style="color:var(--accent);">루모스캔들(주)</a> &nbsp;|&nbsp; <a
+          href="https://brunch.co.kr/@breakthrough" target="_blank" style="color:var(--accent);">브런치</a> &nbsp;|&nbsp; <a
           href="https://www.facebook.com/kukhyun.han" target="_blank" style="color:var(--accent);">Facebook</a></p>
     </section>
 
-    <footer>짤 2026 ?쒓뎅??(Kuk-Hyun Han). All rights reserved.</footer>
+    <footer>© 2026 한국현 (Kuk-Hyun Han). All rights reserved.</footer>
 
     <script is:inline>
       document.querySelectorAll('.collapse-btn').forEach((btn) => {
