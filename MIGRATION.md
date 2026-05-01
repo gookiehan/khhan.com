@@ -126,6 +126,14 @@ Link validation script:
 - `validate` now runs `validate:content` + `validate:links`.
 - Link validation status: pass (`files[]` 177, unique URLs 146, local assets 109, missing local assets 0).
 
+Legacy data.js runtime cleanup (pass 1):
+
+- Removed `?edit` runtime `fetch('data.js')` dependency in `src/pages/index.astro`.
+- Legacy editor entry is now disabled with YAML migration guidance (`src/data/*.yml` editing path).
+- `scripts/sync-static.mjs` no longer copies root `data.js` to `public/data.js`, and removes stale `public/data.js`.
+- Verification: `npm run validate` pass, `npm run build` pass, `dist/data.js` not generated, `dist/style.css`/`dist/assets/`/`dist/CNAME` preserved.
+- Rollback: restore previous behavior by reverting `src/pages/index.astro` and `scripts/sync-static.mjs` to the commit before this cleanup.
+
 ## Final pre-PR checklist
 
 Final verification run completed on `feature/astro-migration` before PR creation.
