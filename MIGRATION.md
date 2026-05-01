@@ -61,14 +61,30 @@ git show before-astro-migration
 
 ## Phase 1: Astro Project Scaffold
 
-- [ ] Add Astro project files without changing content semantics.
-- [ ] Keep GitHub Pages compatibility.
-- [ ] Preserve custom domain handling by keeping `CNAME` in the published output.
+- [x] Add Astro project files without changing content semantics.
+- [x] Keep GitHub Pages compatibility.
+- [x] Preserve custom domain handling by keeping `CNAME` in the published output.
 - [ ] Move or expose static assets under Astro's public asset path.
-- [ ] Add local commands:
+- [x] Add local commands:
   - `npm run dev`
   - `npm run build`
   - `npm run preview`
+
+Local Astro commands:
+
+```powershell
+npm install
+npm run dev
+npm run build
+npm run preview
+```
+
+The custom domain is preserved by keeping `khhan.com` in `public/CNAME`; Astro copies files from `public/` into `dist/` during build.
+
+Build verification:
+
+- `npm run build` passed with Astro 5.18.1.
+- Generated output includes `dist/CNAME`.
 
 ## Phase 2: Content Model
 
