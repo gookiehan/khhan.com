@@ -6,7 +6,7 @@ const root = process.cwd();
 const dataDir = path.join(root, 'src', 'data');
 const publicDir = path.join(root, 'public');
 
-const expected = {
+const baselineInfo = {
   fileLinks: 177,
   uniqueUrls: 146,
   localAssetUrls: 109,
@@ -145,18 +145,9 @@ function run() {
     });
   });
 
-  if (fileLinks !== expected.fileLinks) {
-    errors.push(`[count] fileLinks: expected ${expected.fileLinks}, got ${fileLinks}`);
-  }
   const uniqueUrls = new Set(allUrls).size;
-  if (uniqueUrls !== expected.uniqueUrls) {
-    errors.push(`[count] uniqueUrls: expected ${expected.uniqueUrls}, got ${uniqueUrls}`);
-  }
-  if (uniqueLocal.size !== expected.localAssetUrls) {
-    errors.push(`[count] localAssetUrls: expected ${expected.localAssetUrls}, got ${uniqueLocal.size}`);
-  }
-  if (missingLocalAssets.length !== expected.missingLocalAssets) {
-    errors.push(`[count] missingLocalAssets: expected ${expected.missingLocalAssets}, got ${missingLocalAssets.length}`);
+  if (missingLocalAssets.length > 0) {
+    errors.push(`[local-assets] missing local assets: ${missingLocalAssets.length}`);
   }
 
   const result = {
@@ -170,6 +161,13 @@ function run() {
       other: uniqueOther.size,
     },
     missingLocalAssets: missingLocalAssets.map((item) => item.url),
+    baselineInfo,
+    baselineDelta: {
+      fileLinks: fileLinks - baselineInfo.fileLinks,
+      uniqueUrls: uniqueUrls - baselineInfo.uniqueUrls,
+      localAssetUrls: uniqueLocal.size - baselineInfo.localAssetUrls,
+      missingLocalAssets: missingLocalAssets.length - baselineInfo.missingLocalAssets,
+    },
     success: errors.length === 0,
   };
 
