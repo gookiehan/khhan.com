@@ -131,6 +131,7 @@ Validation policy update (operations mode):
 - `validate:content` was changed from fixed baseline-count enforcement to schema/structure validation.
 - Content growth (new publications/awards/links) no longer fails validation only because counts increase.
 - Baseline counts are still printed as informational deltas for monitoring.
+- `validate:links` was also updated to operations mode: fixed link-count mismatches are informational only, while URL/schema/local-file-existence errors remain blocking.
 
 Legacy data.js runtime cleanup (pass 1):
 
