@@ -1,4 +1,13 @@
 awards:
+- date: 2025. 9.
+  title: 2025 전국뿌리기술경기대회 1위 – 대통령상(삼영기계)
+  files:
+  - url: assets/images/20260503_CastingTech_2025a_f7e526.jpg
+    icon: 🖼️
+    tip: 상장
+  - url: assets/images/20260503_CastingTech_2025c_9fae91.jpg
+    icon: 🖼️
+    tip: 수상 사진
 - date: 2024. 9.
   title: 2024 전국뿌리기술경기대회(주조분야) – 대상 / 국무총리상(삼영기계)
   files:
