@@ -1,217 +1,228 @@
 awards:
-  - date: 2023. 11.
-    title: 제8회 3D프린팅 BIZCON 경진대회 최우수상 – 특허청장상
-    files:
-      - url: assets/images/3DPrintingBizcon_2023.jpg
-        icon: 🖼️
-        tip: 수상 사진
-  - date: 2023. 10.
-    title: 뿌리산업 발전 유공자 – 산업통상자원부장관 표창, <a href="https://www.motie.go.kr/">산업통상자원부</a>
-    files:
-      - url: assets/docs/PPURI_2023.pdf
-        icon: 📄
-        tip: 표창장 PDF
-  - date: 2022. 11.
-    title: 2022 3D프린팅 활용 우수사례 경진대회 최우수상 – 과학기술정보통신부 장관상(삼영기계), <a href="https://www.msit.go.kr/index.do">과학기술정보통신부</a>
-    files:
-      - url: assets/docs/3DP_MSIT_2022.pdf
-        icon: 📄
-        tip: 상장 PDF
-      - url: http://amenews.kr/news/view.php?idx=51408
-        icon: 📰
-        tip: AM뉴스
-  - date: 2022. 10.
-    title: 2022 한국의 산업을 이끈 산업기술성과 19선 선정(삼영기계), <a href="https://www.naek.or.kr/home_kr/index.asp">한국공학한림원</a>
-    files:
-      - url: https://news.mt.co.kr/mtview.php?no=2022101313052631515
-        icon: 📰
-        tip: 머니투데이
-      - url: https://biz.chosun.com/science-chosun/science/2022/10/12/XWDMWR3KQJA35IFMH3OPIQIOSU/?utm_source=naver&utm_medium=original&utm_campaign=biz
-        icon: 📰
-        tip: 조선비즈
-  - date: 2022. 9.
-    title: 2022 전국뿌리기술경기대회(주조분야) – 중소벤처기업부 장관상(삼영기계), <a href="https://www.msit.go.kr/index.do">과학기술정보통신부</a>
-    files:
-      - url: assets/images/CastingTech_2022.jpg
-        icon: 🖼️
-        tip: 수상 사진
-      - url: http://amenews.kr/news/view.php?idx=50497
-        icon: 📰
-        tip: AM뉴스
-  - date: 2021. 11.
-    title: 3D프린팅 산업발전 유공자 – 과학기술정보통신부장관 표창, <a href="https://www.msit.go.kr/index.do">과학기술정보통신부</a>
-    files:
-      - url: assets/docs/3DP_MSIT_2021.pdf
-        icon: 📄
-        tip: 표창장 PDF
-      - url: https://news.mt.co.kr/mtview.php?no=2021112410114019744
-        icon: 📰
-        tip: 머니투데이
-  - date: 2021. 11.
-    title: 2021 3D프린팅 활용 우수사례 경진대회 – 우수상(삼영기계), <a href="https://www.nipa.kr/index.jsp">정보통신산업진흥원</a>
-    files:
-      - url: assets/docs/3DP_NIPA_2021.pdf
-        icon: 📄
-        tip: 상장 PDF
-  - date: 2021. 10.
-    title: 뿌리산업 혁신과 3D프린팅 확산 공로 – 국회 과학기술정보방송통신위원회 위원장 표창, <a href="https://science.na.go.kr:444/science/index.do">과학기술정보방송통신위원회</a>
-    files:
-      - url: assets/docs/3DP_NationalAssembly_2021.pdf
-        icon: 📄
-        tip: 표창장 PDF
-      - url: assets/images/3DP_NationalAssembly_2021.jpg
-        icon: 🖼️
-        tip: 수상 사진
-  - date: 2021. 9.
-    title: 2021 전국뿌리기술경기대회(주조분야) – 중소벤처기업부 장관상(삼영기계), <a href="https://www.mss.go.kr/site/smba/main.do">중소벤처기업부</a>
-    files:
-      - url: assets/images/CastingTech_2021.jpg
-        icon: 🖼️
-        tip: 수상 사진
-      - url: https://news.mt.co.kr/mtview.php?no=2021110112384013589
-        icon: 📰
-        tip: 머니투데이
-  - date: 2020. 12.
-    title: 3D프린팅 경진대회(Innovation Challenge) 최우수상 – 과학기술정보통신부 장관상(삼영기계), <a href="https://www.msit.go.kr/index.do">과학기술정보통신부</a>
-    files:
-      - url: assets/docs/3DP_NIPA_2020.pdf
-        icon: 📄
-        tip: 상장 PDF
-      - url: http://amenews.kr/news/view.php?idx=43860
-        icon: 📰
-        tip: AM뉴스
-  - date: 2020. 11.
-    title: 한국정밀공학회 2020 통합학술대회 – 최우수논문상, <a href="http://www.kspe.or.kr/">한국정밀공학회</a>
-    files:
-      - url: assets/docs/BestPaperAward_KSPE2020.pdf
-        icon: 📄
-        tip: 상장 PDF
-  - date: 2020. 9.
-    title: 제4회 DfAM 경진대회 – 동상, <a href="http://www.kamug.or.kr/index.php?theme=KAMUG">한국3D프린팅사용자협회</a>
-    files:
-      - url: assets/docs/DfAM_prize_2020.pdf
-        icon: 📄
-        tip: 상장 PDF
-  - date: 2019. 12.
-    title: 대한민국 기술사업화대전 – 기술사업화부문 산업통상자원부장관 표창, <a href="http://www.motie.go.kr/www/main.do">산업통상자원부</a>
-    files:
-      - url: assets/docs/Minister_Award_201912.pdf
-        icon: 📄
-        tip: 표창장 PDF
-      - url: assets/images/20191212_award.jpg
-        icon: 🖼️
-        tip: 수상 사진
-      - url: http://www.joongdo.co.kr/main/view.php?key=20191213010005855
-        icon: 📰
-        tip: 중도일보
-  - date: 2019. 9.
-    title: 전국주조기술경기대회 단체전(삼영기계) 1위 – 국무총리상 수상
-    files:
-      - url: assets/docs/CastingTech_2019.pdf
-        icon: 📄
-        tip: 상장 PDF
-  - date: 2017. 12.
-    title: 대한민국 3D프린팅 산업발전 대상 유공자 – 정보통신산업진흥원장 표창, <a href="http://www.nipa.kr/main.html">정보통신산업진흥원</a>
-    files:
-      - url: assets/docs/3DP_NIPA_2017.pdf
-        icon: 📄
-        tip: 표창장 PDF
-  - date: 2017. 09.
-    title: 도전 K-스타트업 본선진출 – 100팀
-    files: []
-  - date: 2017. 07.
-    title: 대한민국 창업대전 지역예선 – 최우수상
-    files:
-      - url: assets/docs/LUMOS_award_2017.pdf
-        icon: 📄
-        tip: 상장 PDF
-  - date: 2015. 06.
-    title: 품질경영 유공자 도지사상
-    files:
-      - url: assets/docs/QM_award_201506.pdf
-        icon: 📄
-        tip: 상장 PDF
-  - date: 2010. 11.
-    title: "삼성논문상 2010 – 은상, 삼성 – \"Touch-and-Link: Inter-Device Interaction Associating Touched Points\" (김학준, 한상준, 은동진, 이택헌, 홍승환, 한국현, 강성훈)"
-    files: []
-  - date: 2007. 11.
-    title: SW Day 우수 과제 출품 전시회 – 금상, 삼성전자 DM총괄
-    files: []
-  - date: 2005. 1.
-    title: SW논문발표회 – 최우수논문상, 삼성전자 디지털미디어 연구소 – "Quantum-inspired Evolutionary Algorithms for a Class of Combinatorial and Numerical Optimization Problems"
-    files: []
-  - date: 2003. 2.
-    title: 제 9회 삼성 휴먼테크논문대상 – 금상 – "2상 양자 진화 알고리즘"
-    files:
-      - url: assets/docs/TPQEA_Humantech2002.pdf
-        icon: 📄
-        tip: 논문 PDF
-      - url: assets/images/humantech_9th_1.jpg
-        icon: 🖼️
-        tip: 사진 1
-      - url: assets/images/humantech_9th_2.jpg
-        icon: 🖼️
-        tip: 사진 2
-  - date: 2001. 8.
-    title: <a href="http://www.fira.net/">FIRA</a> Cup China 2001 – Middle League MiroSot 부문 2위
-    files:
-      - url: assets/images/soty5.jpg
-        icon: 🖼️
-        tip: SOTY5 사진
-      - url: assets/images/simulator1.bmp
-        icon: 🖼️
-        tip: 시뮬레이터
-      - url: assets/images/fira2001.jpg
-        icon: 🖼️
-        tip: FIRA 2001
-  - date: 2001. 5.
-    title: FIRA-KAIST Cup 2001 – Small League MiroSot 부문 1위
-    files: []
-  - date: 2001. 2.
-    title: 제 7회 삼성 휴먼테크논문대상 – 동상 – "양자 진화 알고리즘"
-    files:
-      - url: assets/docs/Humantech2000S.pdf
-        icon: 📄
-        tip: 논문 PDF
-      - url: assets/images/humantech0.jpg
-        icon: 🖼️
-        tip: 사진 1
-      - url: assets/images/humantech1.jpg
-        icon: 🖼️
-        tip: 사진 2
-  - date: 2000. 11.
-    title: Feel KAIST 2000 논문 발표 컨테스트 – 영어부문 특별상
-    files: []
-  - date: 1997. 6.
-    title: 세계 마이크로로봇 축구 대회 '97 – S-MiroSot 부문 2위
-    files:
-      - url: assets/images/robot1.jpg
-        icon: 🖼️
-        tip: 로봇 사진
-      - url: assets/images/mirage1.jpg
-        icon: 🖼️
-        tip: MIRAGE 사진
-  - date: 1996. 11.
-    title: 세계 마이크로로봇 축구 대회 '96 – 공로상
-    files:
-      - url: assets/images/mirage3.jpg
-        icon: 🖼️
-        tip: MIRAGE 사진
-  - date: "1994"
-    title: 제 1회 IEEE 회로 경시대회 – 2학년 부문 1위 (<a href="http://www.ieee.org/">IEEE</a> <a href="http://www.kaist.ac.kr/">KAIST</a> Student branch 주최)
-    files: []
-  - date: 1992. 10.
-    title: 제 38회 <a href="http://www.science.go.kr/">전국과학전람회</a> 대통령상 – "격자에의해 생기는 물결무늬의 해석과 그 응용에 관한 연구"
-    files:
-      - url: assets/docs/moire.pdf
-        icon: 📄
-        tip: 논문 PDF
-  - date: "1992"
-    title: 제 4회 대전시 수학과학경시대회 – 물리부문 금상
-    files: []
-  - date: "1992"
-    title: 제 4회 전국 수학과학경시대회 – 물리부문 장려상
-    files: []
-  - date: "1990"
-    title: 제 1회 대전시 컴퓨터프로그래밍경진대회 – 금상
-    files: []
+- date: '2026'
+  title: Test award from NAS
+  files:
+  - url: https://example.com
+    icon: link
+    tip: test
+- date: 2023. 11.
+  title: 제8회 3D프린팅 BIZCON 경진대회 최우수상 – 특허청장상
+  files:
+  - url: assets/images/3DPrintingBizcon_2023.jpg
+    icon: 🖼️
+    tip: 수상 사진
+- date: 2023. 10.
+  title: 뿌리산업 발전 유공자 – 산업통상자원부장관 표창, <a href="https://www.motie.go.kr/">산업통상자원부</a>
+  files:
+  - url: assets/docs/PPURI_2023.pdf
+    icon: 📄
+    tip: 표창장 PDF
+- date: 2022. 11.
+  title: 2022 3D프린팅 활용 우수사례 경진대회 최우수상 – 과학기술정보통신부 장관상(삼영기계), <a href="https://www.msit.go.kr/index.do">과학기술정보통신부</a>
+  files:
+  - url: assets/docs/3DP_MSIT_2022.pdf
+    icon: 📄
+    tip: 상장 PDF
+  - url: http://amenews.kr/news/view.php?idx=51408
+    icon: 📰
+    tip: AM뉴스
+- date: 2022. 10.
+  title: 2022 한국의 산업을 이끈 산업기술성과 19선 선정(삼영기계), <a href="https://www.naek.or.kr/home_kr/index.asp">한국공학한림원</a>
+  files:
+  - url: https://news.mt.co.kr/mtview.php?no=2022101313052631515
+    icon: 📰
+    tip: 머니투데이
+  - url: https://biz.chosun.com/science-chosun/science/2022/10/12/XWDMWR3KQJA35IFMH3OPIQIOSU/?utm_source=naver&utm_medium=original&utm_campaign=biz
+    icon: 📰
+    tip: 조선비즈
+- date: 2022. 9.
+  title: 2022 전국뿌리기술경기대회(주조분야) – 중소벤처기업부 장관상(삼영기계), <a href="https://www.msit.go.kr/index.do">과학기술정보통신부</a>
+  files:
+  - url: assets/images/CastingTech_2022.jpg
+    icon: 🖼️
+    tip: 수상 사진
+  - url: http://amenews.kr/news/view.php?idx=50497
+    icon: 📰
+    tip: AM뉴스
+- date: 2021. 11.
+  title: 3D프린팅 산업발전 유공자 – 과학기술정보통신부장관 표창, <a href="https://www.msit.go.kr/index.do">과학기술정보통신부</a>
+  files:
+  - url: assets/docs/3DP_MSIT_2021.pdf
+    icon: 📄
+    tip: 표창장 PDF
+  - url: https://news.mt.co.kr/mtview.php?no=2021112410114019744
+    icon: 📰
+    tip: 머니투데이
+- date: 2021. 11.
+  title: 2021 3D프린팅 활용 우수사례 경진대회 – 우수상(삼영기계), <a href="https://www.nipa.kr/index.jsp">정보통신산업진흥원</a>
+  files:
+  - url: assets/docs/3DP_NIPA_2021.pdf
+    icon: 📄
+    tip: 상장 PDF
+- date: 2021. 10.
+  title: 뿌리산업 혁신과 3D프린팅 확산 공로 – 국회 과학기술정보방송통신위원회 위원장 표창, <a href="https://science.na.go.kr:444/science/index.do">과학기술정보방송통신위원회</a>
+  files:
+  - url: assets/docs/3DP_NationalAssembly_2021.pdf
+    icon: 📄
+    tip: 표창장 PDF
+  - url: assets/images/3DP_NationalAssembly_2021.jpg
+    icon: 🖼️
+    tip: 수상 사진
+- date: 2021. 9.
+  title: 2021 전국뿌리기술경기대회(주조분야) – 중소벤처기업부 장관상(삼영기계), <a href="https://www.mss.go.kr/site/smba/main.do">중소벤처기업부</a>
+  files:
+  - url: assets/images/CastingTech_2021.jpg
+    icon: 🖼️
+    tip: 수상 사진
+  - url: https://news.mt.co.kr/mtview.php?no=2021110112384013589
+    icon: 📰
+    tip: 머니투데이
+- date: 2020. 12.
+  title: 3D프린팅 경진대회(Innovation Challenge) 최우수상 – 과학기술정보통신부 장관상(삼영기계), <a href="https://www.msit.go.kr/index.do">과학기술정보통신부</a>
+  files:
+  - url: assets/docs/3DP_NIPA_2020.pdf
+    icon: 📄
+    tip: 상장 PDF
+  - url: http://amenews.kr/news/view.php?idx=43860
+    icon: 📰
+    tip: AM뉴스
+- date: 2020. 11.
+  title: 한국정밀공학회 2020 통합학술대회 – 최우수논문상, <a href="http://www.kspe.or.kr/">한국정밀공학회</a>
+  files:
+  - url: assets/docs/BestPaperAward_KSPE2020.pdf
+    icon: 📄
+    tip: 상장 PDF
+- date: 2020. 9.
+  title: 제4회 DfAM 경진대회 – 동상, <a href="http://www.kamug.or.kr/index.php?theme=KAMUG">한국3D프린팅사용자협회</a>
+  files:
+  - url: assets/docs/DfAM_prize_2020.pdf
+    icon: 📄
+    tip: 상장 PDF
+- date: 2019. 12.
+  title: 대한민국 기술사업화대전 – 기술사업화부문 산업통상자원부장관 표창, <a href="http://www.motie.go.kr/www/main.do">산업통상자원부</a>
+  files:
+  - url: assets/docs/Minister_Award_201912.pdf
+    icon: 📄
+    tip: 표창장 PDF
+  - url: assets/images/20191212_award.jpg
+    icon: 🖼️
+    tip: 수상 사진
+  - url: http://www.joongdo.co.kr/main/view.php?key=20191213010005855
+    icon: 📰
+    tip: 중도일보
+- date: 2019. 9.
+  title: 전국주조기술경기대회 단체전(삼영기계) 1위 – 국무총리상 수상
+  files:
+  - url: assets/docs/CastingTech_2019.pdf
+    icon: 📄
+    tip: 상장 PDF
+- date: 2017. 12.
+  title: 대한민국 3D프린팅 산업발전 대상 유공자 – 정보통신산업진흥원장 표창, <a href="http://www.nipa.kr/main.html">정보통신산업진흥원</a>
+  files:
+  - url: assets/docs/3DP_NIPA_2017.pdf
+    icon: 📄
+    tip: 표창장 PDF
+- date: 2017. 09.
+  title: 도전 K-스타트업 본선진출 – 100팀
+  files: []
+- date: 2017. 07.
+  title: 대한민국 창업대전 지역예선 – 최우수상
+  files:
+  - url: assets/docs/LUMOS_award_2017.pdf
+    icon: 📄
+    tip: 상장 PDF
+- date: 2015. 06.
+  title: 품질경영 유공자 도지사상
+  files:
+  - url: assets/docs/QM_award_201506.pdf
+    icon: 📄
+    tip: 상장 PDF
+- date: 2010. 11.
+  title: '삼성논문상 2010 – 은상, 삼성 – "Touch-and-Link: Inter-Device Interaction Associating
+    Touched Points" (김학준, 한상준, 은동진, 이택헌, 홍승환, 한국현, 강성훈)'
+  files: []
+- date: 2007. 11.
+  title: SW Day 우수 과제 출품 전시회 – 금상, 삼성전자 DM총괄
+  files: []
+- date: 2005. 1.
+  title: SW논문발표회 – 최우수논문상, 삼성전자 디지털미디어 연구소 – "Quantum-inspired Evolutionary Algorithms
+    for a Class of Combinatorial and Numerical Optimization Problems"
+  files: []
+- date: 2003. 2.
+  title: 제 9회 삼성 휴먼테크논문대상 – 금상 – "2상 양자 진화 알고리즘"
+  files:
+  - url: assets/docs/TPQEA_Humantech2002.pdf
+    icon: 📄
+    tip: 논문 PDF
+  - url: assets/images/humantech_9th_1.jpg
+    icon: 🖼️
+    tip: 사진 1
+  - url: assets/images/humantech_9th_2.jpg
+    icon: 🖼️
+    tip: 사진 2
+- date: 2001. 8.
+  title: <a href="http://www.fira.net/">FIRA</a> Cup China 2001 – Middle League MiroSot
+    부문 2위
+  files:
+  - url: assets/images/soty5.jpg
+    icon: 🖼️
+    tip: SOTY5 사진
+  - url: assets/images/simulator1.bmp
+    icon: 🖼️
+    tip: 시뮬레이터
+  - url: assets/images/fira2001.jpg
+    icon: 🖼️
+    tip: FIRA 2001
+- date: 2001. 5.
+  title: FIRA-KAIST Cup 2001 – Small League MiroSot 부문 1위
+  files: []
+- date: 2001. 2.
+  title: 제 7회 삼성 휴먼테크논문대상 – 동상 – "양자 진화 알고리즘"
+  files:
+  - url: assets/docs/Humantech2000S.pdf
+    icon: 📄
+    tip: 논문 PDF
+  - url: assets/images/humantech0.jpg
+    icon: 🖼️
+    tip: 사진 1
+  - url: assets/images/humantech1.jpg
+    icon: 🖼️
+    tip: 사진 2
+- date: 2000. 11.
+  title: Feel KAIST 2000 논문 발표 컨테스트 – 영어부문 특별상
+  files: []
+- date: 1997. 6.
+  title: 세계 마이크로로봇 축구 대회 '97 – S-MiroSot 부문 2위
+  files:
+  - url: assets/images/robot1.jpg
+    icon: 🖼️
+    tip: 로봇 사진
+  - url: assets/images/mirage1.jpg
+    icon: 🖼️
+    tip: MIRAGE 사진
+- date: 1996. 11.
+  title: 세계 마이크로로봇 축구 대회 '96 – 공로상
+  files:
+  - url: assets/images/mirage3.jpg
+    icon: 🖼️
+    tip: MIRAGE 사진
+- date: '1994'
+  title: 제 1회 IEEE 회로 경시대회 – 2학년 부문 1위 (<a href="http://www.ieee.org/">IEEE</a> <a
+    href="http://www.kaist.ac.kr/">KAIST</a> Student branch 주최)
+  files: []
+- date: 1992. 10.
+  title: 제 38회 <a href="http://www.science.go.kr/">전국과학전람회</a> 대통령상 – "격자에의해 생기는 물결무늬의
+    해석과 그 응용에 관한 연구"
+  files:
+  - url: assets/docs/moire.pdf
+    icon: 📄
+    tip: 논문 PDF
+- date: '1992'
+  title: 제 4회 대전시 수학과학경시대회 – 물리부문 금상
+  files: []
+- date: '1992'
+  title: 제 4회 전국 수학과학경시대회 – 물리부문 장려상
+  files: []
+- date: '1990'
+  title: 제 1회 대전시 컴퓨터프로그래밍경진대회 – 금상
+  files: []
