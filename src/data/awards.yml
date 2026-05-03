@@ -9,24 +9,6 @@ awards:
     icon: 🖼️
     tip: 수상 사진
 - date: 2024. 9.
-  title: 방산혁신기업100 선정, <a href="https://www.dapa.go.kr/">방위사업청</a>
-  files:
-  - url: assets/docs/20260503_DefenceInno100a_faef24.pdf
-    icon: 📄
-    tip: 선정서
-  - url: assets/images/20260503_DefenceInno100c_f4b240.jpg
-    icon: 🖼️
-    tip: 수여식 사진
-- date: 2025. 9.
-  title: 2025 전국뿌리기술경기대회 1위 – 대통령상(삼영기계)
-  files:
-  - url: assets/images/20260503_CastingTech_2025a_f7e526.jpg
-    icon: 🖼️
-    tip: 상장
-  - url: assets/images/20260503_CastingTech_2025c_9fae91.jpg
-    icon: 🖼️
-    tip: 수상 사진
-- date: 2024. 9.
   title: 2024 전국뿌리기술경기대회(주조분야) – 대상 / 국무총리상(삼영기계)
   files:
   - url: assets/images/CastingTech_2024a.jpg
@@ -35,6 +17,15 @@ awards:
   - url: assets/images/CastingTech_2024c.jpg
     icon: 🖼️
     tip: 수상 사진
+- date: 2024. 9.
+  title: 방산혁신기업100 선정, <a href="https://www.dapa.go.kr/">방위사업청</a>
+  files:
+  - url: assets/docs/20260503_DefenceInno100a_faef24.pdf
+    icon: 📄
+    tip: 선정서
+  - url: assets/images/20260503_DefenceInno100c_f4b240.jpg
+    icon: 🖼️
+    tip: 수여식 사진
 - date: 2023. 11.
   title: 제8회 3D프린팅 BIZCON 경진대회 최우수상 – 특허청장상
   files:
