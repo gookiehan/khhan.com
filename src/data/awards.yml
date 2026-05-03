@@ -8,6 +8,15 @@ awards:
   - url: assets/images/CastingTech_2024c.jpg
     icon: 🖼️
     tip: 수상 사진
+- date: 2024. 9.
+  title: 2024 전국뿌리기술경기대회(주조분야) – 대상 / 국무총리상(삼영기계)
+  files:
+  - url: assets/images/CastingTech_2024a.jpg
+    icon: 🖼️
+    tip: 상장
+  - url: assets/images/CastingTech_2024c.jpg
+    icon: 🖼️
+    tip: 수상 사진
 - date: 2023. 11.
   title: 제8회 3D프린팅 BIZCON 경진대회 최우수상 – 특허청장상
   files:
