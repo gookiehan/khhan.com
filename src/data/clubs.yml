@@ -4,6 +4,8 @@ clubs:
   desc: MIRAGE I 로봇 시스템 설계 및 제작, 세계 마이크로로봇 축구 대회 참가
   files:
   - url: assets/images/mirage1.jpg
+    icon: 🖼️
     tip: MIRAGE 사진
   - url: assets/images/robot1.jpg
+    icon: 🖼️
     tip: 로봇 사진
