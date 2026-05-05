@@ -95,21 +95,21 @@ const boardItems = activities.board.map((b) => ({
   period: b.period,
   titleHtml: b.title,
   descHtml: '',
-  files: [],
+  files: b.files ?? [],
 }));
 
 const committeeItems = activities.committee.map((c) => ({
   period: c.period,
   titleHtml: c.title,
   descHtml: '',
-  files: [],
+  files: c.files ?? [],
 }));
 
 const standardizationItems = activities.standardization.map((s) => ({
   period: s.period,
   titleHtml: s.title,
   descHtml: '',
-  files: [],
+  files: s.files ?? [],
 }));
 
 const talksItems = activities.invitedTalks.map((t) => ({
@@ -123,14 +123,14 @@ const teachingItems = activities.teaching.map((t) => ({
   period: t.date,
   titleHtml: t.title,
   descHtml: '',
-  files: [],
+  files: t.files ?? [],
 }));
 
 const judgesItems = activities.judges.map((j) => ({
   period: j.period,
   titleHtml: j.title,
   descHtml: '',
-  files: [],
+  files: j.files ?? [],
 }));
 
 const taItems = taActivities.map((t) => ({
@@ -144,7 +144,7 @@ const clubsItems = clubs.map((c) => ({
   period: '',
   titleHtml: c.title,
   descHtml: c.desc,
-  files: [],
+  files: c.files ?? [],
 }));
 ---
 
