@@ -51,23 +51,39 @@ function escapeHtml(value: string) {
     <ListSection items={standardizationItems} />
   </div>
   <h3>초청강연</h3>
-  <button class="collapse-btn" data-target="talks-list">초청강연 펼치기 / 접기</button>
-  <div id="talks-list" class="collapsible">
-    <ListSection items={talksItems} />
-  </div>
+  {talksItems.length > 0 && (
+    <>
+      <button class="collapse-btn" data-target="talks-list">초청강연 펼치기 / 접기</button>
+      <div id="talks-list" class="collapsible">
+        <ListSection items={talksItems} />
+      </div>
+    </>
+  )}
   <h3>강의</h3>
-  <button class="collapse-btn" data-target="teaching-list">강의 펼치기 / 접기</button>
-  <div id="teaching-list" class="collapsible">
-    <ListSection items={teachingItems} />
-  </div>
+  {teachingItems.length > 0 && (
+    <>
+      <button class="collapse-btn" data-target="teaching-list">강의 펼치기 / 접기</button>
+      <div id="teaching-list" class="collapsible">
+        <ListSection items={teachingItems} />
+      </div>
+    </>
+  )}
   <h3>심사위원</h3>
-  <button class="collapse-btn" data-target="judges-list">심사위원 펼치기 / 접기</button>
-  <div id="judges-list" class="collapsible">
-    <ListSection items={judgesItems} />
-  </div>
+  {judgesItems.length > 0 && (
+    <>
+      <button class="collapse-btn" data-target="judges-list">심사위원 펼치기 / 접기</button>
+      <div id="judges-list" class="collapsible">
+        <ListSection items={judgesItems} />
+      </div>
+    </>
+  )}
   <h3>저널 리뷰어</h3>
-  <button class="collapse-btn" data-target="reviewers-wrapper">저널 리뷰어 펼치기 / 접기</button>
-  <div id="reviewers-wrapper" class="collapsible">
-    <ul id="reviewers-list" class="simple-list" set:html={reviewers.map((r) => `<li>${escapeHtml(r)}</li>`).join('')}></ul>
-  </div>
+  {reviewers.length > 0 && (
+    <>
+      <button class="collapse-btn" data-target="reviewers-wrapper">저널 리뷰어 펼치기 / 접기</button>
+      <div id="reviewers-wrapper" class="collapsible">
+        <ul id="reviewers-list" class="simple-list" set:html={reviewers.map((r) => `<li>${escapeHtml(r)}</li>`).join('')}></ul>
+      </div>
+    </>
+  )}
 </section>

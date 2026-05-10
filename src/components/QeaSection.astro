@@ -38,15 +38,19 @@ const { qeaAbstract, qeaThesis, qeaJournals, qeaConferences, qeaDomestic, qeaPat
     ))}
   </div>
   <h3>International Conference Papers (QEA)</h3>
-  <button class="collapse-btn" data-target="qea-conferences">QEA Conference Papers 펼치기 / 접기</button>
-  <div id="qea-conferences" class="collapsible">
-    {qeaConferences.map((p) => (
-      <div class="item">
-        <div class="title" set:html={p.citation}></div>
-        <FileLinks files={p.files} />
+  {qeaConferences.length > 0 && (
+    <>
+      <button class="collapse-btn" data-target="qea-conferences">QEA Conference Papers 펼치기 / 접기</button>
+      <div id="qea-conferences" class="collapsible">
+        {qeaConferences.map((p) => (
+          <div class="item">
+            <div class="title" set:html={p.citation}></div>
+            <FileLinks files={p.files} />
+          </div>
+        ))}
       </div>
-    ))}
-  </div>
+    </>
+  )}
   <h3>Domestic Conference Paper (QEA)</h3>
   <div id="qea-domestic">
     {qeaDomestic.map((p) => (
