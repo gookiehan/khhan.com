@@ -65,7 +65,7 @@ function escapeHtml(value) {
 
 const educationItems = education.map((e) => ({
   period: e.period,
-  titleHtml: `${e.title}, <a href="${e.orgUrl}" target="_blank">${e.org}</a>`,
+  titleHtml: `${e.title}, <a href="${e.orgUrl}" target="_blank" rel="noopener noreferrer">${e.org}</a>`,
   descHtml: e.desc,
   files: e.files,
 }));
