@@ -100,14 +100,10 @@ footer { text-align: center; padding: 2rem 1rem; color: var(--muted); font-size:
 
 /* QEA Abstract */
 .qea-abstract {
-  background: var(--card);
-  border-left: 3px solid var(--accent);
-  border-radius: var(--radius);
-  padding: 1rem 1.2rem;
-  margin-bottom: 1rem;
   font-size: .92rem;
   line-height: 1.8;
-  color: var(--text);
+  color: var(--muted);
+  margin-bottom: 1.2rem;
 }
 
 /* ── QEA BIBLIOGRAPHY (matches Publications) ── */
