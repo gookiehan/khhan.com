@@ -31,7 +31,7 @@ nav .brand { font-weight: 700; color: var(--accent); font-size: 1rem; margin-rig
 .hero-text { flex: 1; min-width: 0; }
 .hero-photo-wrap { flex-shrink: 0; padding-top: .2rem; }
 .hero-photo { display: block; width: 120px; height: auto; border-radius: 20px; box-shadow: 0 10px 24px rgba(0,0,0,.32), 0 0 0 1px rgba(79,195,247,.1); }
-.hero-tagline { font-size: .82rem; color: #606c7d; letter-spacing: .04em; margin-top: .3rem; margin-bottom: .65rem; }
+.hero-tagline { font-size: .82rem; color: #8a96a8; letter-spacing: .04em; margin-top: .3rem; margin-bottom: .65rem; }
 
 /* ── SECTION ── */
 section { max-width: 920px; margin: 0 auto 2.5rem; padding: 0 1.2rem; scroll-margin-top: 4rem; }
@@ -379,3 +379,7 @@ footer { text-align: center; padding: 2rem 1rem; color: var(--muted); font-size:
   #ta-list .item { display: block; padding: .65rem 0; }
   #ta-list .item .period { margin-bottom: .15rem; }
 }
+
+/* ── FOCUS VISIBLE (keyboard navigation) ── */
+nav a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 3px; }
+.collapse-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }

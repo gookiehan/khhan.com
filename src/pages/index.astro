@@ -182,10 +182,10 @@ const clubsItems = clubs.map((c) => ({
         <div class="hero-text">
           <h1>한국현 (Kuk-Hyun Han, Ph.D.)</h1>
           <p class="hero-tagline">공학자 · 연구자 · 기업인</p>
-          <p><a href="https://www.sym.co.kr" target="_blank" style="color:#4fc3f7;">삼영기계</a> 사장·연구소장 &nbsp;|&nbsp; 순천향대학교 겸임교수
+          <p><a href="https://www.sym.co.kr" target="_blank" rel="noopener noreferrer" style="color:#4fc3f7;">삼영기계</a> 사장·연구소장 &nbsp;|&nbsp; 순천향대학교 겸임교수
             &nbsp;|&nbsp; 한국주조공학회 부회장 &nbsp;|&nbsp; 한국정밀공학회 이사</p>
           <p style="margin-top:.5rem;">
-            <a href={scholarUrl} target="_blank" style="color:#4fc3f7;">Google Scholar</a>
+            <a href={scholarUrl} target="_blank" rel="noopener noreferrer" style="color:#4fc3f7;">Google Scholar</a>
           </p>
         </div>
         <div class="hero-photo-wrap">
@@ -221,10 +221,14 @@ const clubsItems = clubs.map((c) => ({
       <div id="featured-projects">
         <ListSection items={projectsItems.slice(0, 3)} />
       </div>
-      <button class="collapse-btn" data-target="projects-list">이전 연구과제 펼치기 / 접기</button>
-      <div id="projects-list" class="collapsible">
-        <ListSection items={projectsItems.slice(3)} />
-      </div>
+      {projectsItems.length > 3 && (
+        <>
+          <button class="collapse-btn" data-target="projects-list">이전 연구과제 펼치기 / 접기</button>
+          <div id="projects-list" class="collapsible">
+            <ListSection items={projectsItems.slice(3)} />
+          </div>
+        </>
+      )}
     </section>
 
     <QeaSection
@@ -265,30 +269,38 @@ const clubsItems = clubs.map((c) => ({
     <section id="patents">
       <h2>특허 (Patents)</h2>
       <p id="patent-note">{patentNote}</p>
-      <div id="patent-buttons" class="patent-btns" set:html={patentSearchUrls.map((p) => `<a href="${escapeHtml(p.url)}" target="_blank">${escapeHtml(p.label)}</a>`).join('')}></div>
+      <div id="patent-buttons" class="patent-btns" set:html={patentSearchUrls.map((p) => `<a href="${escapeHtml(p.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(p.label)}</a>`).join('')}></div>
     </section>
 
     <!-- Honors (collapsible) -->
     <section id="honors">
       <h2>Honors</h2>
-      <button class="collapse-btn" data-target="honors-list">Honors 펼치기 / 접기</button>
-      <div id="honors-list" class="collapsible">
-        {honors.map((h) => (
-          <div class="item">
-            <div class="title" set:html={h.title}></div>
-            <FileLinks files={h.files} />
+      {honors.length > 0 && (
+        <>
+          <button class="collapse-btn" data-target="honors-list">Honors 펼치기 / 접기</button>
+          <div id="honors-list" class="collapsible">
+            {honors.map((h) => (
+              <div class="item">
+                <div class="title" set:html={h.title}></div>
+                <FileLinks files={h.files} />
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
+        </>
+      )}
     </section>
 
     <!-- TA activities (collapsible) -->
     <section id="ta">
       <h2>조교활동</h2>
-      <button class="collapse-btn" data-target="ta-list">조교활동 펼치기 / 접기</button>
-      <div id="ta-list" class="collapsible">
-        <ListSection items={taItems} />
-      </div>
+      {taItems.length > 0 && (
+        <>
+          <button class="collapse-btn" data-target="ta-list">조교활동 펼치기 / 접기</button>
+          <div id="ta-list" class="collapsible">
+            <ListSection items={taItems} />
+          </div>
+        </>
+      )}
     </section>
 
     <section id="clubs">
@@ -301,10 +313,10 @@ const clubsItems = clubs.map((c) => ({
     <!-- Contact / Links -->
     <section id="contact">
       <h2>링크</h2>
-      <p><a href="http://www.sym.co.kr/" target="_blank" style="color:var(--accent);">삼영기계(주)</a> &nbsp;|&nbsp; <a
-          href="http://lumoscandle.com/" target="_blank" style="color:var(--accent);">루모스캔들(주)</a> &nbsp;|&nbsp; <a
-          href="https://brunch.co.kr/@breakthrough" target="_blank" style="color:var(--accent);">브런치</a> &nbsp;|&nbsp; <a
-          href="https://www.facebook.com/kukhyun.han" target="_blank" style="color:var(--accent);">Facebook</a></p>
+      <p><a href="http://www.sym.co.kr/" target="_blank" rel="noopener noreferrer" style="color:var(--accent);">삼영기계(주)</a> &nbsp;|&nbsp; <a
+          href="http://lumoscandle.com/" target="_blank" rel="noopener noreferrer" style="color:var(--accent);">루모스캔들(주)</a> &nbsp;|&nbsp; <a
+          href="https://brunch.co.kr/@breakthrough" target="_blank" rel="noopener noreferrer" style="color:var(--accent);">브런치</a> &nbsp;|&nbsp; <a
+          href="https://www.facebook.com/kukhyun.han" target="_blank" rel="noopener noreferrer" style="color:var(--accent);">Facebook</a></p>
     </section>
 
     <footer>© 2026 한국현 (Kuk-Hyun Han). All rights reserved.</footer>

@@ -4,3 +4,4 @@ dist/
 public/assets/
 public/data.js
 public/style.css
+.claude/settings.local.json
