@@ -37,35 +37,47 @@ const { phdThesis, intlJournals, intlConferences, domesticPapers, magazineArticl
     ))}
   </div>
   <h3>International Conference Papers</h3>
-  <button class="collapse-btn" data-target="intl-conf-list">International Conference Papers 펼치기 / 접기</button>
-  <div id="intl-conf-list" class="collapsible">
-    {intlConferences.map((p) => (
-      <div class="item">
-        <div class="title" set:html={p.citation}></div>
-        <FileLinks files={p.files} />
+  {intlConferences.length > 0 && (
+    <>
+      <button class="collapse-btn" data-target="intl-conf-list">International Conference Papers 펼치기 / 접기</button>
+      <div id="intl-conf-list" class="collapsible">
+        {intlConferences.map((p) => (
+          <div class="item">
+            <div class="title" set:html={p.citation}></div>
+            <FileLinks files={p.files} />
+          </div>
+        ))}
       </div>
-    ))}
-  </div>
+    </>
+  )}
   <h3>Domestic Conference & Journal Papers</h3>
-  <button class="collapse-btn" data-target="domestic-list">Domestic Papers 펼치기 / 접기</button>
-  <div id="domestic-list" class="collapsible">
-    {domesticPapers.map((p) => (
-      <div class="item">
-        <div class="title" set:html={p.citation}></div>
-        <FileLinks files={p.files} />
+  {domesticPapers.length > 0 && (
+    <>
+      <button class="collapse-btn" data-target="domestic-list">Domestic Papers 펼치기 / 접기</button>
+      <div id="domestic-list" class="collapsible">
+        {domesticPapers.map((p) => (
+          <div class="item">
+            <div class="title" set:html={p.citation}></div>
+            <FileLinks files={p.files} />
+          </div>
+        ))}
       </div>
-    ))}
-  </div>
+    </>
+  )}
   <h3>Magazine Articles</h3>
-  <button class="collapse-btn" data-target="magazine-list">Magazine Articles 펼치기 / 접기</button>
-  <div id="magazine-list" class="collapsible">
-    {magazineArticles.map((p) => (
-      <div class="item">
-        <div class="title" set:html={p.citation}></div>
-        <FileLinks files={p.files} />
+  {magazineArticles.length > 0 && (
+    <>
+      <button class="collapse-btn" data-target="magazine-list">Magazine Articles 펼치기 / 접기</button>
+      <div id="magazine-list" class="collapsible">
+        {magazineArticles.map((p) => (
+          <div class="item">
+            <div class="title" set:html={p.citation}></div>
+            <FileLinks files={p.files} />
+          </div>
+        ))}
       </div>
-    ))}
-  </div>
+    </>
+  )}
   <h3>Books</h3>
   <div id="books-list">
     {books.map((p) => (
