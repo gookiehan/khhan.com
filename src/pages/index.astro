@@ -178,12 +178,27 @@ const clubsItems = clubs.map((c) => ({
 
     <!-- HERO -->
     <div class="hero">
-      <h1>한국현 (Kuk-Hyun Han, Ph.D.)</h1>
-      <p><a href="https://www.sym.co.kr" target="_blank" style="color:#4fc3f7;">삼영기계</a> 사장·연구소장 &nbsp;|&nbsp; 순천향대학교 겸임교수
-        &nbsp;|&nbsp; 한국주조공학회 부회장 &nbsp;|&nbsp; 한국정밀공학회 이사</p>
-      <p style="margin-top:.5rem;">
-        <a href={scholarUrl} target="_blank" style="color:#4fc3f7;">Google Scholar</a>
-      </p>
+      <div class="hero-inner">
+        <div class="hero-text">
+          <h1>한국현 (Kuk-Hyun Han, Ph.D.)</h1>
+          <p class="hero-tagline">공학자 · 연구자 · 기업인</p>
+          <p><a href="https://www.sym.co.kr" target="_blank" style="color:#4fc3f7;">삼영기계</a> 사장·연구소장 &nbsp;|&nbsp; 순천향대학교 겸임교수
+            &nbsp;|&nbsp; 한국주조공학회 부회장 &nbsp;|&nbsp; 한국정밀공학회 이사</p>
+          <p style="margin-top:.5rem;">
+            <a href={scholarUrl} target="_blank" style="color:#4fc3f7;">Google Scholar</a>
+          </p>
+        </div>
+        <div class="hero-photo-wrap">
+          <img
+            class="hero-photo"
+            src="/assets/images/profile.jpg"
+            alt="한국현 (Kuk-Hyun Han)"
+            width="120"
+            height="152"
+            loading="eager"
+          />
+        </div>
+      </div>
     </div>
 
     <!-- SECTIONS -->
@@ -203,9 +218,12 @@ const clubsItems = clubs.map((c) => ({
       <h3>관심분야</h3>
       <div id="interest-tags" class="tags" set:html={researchInterests.map((t) => `<span class="tag">${escapeHtml(t)}</span>`).join('')}></div>
       <h3>주요 연구과제 (프로젝트)</h3>
-      <button class="collapse-btn" data-target="projects-list">연구과제 펼치기 / 접기</button>
+      <div id="featured-projects">
+        <ListSection items={projectsItems.slice(0, 3)} />
+      </div>
+      <button class="collapse-btn" data-target="projects-list">이전 연구과제 펼치기 / 접기</button>
       <div id="projects-list" class="collapsible">
-        <ListSection items={projectsItems} />
+        <ListSection items={projectsItems.slice(3)} />
       </div>
     </section>
 
@@ -250,7 +268,7 @@ const clubsItems = clubs.map((c) => ({
       <div id="patent-buttons" class="patent-btns" set:html={patentSearchUrls.map((p) => `<a href="${escapeHtml(p.url)}" target="_blank">${escapeHtml(p.label)}</a>`).join('')}></div>
     </section>
 
-    <!-- ??Honors: ?묒씠?앹쑝濡?蹂寃?-->
+    <!-- Honors (collapsible) -->
     <section id="honors">
       <h2>Honors</h2>
       <button class="collapse-btn" data-target="honors-list">Honors 펼치기 / 접기</button>
@@ -264,7 +282,7 @@ const clubsItems = clubs.map((c) => ({
       </div>
     </section>
 
-    <!-- ??議곌탳?쒕룞: ?묒씠?앹쑝濡?蹂寃?-->
+    <!-- TA activities (collapsible) -->
     <section id="ta">
       <h2>조교활동</h2>
       <button class="collapse-btn" data-target="ta-list">조교활동 펼치기 / 접기</button>
@@ -280,7 +298,7 @@ const clubsItems = clubs.map((c) => ({
       </div>
     </section>
 
-    <!-- ??Contact: ?대찓????젣 -->
+    <!-- Contact / Links -->
     <section id="contact">
       <h2>링크</h2>
       <p><a href="http://www.sym.co.kr/" target="_blank" style="color:var(--accent);">삼영기계(주)</a> &nbsp;|&nbsp; <a
