@@ -31,7 +31,14 @@ npm run dev
 - TA: `src/data/ta.yml`
 - 동아리: `src/data/clubs.yml`
 
-참고: `?edit` 레거시 editor는 제거되었습니다. 콘텐츠 수정은 `src/data/*.yml`에서 진행해야 합니다.
+참고: `?edit` 레거시 editor는 제거되었습니다. 콘텐츠 수정은 `src/data/*.yml`에서 직접 진행하거나, 아래 `/admin` 페이지를 사용합니다.
+
+### 3-1) `/admin` 페이지로 수정하기
+
+- 경로: `khhan.com/admin` (정적 페이지, 서버 없음)
+- 이 저장소에만 `Contents: Read and write` 권한을 부여한 GitHub fine-grained PAT를 발급해 입력합니다(만료 기간은 짧게 설정 권장).
+- 토큰은 브라우저 탭의 `sessionStorage`에만 저장되고, 모든 요청은 브라우저에서 GitHub API로 직접 전송됩니다(별도 서버 없음).
+- 파일을 불러와 수정한 뒤 저장하면 `main`에 바로 반영되지 않고 새 브랜치 + Pull Request가 생성됩니다. 실제 배포는 PR을 검토하고 병합해야 이루어집니다.
 
 ## 4) 새 논문 추가 방법
 

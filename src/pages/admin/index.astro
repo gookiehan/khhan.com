@@ -1,0 +1,300 @@
+---
+// Static, client-only admin page. No server-side code runs here or at
+// build time beyond emitting this HTML shell — all GitHub access happens
+// directly from the visitor's browser using a token they supply themselves.
+const REPO_OWNER = 'gookiehan';
+const REPO_NAME = 'khhan.com';
+const BASE_BRANCH = 'main';
+
+const DATA_FILES = [
+  'profile.yml',
+  'qea.yml',
+  'education.yml',
+  'career.yml',
+  'research.yml',
+  'awards.yml',
+  'activities.yml',
+  'publications.yml',
+  'patents.yml',
+  'honors.yml',
+  'ta.yml',
+  'clubs.yml',
+];
+---
+
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>khhan.com 콘텐츠 관리</title>
+    <link rel="stylesheet" href="/style.css" />
+    <style>
+      body { padding: 2rem 1.2rem 4rem; max-width: 860px; margin: 0 auto; }
+      h1 { color: #fff; font-size: 1.4rem; margin-bottom: .3rem; }
+      .notice { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1rem 1.2rem; margin: 1.2rem 0; font-size: .88rem; color: var(--muted); }
+      .notice ul { margin: .5rem 0 0 1.1rem; }
+      .card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.2rem; margin-bottom: 1.2rem; }
+      label { display: block; font-size: .85rem; color: var(--muted); margin-bottom: .3rem; }
+      input[type="password"], input[type="text"], select, textarea {
+        width: 100%; background: var(--bg); color: var(--text); border: 1px solid var(--border);
+        border-radius: 6px; padding: .55rem .7rem; font-size: .85rem; font-family: inherit;
+      }
+      textarea { min-height: 380px; font-family: ui-monospace, monospace; white-space: pre; }
+      .row { display: flex; gap: .8rem; margin-bottom: .9rem; flex-wrap: wrap; }
+      .row > div { flex: 1; min-width: 200px; }
+      button { background: var(--accent); color: #05202b; border: none; border-radius: 6px; padding: .55rem 1rem; font-weight: 700; cursor: pointer; font-size: .85rem; }
+      button.secondary { background: transparent; color: var(--accent); border: 1px solid var(--accent); }
+      button:disabled { opacity: .5; cursor: not-allowed; }
+      .status { margin-top: .8rem; font-size: .85rem; white-space: pre-wrap; }
+      .status.error { color: #ff8a80; }
+      .status.ok { color: #a5d6a7; }
+      a.pr-link { color: var(--accent); }
+    </style>
+  </head>
+  <body>
+    <h1>khhan.com 콘텐츠 관리</h1>
+    <p style="color:var(--muted); font-size:.9rem;">src/data/*.yml 파일을 편집해 GitHub에 PR을 생성합니다. main에는 직접 반영되지 않습니다.</p>
+
+    <div class="notice">
+      <strong>사용 전 확인</strong>
+      <ul>
+        <li>GitHub → Settings → Developer settings → Fine-grained personal access token 발급 시, <strong>이 저장소({REPO_OWNER}/{REPO_NAME})</strong> 하나만 선택하고 권한은 <strong>Contents: Read and write</strong>만 부여하세요.</li>
+        <li>만료 기간을 짧게(예: 7~30일) 설정하세요.</li>
+        <li>토큰은 이 브라우저 탭의 메모리(sessionStorage)에만 저장되며, 탭을 닫으면 사라집니다. 서버로 전송되지 않고 GitHub API로만 직접 전송됩니다.</li>
+        <li>저장 시 바로 main에 반영되지 않고 새 브랜치 + Pull Request로 생성됩니다. 실제 배포는 PR을 검토 후 병합해야 이루어집니다.</li>
+        <li>공용 PC나 신뢰할 수 없는 브라우저 확장 프로그램이 있는 환경에서는 사용하지 마세요.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <label for="pat">GitHub Personal Access Token</label>
+      <input id="pat" type="password" placeholder="github_pat_..." autocomplete="off" />
+      <div class="row" style="margin-top:.6rem;">
+        <button id="save-token" type="button">토큰 저장 (이 탭에서만)</button>
+        <button id="clear-token" type="button" class="secondary">토큰 지우기</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="row">
+        <div>
+          <label for="file-select">수정할 파일</label>
+          <select id="file-select">
+            {DATA_FILES.map((f) => <option value={f}>{f}</option>)}
+          </select>
+        </div>
+        <div style="flex:0 0 auto; align-self:flex-end;">
+          <button id="load-file" type="button">불러오기</button>
+        </div>
+      </div>
+
+      <label for="editor">내용 (YAML)</label>
+      <textarea id="editor" spellcheck="false" disabled placeholder="먼저 토큰을 저장하고 파일을 불러오세요."></textarea>
+
+      <div class="row" style="margin-top:.9rem;">
+        <div>
+          <label for="commit-message">커밋 메시지</label>
+          <input id="commit-message" type="text" placeholder="content: update publications" />
+        </div>
+      </div>
+
+      <button id="create-pr" type="button" disabled>PR 생성</button>
+      <div id="status" class="status"></div>
+    </div>
+
+    <script>
+      import yaml from 'js-yaml';
+
+      const REPO_OWNER = 'gookiehan';
+      const REPO_NAME = 'khhan.com';
+      const BASE_BRANCH = 'main';
+      const API_ROOT = 'https://api.github.com';
+
+      const patInput = document.getElementById('pat');
+      const saveTokenBtn = document.getElementById('save-token');
+      const clearTokenBtn = document.getElementById('clear-token');
+      const fileSelect = document.getElementById('file-select');
+      const loadFileBtn = document.getElementById('load-file');
+      const editor = document.getElementById('editor');
+      const commitMessageInput = document.getElementById('commit-message');
+      const createPrBtn = document.getElementById('create-pr');
+      const statusEl = document.getElementById('status');
+
+      let currentFileSha = null;
+      let currentFilePath = null;
+
+      function setStatus(message, kind) {
+        statusEl.textContent = message;
+        statusEl.className = 'status' + (kind ? ' ' + kind : '');
+      }
+
+      function getToken() {
+        return sessionStorage.getItem('khhan_admin_pat') || '';
+      }
+
+      function refreshEnabledState() {
+        const hasToken = !!getToken();
+        loadFileBtn.disabled = !hasToken;
+        if (!hasToken) {
+          editor.disabled = true;
+          createPrBtn.disabled = true;
+        }
+      }
+
+      saveTokenBtn.addEventListener('click', () => {
+        const value = patInput.value.trim();
+        if (!value) {
+          setStatus('토큰을 입력하세요.', 'error');
+          return;
+        }
+        sessionStorage.setItem('khhan_admin_pat', value);
+        patInput.value = '';
+        setStatus('토큰이 이 탭 세션에 저장되었습니다.', 'ok');
+        refreshEnabledState();
+      });
+
+      clearTokenBtn.addEventListener('click', () => {
+        sessionStorage.removeItem('khhan_admin_pat');
+        editor.value = '';
+        currentFileSha = null;
+        currentFilePath = null;
+        setStatus('토큰을 지웠습니다.', 'ok');
+        refreshEnabledState();
+      });
+
+      function authHeaders() {
+        return {
+          Authorization: `Bearer ${getToken()}`,
+          Accept: 'application/vnd.github+json',
+          'X-GitHub-Api-Version': '2022-11-28',
+        };
+      }
+
+      function utf8ToBase64(str) {
+        return btoa(String.fromCharCode(...new TextEncoder().encode(str)));
+      }
+
+      function base64ToUtf8(b64) {
+        const binary = atob(b64.replace(/\n/g, ''));
+        const bytes = Uint8Array.from(binary, (c) => c.charCodeAt(0));
+        return new TextDecoder('utf-8').decode(bytes);
+      }
+
+      async function githubRequest(path, options = {}) {
+        const res = await fetch(`${API_ROOT}${path}`, {
+          ...options,
+          headers: { ...authHeaders(), ...(options.headers || {}) },
+        });
+        if (!res.ok) {
+          const body = await res.text();
+          throw new Error(`GitHub API ${res.status}: ${body}`);
+        }
+        return res.json();
+      }
+
+      loadFileBtn.addEventListener('click', async () => {
+        if (!getToken()) {
+          setStatus('먼저 토큰을 저장하세요.', 'error');
+          return;
+        }
+        const file = fileSelect.value;
+        const filePath = `src/data/${file}`;
+        setStatus('불러오는 중...');
+        try {
+          const data = await githubRequest(
+            `/repos/${REPO_OWNER}/${REPO_NAME}/contents/${filePath}?ref=${BASE_BRANCH}`
+          );
+          editor.value = base64ToUtf8(data.content);
+          editor.disabled = false;
+          createPrBtn.disabled = false;
+          currentFileSha = data.sha;
+          currentFilePath = filePath;
+          commitMessageInput.value = `content: update ${file}`;
+          setStatus(`${filePath} 불러옴 (sha: ${data.sha.slice(0, 7)})`, 'ok');
+        } catch (err) {
+          setStatus(String(err.message || err), 'error');
+        }
+      });
+
+      createPrBtn.addEventListener('click', async () => {
+        if (!getToken() || !currentFilePath || currentFileSha == null) {
+          setStatus('먼저 파일을 불러오세요.', 'error');
+          return;
+        }
+        const newContent = editor.value;
+        const message = commitMessageInput.value.trim() || `content: update ${fileSelect.value}`;
+
+        // Validate YAML client-side before touching GitHub, to catch obvious
+        // syntax mistakes early (the repo's own validate:content script is
+        // still the authoritative check, run in CI on the resulting PR).
+        try {
+          yaml.load(newContent);
+        } catch (err) {
+          setStatus('YAML 파싱 오류: ' + String(err.message || err), 'error');
+          return;
+        }
+
+        createPrBtn.disabled = true;
+        setStatus('브랜치 생성 중...');
+        try {
+          const refData = await githubRequest(
+            `/repos/${REPO_OWNER}/${REPO_NAME}/git/ref/heads/${BASE_BRANCH}`
+          );
+          const baseSha = refData.object.sha;
+          const branchName = `admin/${fileSelect.value.replace('.yml', '')}-${Date.now()}`;
+
+          await githubRequest(`/repos/${REPO_OWNER}/${REPO_NAME}/git/refs`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ ref: `refs/heads/${branchName}`, sha: baseSha }),
+          });
+
+          setStatus('파일 커밋 중...');
+          await githubRequest(
+            `/repos/${REPO_OWNER}/${REPO_NAME}/contents/${currentFilePath}`,
+            {
+              method: 'PUT',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                message,
+                content: utf8ToBase64(newContent),
+                sha: currentFileSha,
+                branch: branchName,
+              }),
+            }
+          );
+
+          setStatus('PR 생성 중...');
+          const pr = await githubRequest(`/repos/${REPO_OWNER}/${REPO_NAME}/pulls`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              title: message,
+              head: branchName,
+              base: BASE_BRANCH,
+              body: `khhan.com/admin 에서 생성된 콘텐츠 수정 PR입니다.\n\n파일: ${currentFilePath}`,
+            }),
+          });
+
+          statusEl.innerHTML = '';
+          const link = document.createElement('a');
+          link.href = pr.html_url;
+          link.target = '_blank';
+          link.rel = 'noopener noreferrer';
+          link.className = 'pr-link';
+          link.textContent = `PR 생성 완료: ${pr.html_url}`;
+          statusEl.className = 'status ok';
+          statusEl.appendChild(link);
+        } catch (err) {
+          setStatus(String(err.message || err), 'error');
+        } finally {
+          createPrBtn.disabled = false;
+        }
+      });
+
+      refreshEnabledState();
+    </script>
+  </body>
+</html>
