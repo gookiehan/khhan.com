@@ -1,6 +1,5 @@
 ---
 import FileLinks from './FileLinks.astro';
-import { sanitizeRichText } from '../utils/richText.js';
 
 interface FileLink {
   url: string;
@@ -26,8 +25,8 @@ const { items } = Astro.props as Props;
   items.map((item) => (
     <div class="item">
       <div class="period">{item.period || ''}</div>
-      <div class="title" set:html={sanitizeRichText(item.titleHtml)}></div>
-      {item.descHtml ? <div class="desc" set:html={sanitizeRichText(item.descHtml)}></div> : null}
+      <div class="title" set:html={item.titleHtml}></div>
+      {item.descHtml ? <div class="desc" set:html={item.descHtml}></div> : null}
       <FileLinks files={item.files} />
     </div>
   ))

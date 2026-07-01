@@ -1,6 +1,5 @@
 ---
 import FileLinks from './FileLinks.astro';
-import { sanitizeRichText } from '../utils/richText.js';
 
 interface QeaItem {
   citation: string;
@@ -25,7 +24,7 @@ const { qeaAbstract, qeaThesis, qeaJournals, qeaConferences, qeaDomestic, qeaPat
   <h3>Ph.D Thesis</h3>
   <div id="qea-thesis">
     <div class="item">
-      <div class="title" set:html={sanitizeRichText(qeaThesis.citation)}></div>
+      <div class="title" set:html={qeaThesis.citation}></div>
       <FileLinks files={qeaThesis.files} />
     </div>
   </div>
@@ -33,7 +32,7 @@ const { qeaAbstract, qeaThesis, qeaJournals, qeaConferences, qeaDomestic, qeaPat
   <div id="qea-journals">
     {qeaJournals.map((p) => (
       <div class="item">
-        <div class="title" set:html={sanitizeRichText(p.citation)}></div>
+        <div class="title" set:html={p.citation}></div>
         <FileLinks files={p.files} />
       </div>
     ))}
@@ -45,7 +44,7 @@ const { qeaAbstract, qeaThesis, qeaJournals, qeaConferences, qeaDomestic, qeaPat
       <div id="qea-conferences" class="collapsible">
         {qeaConferences.map((p) => (
           <div class="item">
-            <div class="title" set:html={sanitizeRichText(p.citation)}></div>
+            <div class="title" set:html={p.citation}></div>
             <FileLinks files={p.files} />
           </div>
         ))}
@@ -56,7 +55,7 @@ const { qeaAbstract, qeaThesis, qeaJournals, qeaConferences, qeaDomestic, qeaPat
   <div id="qea-domestic">
     {qeaDomestic.map((p) => (
       <div class="item">
-        <div class="title" set:html={sanitizeRichText(p.citation)}></div>
+        <div class="title" set:html={p.citation}></div>
         <FileLinks files={p.files} />
       </div>
     ))}
@@ -64,7 +63,7 @@ const { qeaAbstract, qeaThesis, qeaJournals, qeaConferences, qeaDomestic, qeaPat
   <h3>Patent (QEA)</h3>
   <div id="qea-patent">
     <div class="item">
-      <div class="title" set:html={sanitizeRichText(qeaPatent.citation)}></div>
+      <div class="title" set:html={qeaPatent.citation}></div>
       <FileLinks files={qeaPatent.files} />
     </div>
   </div>
