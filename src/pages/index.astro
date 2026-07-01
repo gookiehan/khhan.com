@@ -8,7 +8,6 @@ import ListSection from '../components/ListSection.astro';
 import QeaSection from '../components/QeaSection.astro';
 import PublicationsSection from '../components/PublicationsSection.astro';
 import ActivitiesSection from '../components/ActivitiesSection.astro';
-import { sanitizeRichText } from '../utils/richText.js';
 
 function loadYaml(fileName) {
   const fullPath = path.join(process.cwd(), 'src', 'data', fileName);
@@ -282,7 +281,7 @@ const clubsItems = clubs.map((c) => ({
           <div id="honors-list" class="collapsible">
             {honors.map((h) => (
               <div class="item">
-                <div class="title" set:html={sanitizeRichText(h.title)}></div>
+                <div class="title" set:html={h.title}></div>
                 <FileLinks files={h.files} />
               </div>
             ))}

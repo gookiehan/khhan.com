@@ -1,6 +1,5 @@
 ---
 import FileLinks from './FileLinks.astro';
-import { sanitizeRichText } from '../utils/richText.js';
 
 interface CitationItem {
   citation: string;
@@ -24,7 +23,7 @@ const { phdThesis, intlJournals, intlConferences, domesticPapers, magazineArticl
   <h3>Ph.D Thesis</h3>
   <div id="phd-list">
     <div class="item">
-      <div class="title" set:html={sanitizeRichText(phdThesis.citation)}></div>
+      <div class="title" set:html={phdThesis.citation}></div>
       <FileLinks files={phdThesis.files} />
     </div>
   </div>
@@ -32,7 +31,7 @@ const { phdThesis, intlJournals, intlConferences, domesticPapers, magazineArticl
   <div id="intl-journal-list">
     {intlJournals.map((p) => (
       <div class="item">
-        <div class="title" set:html={sanitizeRichText(p.citation)}></div>
+        <div class="title" set:html={p.citation}></div>
         <FileLinks files={p.files} />
       </div>
     ))}
@@ -44,7 +43,7 @@ const { phdThesis, intlJournals, intlConferences, domesticPapers, magazineArticl
       <div id="intl-conf-list" class="collapsible">
         {intlConferences.map((p) => (
           <div class="item">
-            <div class="title" set:html={sanitizeRichText(p.citation)}></div>
+            <div class="title" set:html={p.citation}></div>
             <FileLinks files={p.files} />
           </div>
         ))}
@@ -58,7 +57,7 @@ const { phdThesis, intlJournals, intlConferences, domesticPapers, magazineArticl
       <div id="domestic-list" class="collapsible">
         {domesticPapers.map((p) => (
           <div class="item">
-            <div class="title" set:html={sanitizeRichText(p.citation)}></div>
+            <div class="title" set:html={p.citation}></div>
             <FileLinks files={p.files} />
           </div>
         ))}
@@ -72,7 +71,7 @@ const { phdThesis, intlJournals, intlConferences, domesticPapers, magazineArticl
       <div id="magazine-list" class="collapsible">
         {magazineArticles.map((p) => (
           <div class="item">
-            <div class="title" set:html={sanitizeRichText(p.citation)}></div>
+            <div class="title" set:html={p.citation}></div>
             <FileLinks files={p.files} />
           </div>
         ))}
@@ -83,7 +82,7 @@ const { phdThesis, intlJournals, intlConferences, domesticPapers, magazineArticl
   <div id="books-list">
     {books.map((p) => (
       <div class="item">
-        <div class="title" set:html={sanitizeRichText(p.citation)}></div>
+        <div class="title" set:html={p.citation}></div>
         <FileLinks files={p.files} />
       </div>
     ))}
