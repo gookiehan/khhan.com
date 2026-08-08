@@ -1,10 +1,4 @@
 career:
-- period: 2026.07.~현재
-  title: 산학특임교수, AI·AX부트캠프사업단, 호서대학교
-- period: 2023.09.~현재
-  title: 겸임교수, <a href="https://home.sch.ac.kr/factory/index.jsp">스마트팩토리공학과</a>, <a
-    href="https://home.sch.ac.kr/sch/">순천향대학교</a>
-  files: []
 - period: 2018.07.~현재
   title: 사장 / 연구소장, <a href="http://www.sym.co.kr/">삼영기계(주)</a>
   desc: <a href="https://news.naver.com/main/read.nhn?mode=LSD&mid=sec&oid=469&aid=0000452091&sid1=001">소재
@@ -34,6 +28,12 @@ career:
   - url: https://www.youtube.com/watch?v=v7GARnDWtIM
     icon: 🎬
     tip: YouTube
+- period: 2026.07.~현재
+  title: 산학특임교수, AI·AX부트캠프사업단, <a href="https://www.hoseo.ac.kr">호서대학교</a>
+- period: 2023.09.~현재
+  title: 겸임교수, <a href="https://home.sch.ac.kr/factory/index.jsp">스마트팩토리공학과</a>, <a
+    href="https://home.sch.ac.kr/sch/">순천향대학교</a>
+  files: []
 - period: 2016.11.~현재
   title: 대표, <a href="http://lumoscandle.com/">루모스캔들(주)</a>
   files:
