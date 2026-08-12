@@ -16,9 +16,11 @@ const { files = [] } = Astro.props as Props;
   files.length > 0 && (
     <div class="files">
       {files.map((f) => (
-        <a href={f.url} target="_blank" rel="noopener noreferrer" title={f.tip || ''}>
-          {f.icon || '🔗'} {f.tip || '링크'}
-        </a>
+        // 링크 내용은 반드시 한 줄로 둔다 — "📄박사논문 PDF".
+        // Astro 5 의 compressHTML 이 아이콘/라벨 사이와 앵커 안쪽 여백을
+        // 지워왔고 그게 현재 사이트의 모양이다. Astro 7 은 원문의 공백을
+        // 그대로 살리므로, 줄을 나누거나 사이에 공백을 넣으면 표시가 바뀐다.
+        <a href={f.url} target="_blank" rel="noopener noreferrer" title={f.tip || ''}>{f.icon || '🔗'}{f.tip || '링크'}</a>
       ))}
     </div>
   )
