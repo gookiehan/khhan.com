@@ -1,6 +1,4 @@
 ﻿---
-import fs from 'node:fs';
-import path from 'node:path';
 import yaml from 'js-yaml';
 import Section from '../components/Section.astro';
 import FileLinks from '../components/FileLinks.astro';
@@ -10,9 +8,23 @@ import PublicationsSection from '../components/PublicationsSection.astro';
 import ActivitiesSection from '../components/ActivitiesSection.astro';
 import { sanitizeRichText } from '../utils/richText.js';
 
+// Vite 가 빌드 타임에 src/data/*.yml 을 문자열로 인라인한다.
+// node:fs + process.cwd() 를 쓰지 않으므로
+//   - astro 를 저장소 루트 밖에서 실행해도 깨지지 않고
+//   - Cloudflare 어댑터가 번들할 때 node 내장 모듈이 끼어들지 않는다.
+// 없는 파일명을 넘기면 빌드가 조용히 undefined 를 반환하지 않도록 즉시 던진다.
+const rawYaml = import.meta.glob('../data/*.yml', {
+  query: '?raw',
+  import: 'default',
+  eager: true,
+});
+
 function loadYaml(fileName) {
-  const fullPath = path.join(process.cwd(), 'src', 'data', fileName);
-  const source = fs.readFileSync(fullPath, 'utf8');
+  const key = `../data/${fileName}`;
+  const source = rawYaml[key];
+  if (source === undefined) {
+    throw new Error(`[index.astro] src/data/${fileName} 을 찾을 수 없습니다.`);
+  }
   return yaml.load(source);
 }
 
