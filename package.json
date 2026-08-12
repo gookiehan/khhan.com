@@ -15,7 +15,9 @@
     "preview": "astro preview"
   },
   "devDependencies": {
-    "astro": "^5.0.0"
+    "@astrojs/cloudflare": "^12.6.13",
+    "astro": "^5.0.0",
+    "wrangler": "^4.121.0"
   },
   "dependencies": {
     "js-yaml": "^4.1.0",
