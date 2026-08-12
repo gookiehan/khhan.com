@@ -1,0 +1,27 @@
+{
+  // Cloudflare Workers (static assets) 배포 설정.
+  // Pages 시절의 pages_build_output_dir / _routes.json 은 더 이상 쓰지 않는다.
+  // 정적 자산은 dist/ 파일 구조로 먼저 매칭되고, 없으면 Worker 로 폴백한다.
+  "name": "khhan-com",
+
+  // @astrojs/cloudflare v14 가 제공하는 통합 엔트리포인트.
+  "main": "@astrojs/cloudflare/entrypoints/server",
+
+  // 비워 두면 wrangler 가 "오늘"로 잡는데, 로컬 workerd 가 아직 지원하지 않는
+  // 날짜면 런타임이 뜨지 않는다. 그래서 명시적으로 고정한다.
+  "compatibility_date": "2026-08-01",
+
+  // Astro 런타임이 node: 내장 모듈을 참조한다.
+  "compatibility_flags": ["nodejs_compat"],
+
+  "assets": {
+    // directory 는 어댑터가 빌드 출력 구조(dist/client)에 맞춰 자동으로 채운다.
+    "binding": "ASSETS",
+    // 정적 파일이 없으면 dist/404.html 을 돌려준다.
+    "not_found_handling": "404-page"
+  },
+
+  "observability": {
+    "enabled": true
+  }
+}

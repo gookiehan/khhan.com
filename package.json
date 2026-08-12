@@ -15,9 +15,12 @@
     "preview": "astro preview"
   },
   "devDependencies": {
-    "@astrojs/cloudflare": "^12.6.13",
-    "astro": "^5.0.0",
+    "@astrojs/cloudflare": "^14.2.1",
+    "astro": "^7.2.1",
     "wrangler": "^4.121.0"
+  },
+  "overrides": {
+    "@cloudflare/vite-plugin": "1.51.3"
   },
   "dependencies": {
     "js-yaml": "^4.1.0",
