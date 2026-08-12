@@ -1,13 +1,24 @@
 ---
 // /admin 은 이 사이트에서 유일하게 SSR 로 도는 구간이다.
-// 실제 관리 UI 는 P2/P3 에서 채운다. 지금은 라우팅·인증 배선이 맞는지
-// 확인하기 위한 최소 셸이다.
+// 실제 관리 UI 는 P2/P3 에서 채운다. 지금은 인증 배선 확인용 셸이다.
 export const prerender = false;
 
-// Cloudflare Access 가 앞단에 붙으면 이 헤더가 주입된다.
-// (아직 Access 를 걸기 전이라 없을 수 있다 — 그건 정상)
-const accessEmail = Astro.request.headers.get('Cf-Access-Authenticated-User-Email');
-const hasAccessJwt = Astro.request.headers.get('Cf-Access-Jwt-Assertion') !== null;
+import { requireSession, HttpError } from '../../lib/admin/auth.js';
+
+let session;
+try {
+  session = await requireSession(Astro);
+} catch (err) {
+  // 로그인 안 됨 → 로그인 시작. 그 외(403 등)는 화면에 이유를 보여준다.
+  if (err instanceof HttpError && err.status === 401) {
+    return Astro.redirect('/admin/auth/login?returnTo=/admin', 302);
+  }
+  const status = err instanceof HttpError ? err.status : 500;
+  return new Response(`접근할 수 없습니다: ${err.message}`, {
+    status,
+    headers: { 'Content-Type': 'text/plain; charset=utf-8' },
+  });
+}
 ---
 
 <html lang="ko">
@@ -19,12 +30,13 @@ const hasAccessJwt = Astro.request.headers.get('Cf-Access-Jwt-Assertion') !== nu
   </head>
   <body>
     <h1>khhan.com 관리</h1>
-    <p>SSR 라우트가 동작합니다. 관리 UI 는 아직 준비 중입니다.</p>
-    <dl>
-      <dt>Cf-Access-Authenticated-User-Email</dt>
-      <dd>{accessEmail ?? '(없음 — Access 미적용 상태)'}</dd>
-      <dt>Cf-Access-Jwt-Assertion</dt>
-      <dd>{hasAccessJwt ? '있음' : '(없음 — Access 미적용 상태)'}</dd>
-    </dl>
+    <p>
+      <strong>{session.login}</strong> 으로 로그인되었습니다.
+      {session.dev && <em>(로컬 개발 우회)</em>}
+    </p>
+    <p>관리 UI 는 아직 준비 중입니다.</p>
+    <form method="POST" action="/admin/auth/logout">
+      <button type="submit">로그아웃</button>
+    </form>
   </body>
 </html>
