@@ -1,0 +1,26 @@
+# 콘텐츠 YAML은 항상 LF로 커밋한다.
+# /admin이 GitHub API로 만드는 blob은 LF이므로, 로컬 편집이 CRLF를 index에
+# 넣으면 매 게시마다 전체 파일 diff가 발생한다.
+*.yml text eol=lf
+*.yaml text eol=lf
+
+# GitHub Pages 롤백 경로에서 CNAME은 정확히 한 줄이어야 한다.
+CNAME text eol=lf
+
+# 소스도 동일하게 통일
+*.mjs text eol=lf
+*.js text eol=lf
+*.astro text eol=lf
+*.css text eol=lf
+*.json text eol=lf
+*.md text eol=lf
+
+# 바이너리 자산은 절대 변환하지 않는다
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.webp binary
+*.pdf binary
+*.wmv binary
+*.mp4 binary
