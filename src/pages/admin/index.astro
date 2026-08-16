@@ -34,6 +34,12 @@ try {
   <body>
     <header class="topbar">
       <h1>khhan.com 관리</h1>
+      <div class="actions">
+        <span id="change-count" class="change-count">변경 없음</span>
+        <button type="button" id="btn-diff" disabled>변경사항 보기</button>
+        <button type="button" id="btn-discard" disabled>변경 버리기</button>
+        <button type="button" id="btn-publish" class="primary-btn" disabled>게시</button>
+      </div>
       <div class="meta">
         <span id="login"></span>
         <code id="repo"></code>
@@ -44,7 +50,9 @@ try {
       </div>
     </header>
 
+    <div id="banner" hidden></div>
     <div id="warnings" hidden></div>
+    <div id="panel" hidden></div>
 
     <div id="status">불러오는 중…</div>
 

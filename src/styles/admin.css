@@ -266,6 +266,210 @@ button:hover {
   white-space: nowrap;
 }
 
+/* ── 편집 ── */
+.topbar .actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-left: 1.5rem;
+}
+.change-count {
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+.primary-btn {
+  background: var(--accent);
+  color: #08131a;
+  border-color: var(--accent);
+  font-weight: 700;
+}
+.primary-btn:disabled,
+button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+.small-btn {
+  font-size: 0.78rem;
+  padding: 0.2rem 0.5rem;
+}
+.icon-btn {
+  font-size: 0.75rem;
+  padding: 0.15rem 0.4rem;
+  line-height: 1.2;
+}
+.icon-btn.danger:hover {
+  border-color: var(--danger);
+  color: var(--danger);
+}
+.tools {
+  display: inline-flex;
+  gap: 0.25rem;
+  margin-left: auto;
+}
+.dot {
+  color: var(--accent);
+  font-size: 0.6rem;
+}
+.badge {
+  font-size: 0.72rem;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  border-radius: 999px;
+  padding: 0.05rem 0.5rem;
+}
+.section-actions {
+  margin-top: 0.5rem;
+}
+.item.editing {
+  border-color: var(--accent);
+}
+.editing-head {
+  padding: 0.4rem 0.7rem;
+  font-size: 0.8rem;
+  color: var(--accent);
+  border-bottom: 1px solid var(--border);
+}
+.editor {
+  padding: 0.7rem 0.8rem;
+}
+.field-edit {
+  display: block;
+  margin-bottom: 0.6rem;
+}
+.field-edit input,
+.field-edit textarea {
+  display: block;
+  width: 100%;
+  margin-top: 0.2rem;
+  padding: 0.4rem 0.55rem;
+  font: inherit;
+  font-size: 0.88rem;
+  color: var(--text);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+.field-edit textarea {
+  min-height: 4.5rem;
+  resize: vertical;
+}
+.field-edit input:focus,
+.field-edit textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+.hint {
+  display: block;
+  font-size: 0.72rem;
+  color: var(--muted);
+  margin-top: 0.15rem;
+}
+.files-edit {
+  margin: 0.5rem 0;
+}
+.file-row {
+  display: grid;
+  grid-template-columns: 3.5rem 1fr 2fr auto;
+  gap: 0.35rem;
+  margin-bottom: 0.3rem;
+}
+@media (max-width: 620px) {
+  .file-row {
+    grid-template-columns: 1fr;
+  }
+}
+.file-row input {
+  padding: 0.3rem 0.45rem;
+  font: inherit;
+  font-size: 0.82rem;
+  color: var(--text);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+.editor-actions {
+  display: flex;
+  gap: 0.4rem;
+  margin-top: 0.7rem;
+}
+
+/* ── 패널 (diff / 결과) ── */
+#panel,
+#banner {
+  max-width: 1100px;
+  margin: 1rem auto 0;
+  padding: 0.9rem 1.1rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+#banner {
+  border-color: var(--accent);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.88rem;
+}
+.panel-head {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin-bottom: 0.6rem;
+}
+.panel-head h2 {
+  font-size: 1rem;
+  color: var(--accent);
+  margin-right: auto;
+}
+.diff-file {
+  font-size: 0.85rem;
+  margin: 0.8rem 0 0.3rem;
+}
+.diff-body {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0.5rem 0;
+  overflow-x: auto;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.78rem;
+  line-height: 1.5;
+}
+.diff-body .line,
+.diff-body .hunk-header {
+  padding: 0 0.7rem;
+  white-space: pre;
+}
+.hunk-header {
+  color: var(--muted);
+  background: rgba(255, 255, 255, 0.03);
+}
+.line.add {
+  color: #9be9a8;
+  background: rgba(46, 160, 67, 0.12);
+}
+.line.del {
+  color: #ffa198;
+  background: rgba(248, 81, 73, 0.12);
+}
+.warn {
+  color: #ffd479;
+}
+.error-list {
+  margin: 0.4rem 0 0.6rem 1.2rem;
+  font-size: 0.85rem;
+  color: var(--danger);
+}
+.button-link {
+  display: inline-block;
+  padding: 0.35rem 0.8rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--accent);
+  text-decoration: none;
+}
+
 #warnings {
   background: rgba(255, 138, 128, 0.08);
   border: 1px solid var(--danger);

@@ -117,3 +117,86 @@ export async function readDataFiles(fileNames, commitSha) {
   );
   return Object.fromEntries(results);
 }
+
+/**
+ * 저장소에 존재하는 자산 경로 목록('assets/...').
+ * 게시 전에 "저장소에 없는 파일을 가리키는 링크"를 잡기 위해 쓴다.
+ * 트리 한 번으로 끝나므로 호출 비용이 작다.
+ */
+export async function listAssetPaths(commitSha) {
+  const commit = await api(`/repos/${repo()}/git/commits/${commitSha}`);
+  const tree = await api(`/repos/${repo()}/git/trees/${commit.tree.sha}?recursive=1`);
+  const paths = new Set();
+  for (const node of tree.tree || []) {
+    if (node.type === 'blob' && node.path.startsWith('assets/')) paths.add(node.path);
+  }
+  // truncated 면 일부만 받은 것이므로, 잘못된 "없는 자산" 오류를 내지 않도록 알린다.
+  return { paths, truncated: Boolean(tree.truncated) };
+}
+
+/** UTF-8 문자열 → base64 (btoa 는 바이트만 받으므로 먼저 인코딩한다) */
+function encodeBase64Utf8(text) {
+  const bytes = new TextEncoder().encode(text);
+  let binary = '';
+  const CHUNK = 0x8000; // 인자 개수 제한을 피하려고 나눠 넣는다
+  for (let i = 0; i < bytes.length; i += CHUNK) {
+    binary += String.fromCharCode(...bytes.subarray(i, i + CHUNK));
+  }
+  return btoa(binary);
+}
+
+/**
+ * 여러 파일을 한 커밋으로 main 에 올린다.
+ *
+ * 구 앱(khhan-admin)은 파일마다 PUT /contents 를 호출해 커밋이 N개 생겼고, 중간에
+ * 실패하면 절반만 반영된 상태가 남았다. 여기서는 Git Data API 로 blob → tree →
+ * commit → ref 순서로 진행해 **한 커밋**을 만든다.
+ *
+ * @param {{baseSha:string, files:Record<string,string>, message:string}} args
+ *        files 는 저장소 경로 → 내용(문자열)
+ * @returns {{commitSha:string, commitUrl:string}}
+ */
+export async function commitFiles({ baseSha, files, message }) {
+  const entries = Object.entries(files);
+  if (entries.length === 0) throw new HttpError(400, '변경된 파일이 없습니다.');
+
+  // 1) 각 파일을 blob 으로 올린다(아직 어떤 ref 에도 매달리지 않는다).
+  const blobs = await Promise.all(
+    entries.map(async ([path, content]) => {
+      const blob = await api(`/repos/${repo()}/git/blobs`, {
+        method: 'POST',
+        body: JSON.stringify({ content: encodeBase64Utf8(content), encoding: 'base64' }),
+      });
+      return { path, mode: '100644', type: 'blob', sha: blob.sha };
+    })
+  );
+
+  // 2) 기준 커밋의 트리 위에 얹는다.
+  const baseCommit = await api(`/repos/${repo()}/git/commits/${baseSha}`);
+  const tree = await api(`/repos/${repo()}/git/trees`, {
+    method: 'POST',
+    body: JSON.stringify({ base_tree: baseCommit.tree.sha, tree: blobs }),
+  });
+
+  // 3) 커밋 생성
+  const commit = await api(`/repos/${repo()}/git/commits`, {
+    method: 'POST',
+    body: JSON.stringify({ message, tree: tree.sha, parents: [baseSha] }),
+  });
+
+  // 4) main 을 앞으로 옮긴다. force:false 라 fast-forward 만 허용되므로,
+  //    그 사이 main 이 움직였으면 여기서 실패한다(2차 레이스 가드).
+  try {
+    await api(`/repos/${repo()}/git/refs/heads/main`, {
+      method: 'PATCH',
+      body: JSON.stringify({ sha: commit.sha, force: false }),
+    });
+  } catch (err) {
+    throw new HttpError(409, 'main 이 그 사이 변경되어 게시하지 못했습니다. 다시 불러온 뒤 시도하세요.');
+  }
+
+  return {
+    commitSha: commit.sha,
+    commitUrl: `https://github.com/${repo()}/commit/${commit.sha}`,
+  };
+}
