@@ -378,6 +378,11 @@ button:disabled {
     grid-template-columns: 1fr;
   }
 }
+.file-tools {
+  display: inline-flex;
+  gap: 0.2rem;
+  align-items: center;
+}
 .file-row input {
   padding: 0.3rem 0.45rem;
   font: inherit;
