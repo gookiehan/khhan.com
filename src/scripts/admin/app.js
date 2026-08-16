@@ -34,6 +34,9 @@ const state = {
   draft: {}, // 편집 중인 사본
   baseSha: '',
   changeLog: [],
+  // 업로드했지만 아직 게시하지 않은 자산: [{ path, blobSha, size }]
+  // GitHub 에 blob 만 만들어 둔 상태라 게시하지 않으면 저장소에 남지 않는다.
+  assets: [],
   current: null,
   editing: null, // { file, sectionKey, index }  index === -1 이면 새 항목
 };
@@ -54,7 +57,18 @@ function note(message) {
 }
 
 function persist() {
-  saveDraft({ baseSha: state.baseSha, files: state.draft, changeLog: state.changeLog });
+  saveDraft({
+    baseSha: state.baseSha,
+    files: state.draft,
+    changeLog: state.changeLog,
+    assets: state.assets,
+  });
+}
+
+/** 업로드한 자산을 초안에 기록한다(같은 경로가 두 번 들어가지 않게). */
+function rememberAsset(asset) {
+  if (!state.assets.some((a) => a.path === asset.path)) state.assets.push(asset);
+  persist();
 }
 
 function scopeOf(fileSchema, data) {
@@ -153,12 +167,71 @@ function filesEditor(item, rerender) {
   });
 
   wrap.appendChild(list);
+
+  // ── 업로드 ──
+  const drop = el('div', 'dropzone');
+  const status = el('div', 'drop-status');
+  drop.appendChild(el('span', null, '여기로 파일을 끌어놓거나 클릭해서 선택 (이미지·PDF, 최대 10MB)'));
+  drop.appendChild(status);
+
+  const picker = el('input');
+  picker.type = 'file';
+  picker.accept = '.jpg,.jpeg,.png,.webp,.gif,.pdf';
+  picker.multiple = true;
+  picker.hidden = true;
+
+  async function upload(fileList) {
+    for (const file of fileList) {
+      status.textContent = `${file.name} 올리는 중…`;
+      status.className = 'drop-status';
+      try {
+        const body = new FormData();
+        body.append('file', file);
+        const res = await fetch('/admin/api/upload', { method: 'POST', body });
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok) throw new Error(data.error || `업로드 실패 (${res.status})`);
+
+        files.push({ url: data.path, icon: data.icon, tip: data.tip });
+        rememberAsset({ path: data.path, blobSha: data.blobSha, size: data.size });
+        status.textContent = `${file.name} → ${data.path}`;
+      } catch (err) {
+        status.textContent = err.message;
+        status.className = 'drop-status error';
+        break;
+      }
+    }
+    rerender();
+  }
+
+  drop.addEventListener('click', () => picker.click());
+  picker.addEventListener('change', () => {
+    if (picker.files?.length) upload([...picker.files]);
+  });
+  for (const evt of ['dragenter', 'dragover']) {
+    drop.addEventListener(evt, (e) => {
+      e.preventDefault();
+      drop.classList.add('over');
+    });
+  }
+  for (const evt of ['dragleave', 'drop']) {
+    drop.addEventListener(evt, (e) => {
+      e.preventDefault();
+      drop.classList.remove('over');
+    });
+  }
+  drop.addEventListener('drop', (e) => {
+    const dropped = [...(e.dataTransfer?.files || [])];
+    if (dropped.length) upload(dropped);
+  });
+
+  wrap.appendChild(drop);
+  wrap.appendChild(picker);
   wrap.appendChild(
-    btn('+ 첨부 추가', 'small-btn', () => {
+    btn('+ 직접 입력', 'small-btn', () => {
       files.push({ url: '', icon: '', tip: '' });
       persist();
       rerender();
-    })
+    }, '이미 저장소에 있는 파일 경로를 손으로 넣습니다')
   );
   return wrap;
 }
@@ -499,11 +572,16 @@ function renderMain() {
 function renderToolbar() {
   const changed = dirtyFiles();
   const count = state.changeLog.length;
-  document.getElementById('change-count').textContent =
-    changed.length === 0 ? '변경 없음' : `변경 ${count}건 · 파일 ${changed.length}개`;
+  const parts = [];
+  if (count) parts.push(`변경 ${count}건`);
+  if (changed.length) parts.push(`파일 ${changed.length}개`);
+  if (state.assets.length) parts.push(`자산 ${state.assets.length}개`);
+  document.getElementById('change-count').textContent = parts.length ? parts.join(' · ') : '변경 없음';
+
+  const nothing = changed.length === 0 && state.assets.length === 0;
   document.getElementById('btn-diff').disabled = changed.length === 0;
-  document.getElementById('btn-publish').disabled = changed.length === 0;
-  document.getElementById('btn-discard').disabled = changed.length === 0;
+  document.getElementById('btn-publish').disabled = nothing;
+  document.getElementById('btn-discard').disabled = nothing;
 }
 
 function render() {
@@ -589,6 +667,7 @@ async function publish() {
     baseSha: state.baseSha,
     files: draftPayload(),
     changeLog: state.changeLog,
+    assets: state.assets,
   });
 
   publishBtn.textContent = '게시';
@@ -596,9 +675,19 @@ async function publish() {
 
   if (ok) {
     clearDraft();
+    state.assets = [];
     showPanel('게시 완료', () => {
       const box = el('div');
-      box.appendChild(el('p', null, `${data.changedFiles.join(', ')} 을(를) 게시했습니다. 1~2분 뒤 사이트에 반영됩니다.`));
+      const parts = [];
+      if (data.changedFiles?.length) parts.push(data.changedFiles.join(', '));
+      if (data.uploadedAssets?.length) parts.push(`자산 ${data.uploadedAssets.length}개`);
+      box.appendChild(el('p', null, `${parts.join(' + ')} 을(를) 게시했습니다. 1~2분 뒤 사이트에 반영됩니다.`));
+      if (data.uploadedAssets?.length) {
+        const ul = el('ul', 'error-list');
+        ul.style.color = 'var(--muted)';
+        for (const p of data.uploadedAssets) ul.appendChild(el('li', null, p));
+        box.appendChild(ul);
+      }
       const a = el('a', 'button-link', '커밋 보기');
       a.href = data.commitUrl;
       a.target = '_blank';
@@ -635,6 +724,9 @@ function discard() {
   clearDraft();
   state.draft = clone(state.original);
   state.changeLog = [];
+  // 올려둔 자산도 함께 버린다. blob 은 어떤 커밋에도 매달려 있지 않으므로
+  // 참조를 놓으면 GitHub 이 회수한다 — 저장소에는 아무것도 남지 않는다.
+  state.assets = [];
   state.editing = null;
   render();
 }
@@ -662,7 +754,9 @@ async function boot({ keepDraft = false, silent = false } = {}) {
     state.original = {};
     for (const [name, entry] of Object.entries(data.files)) state.original[name] = entry.data;
 
-    const kept = keepDraft ? { files: state.draft, changeLog: state.changeLog } : loadDraft();
+    const kept = keepDraft
+      ? { files: state.draft, changeLog: state.changeLog, assets: state.assets }
+      : loadDraft();
     const banner = document.getElementById('banner');
     banner.hidden = true;
 
@@ -670,6 +764,7 @@ async function boot({ keepDraft = false, silent = false } = {}) {
       // 초안을 만든 뒤 main 이 움직였다. 버릴지 유지할지는 사용자가 정한다.
       state.draft = clone(state.original);
       state.changeLog = [];
+      state.assets = [];
       banner.hidden = false;
       banner.replaceChildren();
       banner.appendChild(el('strong', null, 'main 이 갱신되었습니다. '));
@@ -680,6 +775,7 @@ async function boot({ keepDraft = false, silent = false } = {}) {
         btn('보관된 초안 적용', 'small-btn', () => {
           state.draft = kept.files;
           state.changeLog = kept.changeLog || [];
+          state.assets = kept.assets || [];
           banner.hidden = true;
           persist();
           render();
@@ -689,9 +785,11 @@ async function boot({ keepDraft = false, silent = false } = {}) {
     } else if (kept) {
       state.draft = kept.files;
       state.changeLog = kept.changeLog || [];
+      state.assets = kept.assets || [];
     } else {
       state.draft = clone(state.original);
       state.changeLog = [];
+      state.assets = [];
     }
 
     // 원본에는 있는데 초안에 없는 파일(스키마 추가 등)을 보정한다.

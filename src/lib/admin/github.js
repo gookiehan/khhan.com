@@ -145,6 +145,21 @@ function encodeBase64Utf8(text) {
   return btoa(binary);
 }
 
+/** 바이트를 그대로 blob 으로 올린다(이미지·PDF 용). 반환된 sha 는 게시할 때 트리에 넣는다. */
+export async function createBinaryBlob(bytes) {
+  let binary = '';
+  const CHUNK = 0x8000;
+  const view = new Uint8Array(bytes);
+  for (let i = 0; i < view.length; i += CHUNK) {
+    binary += String.fromCharCode(...view.subarray(i, i + CHUNK));
+  }
+  const blob = await api(`/repos/${repo()}/git/blobs`, {
+    method: 'POST',
+    body: JSON.stringify({ content: btoa(binary), encoding: 'base64' }),
+  });
+  return blob.sha;
+}
+
 /**
  * 여러 파일을 한 커밋으로 main 에 올린다.
  *
@@ -156,11 +171,13 @@ function encodeBase64Utf8(text) {
  *        files 는 저장소 경로 → 내용(문자열)
  * @returns {{commitSha:string, commitUrl:string}}
  */
-export async function commitFiles({ baseSha, files, message }) {
+export async function commitFiles({ baseSha, files, assets = [], message }) {
   const entries = Object.entries(files);
-  if (entries.length === 0) throw new HttpError(400, '변경된 파일이 없습니다.');
+  if (entries.length === 0 && assets.length === 0) {
+    throw new HttpError(400, '변경된 파일이 없습니다.');
+  }
 
-  // 1) 각 파일을 blob 으로 올린다(아직 어떤 ref 에도 매달리지 않는다).
+  // 1) 텍스트 파일을 blob 으로 올린다(아직 어떤 ref 에도 매달리지 않는다).
   const blobs = await Promise.all(
     entries.map(async ([path, content]) => {
       const blob = await api(`/repos/${repo()}/git/blobs`, {
@@ -170,6 +187,13 @@ export async function commitFiles({ baseSha, files, message }) {
       return { path, mode: '100644', type: 'blob', sha: blob.sha };
     })
   );
+
+  // 업로드 때 이미 만들어 둔 자산 blob 들을 같은 트리에 합류시킨다.
+  // 자산과 그것을 가리키는 YAML 이 한 커밋에 들어가므로, 중간 상태(링크는
+  // 있는데 파일은 없는)가 생기지 않는다.
+  for (const asset of assets) {
+    blobs.push({ path: asset.path, mode: '100644', type: 'blob', sha: asset.blobSha });
+  }
 
   // 2) 기준 커밋의 트리 위에 얹는다.
   const baseCommit = await api(`/repos/${repo()}/git/commits/${baseSha}`);

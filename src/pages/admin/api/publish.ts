@@ -21,14 +21,23 @@ import { MANAGED_FILES } from '../../../lib/content-schema.mjs';
 
 export const prerender = false;
 
-function buildMessage(changedFiles, changeLog, login) {
+function buildMessage(changedFiles, changeLog, login, assets = []) {
   const subject =
     changedFiles.length === 1
       ? `content: update ${changedFiles[0]}`
-      : `content: update ${changedFiles.length} files`;
+      : changedFiles.length === 0
+        ? `content: add ${assets.length} asset(s)`
+        : `content: update ${changedFiles.length} files`;
 
-  const lines = [subject, '', '변경된 파일:'];
-  for (const f of changedFiles) lines.push(`- src/data/${f}`);
+  const lines = [subject, ''];
+  if (changedFiles.length) {
+    lines.push('변경된 파일:');
+    for (const f of changedFiles) lines.push(`- src/data/${f}`);
+  }
+  if (assets.length) {
+    lines.push('', '추가된 자산:');
+    for (const a of assets) lines.push(`- ${a.path}`);
+  }
   if (Array.isArray(changeLog) && changeLog.length) {
     lines.push('', '변경 내역:');
     for (const entry of changeLog.slice(0, 50)) lines.push(`- ${String(entry).slice(0, 200)}`);
@@ -61,8 +70,21 @@ export async function POST(context) {
       );
     }
 
+    // 이번 게시에 함께 올릴 자산(업로드 때 blob 만 만들어 둔 것들)
+    const assets = Array.isArray(body?.assets) ? body.assets : [];
+    for (const a of assets) {
+      if (!a?.path || !a?.blobSha) throw new HttpError(400, '자산 정보가 올바르지 않습니다.');
+      if (!a.path.startsWith('assets/images/') && !a.path.startsWith('assets/docs/')) {
+        throw new HttpError(400, `자산 경로가 허용 범위를 벗어납니다: ${a.path}`);
+      }
+    }
+
     // ── 3) 검증. 자산 존재 확인까지 포함한다.
     const { paths: assetPaths, truncated } = await listAssetPaths(currentBaseSha);
+    // 방금 올린 자산은 아직 저장소 트리에 없지만 이 커밋에 함께 들어가므로
+    // "있는 것"으로 쳐야 한다. 안 그러면 자기가 올린 파일을 자기가 거부한다.
+    for (const a of assets) assetPaths.add(a.path);
+
     const errors = validateFiles(
       Object.fromEntries(names.map((n) => [n, draft[n]])),
       truncated ? undefined : assetPaths
@@ -85,17 +107,35 @@ export async function POST(context) {
         changedFiles.push(name);
       }
     }
-    if (changedFiles.length === 0) {
+    // 실제로 참조되는 자산만 커밋한다. 올렸다가 첨부에서 지운 파일이
+    // 저장소에 쓰레기로 남지 않게 하려는 것이다.
+    const referenced = new Set();
+    const collect = (v) => {
+      if (Array.isArray(v)) return v.forEach(collect);
+      if (v && typeof v === 'object') {
+        if (Array.isArray(v.files)) {
+          for (const f of v.files) {
+            if (typeof f?.url === 'string') referenced.add(f.url.replace(/^\//, ''));
+          }
+        }
+        for (const [k, child] of Object.entries(v)) if (k !== 'files') collect(child);
+      }
+    };
+    for (const n of names) collect(draft[n]);
+    const usedAssets = assets.filter((a) => referenced.has(a.path));
+
+    if (changedFiles.length === 0 && usedAssets.length === 0) {
       return Response.json({ error: '바뀐 내용이 없습니다.', noChanges: true }, { status: 400 });
     }
 
     const result = await commitFiles({
       baseSha: currentBaseSha,
       files: toCommit,
-      message: buildMessage(changedFiles, body.changeLog, session.login),
+      assets: usedAssets,
+      message: buildMessage(changedFiles, body.changeLog, session.login, usedAssets),
     });
 
-    return Response.json({ ...result, changedFiles });
+    return Response.json({ ...result, changedFiles, uploadedAssets: usedAssets.map((a) => a.path) });
   } catch (err) {
     return errorResponse(err);
   }
