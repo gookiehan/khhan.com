@@ -1,0 +1,13 @@
+# Cloudflare 전용 헤더 규칙. GitHub Pages 는 이 파일을 무시하므로
+# khhan.com(현재 GitHub Pages 서비스)에는 아무 영향이 없다.
+#
+# 왜 필요한가:
+# 지금은 공개 사이트를 GitHub Pages 가, 관리 화면을 Cloudflare Worker 가 맡는
+# 이원 구조다. Worker 빌드에는 공개 페이지도 함께 들어 있어서, workers.dev 주소로
+# khhan.com 과 같은 내용이 열린다. 검색엔진에 중복 문서로 잡히면 곤란하므로 막는다.
+#
+# ★ P5(커스텀 도메인 연결) 때 반드시 지울 것.
+#   그때는 khhan.com 자체를 이 Worker 가 서비스하므로, 이 규칙이 남아 있으면
+#   사이트 전체가 검색에서 사라진다.
+/*
+  X-Robots-Tag: noindex, nofollow
