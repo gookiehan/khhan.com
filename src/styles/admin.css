@@ -387,6 +387,31 @@ button:disabled {
   border: 1px solid var(--border);
   border-radius: 6px;
 }
+.dropzone {
+  margin: 0.4rem 0;
+  padding: 0.7rem;
+  border: 1px dashed var(--border);
+  border-radius: 6px;
+  text-align: center;
+  font-size: 0.8rem;
+  color: var(--muted);
+  cursor: pointer;
+}
+.dropzone:hover,
+.dropzone.over {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: rgba(79, 195, 247, 0.06);
+}
+.drop-status {
+  margin-top: 0.25rem;
+  font-size: 0.75rem;
+  word-break: break-all;
+}
+.drop-status.error {
+  color: var(--danger);
+}
+
 .editor-actions {
   display: flex;
   gap: 0.4rem;
