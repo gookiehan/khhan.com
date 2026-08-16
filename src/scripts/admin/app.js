@@ -818,11 +818,28 @@ async function boot({ keepDraft = false, silent = false } = {}) {
     document.getElementById('repo').textContent = data.repo || '';
     document.getElementById('basesha').textContent = data.baseSha.slice(0, 7);
 
+    // 서버 경고 + 토큰 만료 임박 경고를 한 곳에 모아 보여준다.
+    const notices = Array.isArray(data.warnings) ? [...data.warnings] : [];
+
+    // GITHUB_TOKEN 이 만료되면 관리 화면이 아예 열리지 않는다. 예고 없이 그렇게
+    // 되지 않도록, 3주 전부터 갱신 방법과 함께 알린다.
+    if (data.tokenExpiry) {
+      const days = Math.floor((new Date(data.tokenExpiry) - Date.now()) / 86400000);
+      if (Number.isFinite(days) && days <= 21) {
+        notices.push(
+          days < 0
+            ? 'GitHub 토큰이 만료되었습니다. 새 PAT 를 발급한 뒤 `npx wrangler secret put GITHUB_TOKEN` 으로 등록하세요.'
+            : `GitHub 토큰이 ${days}일 뒤 만료됩니다(${data.tokenExpiry.slice(0, 10)}). ` +
+              '만료되면 이 화면이 열리지 않습니다. 새 PAT 발급 후 `npx wrangler secret put GITHUB_TOKEN`.'
+        );
+      }
+    }
+
     const warn = document.getElementById('warnings');
-    if (Array.isArray(data.warnings) && data.warnings.length) {
+    if (notices.length) {
       warn.hidden = false;
-      warn.replaceChildren(el('strong', null, '경고'));
-      data.warnings.forEach((w) => warn.appendChild(el('div', null, w)));
+      warn.replaceChildren(el('strong', null, '확인 필요'));
+      notices.forEach((w) => warn.appendChild(el('div', null, w)));
     } else {
       warn.hidden = true;
     }
