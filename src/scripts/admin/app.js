@@ -81,7 +81,8 @@ function blankItem(section) {
   if (section.kind === 'list-scalar') return '';
   const item = {};
   for (const f of section.fields) item[f.name] = '';
-  if (section.files) item.files = [];
+  // files 는 일부러 만들지 않는다. 첨부를 실제로 추가할 때만 생기게 해서
+  // 빈 files: [] 가 데이터에 남지 않게 한다.
   return item;
 }
 
@@ -122,7 +123,10 @@ function filesEditor(item, rerender) {
   wrap.appendChild(el('div', 'field-label', '첨부'));
 
   const list = el('div', 'files-rows');
-  const files = Array.isArray(item.files) ? item.files : (item.files = []);
+  // 여기서 item.files 를 만들어 두면, 첨부를 추가하지 않고 닫아도 files: [] 가
+  // 데이터에 남아 diff 에 무관한 줄이 끼어든다. 실제로 추가할 때만 만든다.
+  if (!Array.isArray(item.files)) item.files = [];
+  const files = item.files;
 
   files.forEach((f, i) => {
     const row = el('div', 'file-row');
@@ -172,6 +176,23 @@ function renderEditor(fileSchema, section, index) {
   // 편집 중에는 사본을 만들어 두고, 취소하면 버린다.
   let working = clone(source ?? blankItem(section));
 
+  // 원래 files 키가 있었는지 기억해 둔다. 없던 항목에 빈 files: [] 를 남기면
+  // 내용은 그대로인데 diff 에 줄이 하나 늘어난다(첫 게시에서 실제로 그랬다).
+  const hadFiles =
+    source !== null && typeof source === 'object' && !Array.isArray(source) && 'files' in source;
+
+  /** 저장 직전 정리: 빈 첨부 행을 버리고, 없던 files 키는 만들지 않는다. */
+  const tidy = (obj) => {
+    if (!section.files || typeof obj !== 'object' || obj === null) return obj;
+    if (Array.isArray(obj.files)) {
+      obj.files = obj.files.filter(
+        (f) => f && [f.url, f.icon, f.tip].some((v) => typeof v === 'string' && v.trim())
+      );
+      if (obj.files.length === 0 && !hadFiles) delete obj.files;
+    }
+    return obj;
+  };
+
   const box = el('div', 'editor');
   const rerender = () => {
     const fresh = renderEditorBody();
@@ -200,6 +221,7 @@ function renderEditor(fileSchema, section, index) {
     const actions = el('div', 'editor-actions');
     actions.appendChild(
       btn('적용', 'primary-btn', () => {
+        tidy(working);
         if (section.kind === 'dict') {
           setSectionValue(fileSchema, section.key, working);
           note(`${fileSchema.label} > ${section.label} 수정`);

@@ -54,9 +54,42 @@ const F = {
 
 export const SCHEMA = [
   {
+    // 사이트 첫 화면(히어로) 내용. 예전에는 index.astro 에 하드코딩되어 있어
+    // 관리 화면에서 고칠 수 없었다.
     file: 'profile.yml',
-    label: '프로필',
+    label: '프로필 (첫 화면)',
     sections: [
+      {
+        key: 'name',
+        label: '이름',
+        kind: 'scalar',
+        fields: [{ name: 'value', label: '이름', type: 'text', required: true }],
+      },
+      {
+        key: 'tagline',
+        label: '한 줄 소개',
+        kind: 'scalar',
+        fields: [{ name: 'value', label: '소개', type: 'text', required: true }],
+      },
+      {
+        // 항목 사이의 구분자(|)는 화면이 넣으므로 데이터에 두지 않는다.
+        key: 'affiliations',
+        label: '소속·직함',
+        kind: 'list-scalar',
+        fields: [{ name: 'value', label: '소속·직함', type: 'richtext', required: true }],
+      },
+      {
+        key: 'photoUrl',
+        label: '사진 경로',
+        kind: 'scalar',
+        fields: [{ name: 'value', label: '경로', type: 'url', required: true }],
+      },
+      {
+        key: 'photoAlt',
+        label: '사진 대체텍스트',
+        kind: 'scalar',
+        fields: [{ name: 'value', label: '대체텍스트', type: 'text', required: true }],
+      },
       {
         key: 'scholarUrl',
         label: 'Google Scholar URL',

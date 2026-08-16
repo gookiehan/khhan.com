@@ -66,6 +66,18 @@ const honors = honorsData.honors;
 const taActivities = taData.taActivities;
 const clubs = clubsData.clubs;
 const scholarUrl = profileData.scholarUrl;
+const profileName = profileData.name;
+const tagline = profileData.tagline;
+const photoUrl = profileData.photoUrl;
+const photoAlt = profileData.photoAlt;
+
+// 소속·직함은 항목 배열로 두고 구분자는 화면이 넣는다.
+// 각 항목에 인라인 HTML(<a> 등)이 들어갈 수 있으므로 sanitizeRichText 를 거친다.
+// 링크 색은 예전엔 style 속성으로 넣었지만, 살균에서 style 은 제거되므로
+// style.css 의 .hero a 규칙으로 옮겼다.
+const affiliationsHtml = (profileData.affiliations ?? [])
+  .map((item) => sanitizeRichText(item))
+  .join(' &nbsp;|&nbsp; ');
 
 function escapeHtml(value) {
   return String(value)
@@ -193,19 +205,18 @@ const clubsItems = clubs.map((c) => ({
     <div class="hero">
       <div class="hero-inner">
         <div class="hero-text">
-          <h1>한국현 (Kuk-Hyun Han, Ph.D.)</h1>
-          <p class="hero-tagline">공학자 · 연구자 · 기업인</p>
-          <p><a href="https://www.sym.co.kr" target="_blank" rel="noopener noreferrer" style="color:#4fc3f7;">삼영기계</a> 사장·연구소장 &nbsp;|&nbsp; 순천향대학교 겸임교수
-            &nbsp;|&nbsp; 한국주조공학회 부회장 &nbsp;|&nbsp; 한국정밀공학회 이사</p>
+          <h1>{profileName}</h1>
+          <p class="hero-tagline">{tagline}</p>
+          <p set:html={affiliationsHtml} />
           <p style="margin-top:.5rem;">
-            <a href={scholarUrl} target="_blank" rel="noopener noreferrer" style="color:#4fc3f7;">Google Scholar</a>
+            <a href={scholarUrl} target="_blank" rel="noopener noreferrer">Google Scholar</a>
           </p>
         </div>
         <div class="hero-photo-wrap">
           <img
             class="hero-photo"
-            src="/assets/images/profile.jpg"
-            alt="한국현 (Kuk-Hyun Han)"
+            src={photoUrl}
+            alt={photoAlt}
             width="120"
             height="152"
             loading="eager"
