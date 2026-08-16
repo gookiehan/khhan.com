@@ -156,13 +156,27 @@ function filesEditor(item, rerender) {
       });
       row.appendChild(input);
     }
-    row.appendChild(
-      btn('✕', 'icon-btn', () => {
+    // 첨부는 화면에 나열되는 순서 그대로 보이므로 순서를 바꿀 수 있어야 한다.
+    const tools = el('span', 'file-tools');
+    const swap = (j) => {
+      [files[i], files[j]] = [files[j], files[i]];
+      persist();
+      rerender();
+    };
+    const up = btn('↑', 'icon-btn', () => swap(i - 1), '위로');
+    up.disabled = i === 0;
+    const down = btn('↓', 'icon-btn', () => swap(i + 1), '아래로');
+    down.disabled = i === files.length - 1;
+    tools.appendChild(up);
+    tools.appendChild(down);
+    tools.appendChild(
+      btn('✕', 'icon-btn danger', () => {
         files.splice(i, 1);
         persist();
         rerender();
       }, '이 첨부 삭제')
     );
+    row.appendChild(tools);
     list.appendChild(row);
   });
 
