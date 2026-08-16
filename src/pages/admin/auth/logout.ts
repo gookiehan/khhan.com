@@ -7,7 +7,9 @@ export async function POST(context) {
   try {
     requireSameOrigin(context.request);
     clearSession(context);
-    return context.redirect('/admin', 302);
+    // /admin 으로 보내면 곧바로 재로그인되어 로그아웃이 안 된 것처럼 보인다.
+    // 세션을 요구하지 않는 착지 페이지로 보낸다.
+    return context.redirect('/admin/auth/logged-out', 302);
   } catch (err) {
     return errorResponse(err);
   }

@@ -67,6 +67,16 @@ const COOKIE_BASE = {
 };
 
 /**
+ * 삭제할 때도 같은 속성을 그대로 보내야 한다.
+ * 특히 secure 는 필수다 — 쿠키 이름이 `__Secure-` 로 시작하면 브라우저는
+ * Secure 속성이 없는 Set-Cookie 를 통째로 거부하므로, 빠뜨리면 "로그아웃을
+ * 눌러도 로그아웃이 안 되는" 증상이 된다.
+ */
+function deleteCookie(cookies, name) {
+  cookies.delete(name, COOKIE_BASE);
+}
+
+/**
  * 세션이 있으면 { login } 을 돌려주고, 없으면 던진다.
  * API 라우트는 이 예외를 401 로 변환하고, 페이지는 로그인으로 리디렉트한다.
  */
@@ -156,7 +166,7 @@ export async function completeLogin({ request, cookies }) {
 
   const stateToken = cookies.get(STATE_COOKIE)?.value;
   if (!stateToken) throw new HttpError(400, 'state 쿠키가 없습니다. 로그인을 다시 시작하세요.');
-  cookies.delete(STATE_COOKIE, { path: COOKIE_BASE.path });
+  deleteCookie(cookies, STATE_COOKIE);
 
   let statePayload;
   try {
@@ -222,7 +232,9 @@ export async function completeLogin({ request, cookies }) {
 }
 
 export function clearSession({ cookies }) {
-  cookies.delete(SESSION_COOKIE, { path: COOKIE_BASE.path });
+  deleteCookie(cookies, SESSION_COOKIE);
+  // 로그인 도중이었다면 state 쿠키도 남아 있을 수 있다.
+  deleteCookie(cookies, STATE_COOKIE);
 }
 
 /** HttpError 를 JSON 응답으로. API 라우트의 catch 에서 쓴다. */
