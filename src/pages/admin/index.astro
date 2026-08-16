@@ -1,15 +1,18 @@
 ---
-// /admin 은 이 사이트에서 유일하게 SSR 로 도는 구간이다.
-// 실제 관리 UI 는 P2/P3 에서 채운다. 지금은 인증 배선 확인용 셸이다.
+// /admin — 관리 화면 셸.
+//
+// 데이터는 초기 HTML 에 넣지 않고 클라이언트가 /admin/api/bootstrap 으로 받아온다.
+// 콘텐츠에는 작성자가 넣은 인라인 HTML 이 들어 있어서, 서버 렌더 문자열에 섞으면
+// 이스케이프 실수 하나가 곧바로 취약점이 된다. 클라이언트에서 textContent 로만
+// 그리도록 경로를 하나로 좁혀 두는 편이 안전하다.
 export const prerender = false;
 
 import { requireSession, HttpError } from '../../lib/admin/auth.js';
+import '../../styles/admin.css';
 
-let session;
 try {
-  session = await requireSession(Astro);
+  await requireSession(Astro);
 } catch (err) {
-  // 로그인 안 됨 → 로그인 시작. 그 외(403 등)는 화면에 이유를 보여준다.
   if (err instanceof HttpError && err.status === 401) {
     return Astro.redirect('/admin/auth/login?returnTo=/admin', 302);
   }
@@ -29,14 +32,29 @@ try {
     <title>khhan.com 관리</title>
   </head>
   <body>
-    <h1>khhan.com 관리</h1>
-    <p>
-      <strong>{session.login}</strong> 으로 로그인되었습니다.
-      {session.dev && <em>(로컬 개발 우회)</em>}
-    </p>
-    <p>관리 UI 는 아직 준비 중입니다.</p>
-    <form method="POST" action="/admin/auth/logout">
-      <button type="submit">로그아웃</button>
-    </form>
+    <header class="topbar">
+      <h1>khhan.com 관리</h1>
+      <div class="meta">
+        <span id="login"></span>
+        <code id="repo"></code>
+        <code>main@<span id="basesha"></span></code>
+        <form method="POST" action="/admin/auth/logout">
+          <button type="submit">로그아웃</button>
+        </form>
+      </div>
+    </header>
+
+    <div id="warnings" hidden></div>
+
+    <div id="status">불러오는 중…</div>
+
+    <div id="app" class="layout" hidden>
+      <nav id="nav"></nav>
+      <main id="main"></main>
+    </div>
+
+    <script>
+      import '../../scripts/admin/app.js';
+    </script>
   </body>
 </html>

@@ -1,0 +1,283 @@
+/* /admin 전용 스타일. 공개 사이트의 style.css 와 분리해 서로 영향이 없게 한다. */
+:root {
+  --bg: #0f1117;
+  --surface: #171a23;
+  --card: #1e222e;
+  --accent: #4fc3f7;
+  --text: #e2e4ea;
+  --muted: #949aab;
+  --border: #2c3242;
+  --danger: #ff8a80;
+  --radius: 8px;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Pretendard', 'Noto Sans KR', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  font-size: 15px;
+}
+
+/* ── 상단 바 ── */
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.7rem 1.2rem;
+  background: rgba(15, 17, 23, 0.96);
+  border-bottom: 1px solid var(--border);
+}
+.topbar h1 {
+  font-size: 1rem;
+  color: var(--accent);
+  font-weight: 700;
+}
+.topbar .meta {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+.topbar code {
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+button {
+  font: inherit;
+  cursor: pointer;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--card);
+  color: var(--text);
+  padding: 0.35rem 0.7rem;
+}
+button:hover {
+  border-color: var(--accent);
+}
+
+/* ── 레이아웃 ── */
+.layout {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 1.5rem;
+  max-width: 1100px;
+  margin: 1.5rem auto;
+  padding: 0 1.2rem;
+  align-items: start;
+}
+@media (max-width: 760px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── 좌측 섹션 목록 ── */
+#nav {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  position: sticky;
+  top: 4rem;
+}
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  border: 1px solid transparent;
+  padding: 0.45rem 0.7rem;
+  color: var(--muted);
+}
+.nav-item:hover {
+  background: var(--surface);
+  color: var(--text);
+}
+.nav-item.active {
+  background: var(--surface);
+  border-color: var(--border);
+  color: var(--accent);
+  font-weight: 700;
+}
+.nav-item.missing .nav-label {
+  color: var(--danger);
+}
+.nav-label {
+  flex: 1;
+  min-width: 0;
+}
+.nav-count {
+  font-size: 0.75rem;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── 본문 ── */
+.main-head {
+  display: flex;
+  align-items: baseline;
+  gap: 0.8rem;
+  margin-bottom: 1rem;
+}
+.main-head h1 {
+  font-size: 1.35rem;
+}
+.filename {
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+.section {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 0.9rem 1rem;
+  margin-bottom: 0.9rem;
+}
+.section-head {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  margin-bottom: 0.6rem;
+}
+.section-head h2 {
+  font-size: 0.95rem;
+  color: var(--accent);
+}
+.count {
+  font-size: 0.75rem;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.items {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.item {
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--card);
+}
+.item > summary {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  padding: 0.45rem 0.7rem;
+  cursor: pointer;
+  list-style: none;
+}
+.item > summary::-webkit-details-marker {
+  display: none;
+}
+.item > summary::before {
+  content: '▸';
+  color: var(--muted);
+  font-size: 0.75rem;
+}
+.item[open] > summary::before {
+  content: '▾';
+}
+.item > summary:hover {
+  background: var(--surface);
+}
+.idx {
+  font-size: 0.72rem;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+  min-width: 1.6em;
+}
+.summary-text {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.item-detail {
+  padding: 0.5rem 0.8rem 0.7rem;
+  border-top: 1px solid var(--border);
+}
+.field {
+  display: grid;
+  grid-template-columns: 7rem 1fr;
+  gap: 0.6rem;
+  padding: 0.22rem 0;
+  align-items: start;
+}
+@media (max-width: 560px) {
+  .field {
+    grid-template-columns: 1fr;
+    gap: 0.1rem;
+  }
+}
+.field-label {
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+.field-value {
+  /* 콘텐츠에 인라인 HTML 원문이 들어 있으므로 줄바꿈을 보존해 그대로 보여준다 */
+  white-space: pre-wrap;
+  word-break: break-word;
+  font-size: 0.88rem;
+}
+.field-value.empty,
+.empty {
+  color: var(--muted);
+  font-style: italic;
+}
+
+.files {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+.file-chip {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.35rem;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 0.12rem 0.6rem;
+  font-size: 0.78rem;
+  max-width: 100%;
+}
+.file-url {
+  color: var(--muted);
+  font-size: 0.72rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+#warnings {
+  background: rgba(255, 138, 128, 0.08);
+  border: 1px solid var(--danger);
+  border-radius: var(--radius);
+  padding: 0.7rem 1rem;
+  margin: 0 1.2rem;
+  font-size: 0.85rem;
+}
+.error {
+  color: var(--danger);
+}
+#status {
+  padding: 2rem 1.2rem;
+  color: var(--muted);
+}
