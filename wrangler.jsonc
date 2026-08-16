@@ -18,8 +18,29 @@
     // directory 는 어댑터가 빌드 출력 구조(dist/client)에 맞춰 자동으로 채운다.
     "binding": "ASSETS",
     // 정적 파일이 없으면 dist/404.html 을 돌려준다.
-    "not_found_handling": "404-page"
+    "not_found_handling": "404-page",
+
+    // /admin 은 동적 경로이므로 자산 라우터를 아예 거치지 않게 한다.
+    // 안 그러면 자산 라우터가 먼저 404(=404.html)를 만들 수 있고, 그 404 는
+    // 엣지에 캐시된다(CF-Cache-Status: HIT 로 확인). 실제로 대시보드가 만든
+    // 빈 Worker 가 잠깐 모든 경로에 404 를 주던 시기가 있어, 일부 엣지가
+    // /admin → 404 를 물고 있었다.
+    "run_worker_first": ["/admin", "/admin/*"]
   },
+
+  // 공개해도 되는 설정값. 비밀은 여기 두지 않는다.
+  // 시크릿(GITHUB_OAUTH_SECRET / SESSION_SECRET / GITHUB_TOKEN)은
+  // `npx wrangler secret put <이름>` 으로 넣는다.
+  "vars": {
+    "GITHUB_OAUTH_CLIENT_ID": "Ov23liF8Y8IfjiAqwydg",
+    "ADMIN_ALLOWED_LOGINS": "gookiehan",
+    "GITHUB_REPO": "gookiehan/khhan.com"
+  },
+
+  // 프리뷰 URL 을 끈다. Workers 의 시크릿은 Worker 단위라 프리뷰 버전도 같은
+  // GITHUB_TOKEN 을 갖는데, 프리뷰 URL 은 별도 보호가 없다. requireSession 이
+  // 401 을 내므로 실제로 뚫리지는 않지만, 열어둘 이유가 없는 문이다.
+  "preview_urls": false,
 
   "observability": {
     "enabled": true

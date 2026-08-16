@@ -1,13 +1,27 @@
 ---
-// /admin 은 이 사이트에서 유일하게 SSR 로 도는 구간이다.
-// 실제 관리 UI 는 P2/P3 에서 채운다. 지금은 라우팅·인증 배선이 맞는지
-// 확인하기 위한 최소 셸이다.
+// /admin — 관리 화면 셸.
+//
+// 데이터는 초기 HTML 에 넣지 않고 클라이언트가 /admin/api/bootstrap 으로 받아온다.
+// 콘텐츠에는 작성자가 넣은 인라인 HTML 이 들어 있어서, 서버 렌더 문자열에 섞으면
+// 이스케이프 실수 하나가 곧바로 취약점이 된다. 클라이언트에서 textContent 로만
+// 그리도록 경로를 하나로 좁혀 두는 편이 안전하다.
 export const prerender = false;
 
-// Cloudflare Access 가 앞단에 붙으면 이 헤더가 주입된다.
-// (아직 Access 를 걸기 전이라 없을 수 있다 — 그건 정상)
-const accessEmail = Astro.request.headers.get('Cf-Access-Authenticated-User-Email');
-const hasAccessJwt = Astro.request.headers.get('Cf-Access-Jwt-Assertion') !== null;
+import { requireSession, HttpError } from '../../lib/admin/auth.js';
+import '../../styles/admin.css';
+
+try {
+  await requireSession(Astro);
+} catch (err) {
+  if (err instanceof HttpError && err.status === 401) {
+    return Astro.redirect('/admin/auth/login?returnTo=/admin', 302);
+  }
+  const status = err instanceof HttpError ? err.status : 500;
+  return new Response(`접근할 수 없습니다: ${err.message}`, {
+    status,
+    headers: { 'Content-Type': 'text/plain; charset=utf-8' },
+  });
+}
 ---
 
 <html lang="ko">
@@ -18,13 +32,37 @@ const hasAccessJwt = Astro.request.headers.get('Cf-Access-Jwt-Assertion') !== nu
     <title>khhan.com 관리</title>
   </head>
   <body>
-    <h1>khhan.com 관리</h1>
-    <p>SSR 라우트가 동작합니다. 관리 UI 는 아직 준비 중입니다.</p>
-    <dl>
-      <dt>Cf-Access-Authenticated-User-Email</dt>
-      <dd>{accessEmail ?? '(없음 — Access 미적용 상태)'}</dd>
-      <dt>Cf-Access-Jwt-Assertion</dt>
-      <dd>{hasAccessJwt ? '있음' : '(없음 — Access 미적용 상태)'}</dd>
-    </dl>
+    <header class="topbar">
+      <h1>khhan.com 관리</h1>
+      <div class="actions">
+        <span id="change-count" class="change-count">변경 없음</span>
+        <button type="button" id="btn-diff" disabled>변경사항 보기</button>
+        <button type="button" id="btn-discard" disabled>변경 버리기</button>
+        <button type="button" id="btn-publish" class="primary-btn" disabled>게시</button>
+      </div>
+      <div class="meta">
+        <span id="login"></span>
+        <code id="repo"></code>
+        <code>main@<span id="basesha"></span></code>
+        <form method="POST" action="/admin/auth/logout">
+          <button type="submit">로그아웃</button>
+        </form>
+      </div>
+    </header>
+
+    <div id="banner" hidden></div>
+    <div id="warnings" hidden></div>
+    <div id="panel" hidden></div>
+
+    <div id="status">불러오는 중…</div>
+
+    <div id="app" class="layout" hidden>
+      <nav id="nav"></nav>
+      <main id="main"></main>
+    </div>
+
+    <script>
+      import '../../scripts/admin/app.js';
+    </script>
   </body>
 </html>

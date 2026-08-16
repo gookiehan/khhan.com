@@ -1,24 +1,14 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import yaml from 'js-yaml';
+import { SCHEMA, MANAGED_FILES, getSectionScope, isListKind } from '../src/lib/content-schema.mjs';
 
 const root = process.cwd();
 const dataDir = path.join(root, 'src', 'data');
 
-const fileMap = {
-  qea: 'qea.yml',
-  education: 'education.yml',
-  career: 'career.yml',
-  research: 'research.yml',
-  awards: 'awards.yml',
-  activities: 'activities.yml',
-  publications: 'publications.yml',
-  patents: 'patents.yml',
-  honors: 'honors.yml',
-  ta: 'ta.yml',
-  clubs: 'clubs.yml',
-  profile: 'profile.yml',
-};
+// 파일 목록과 구조 지식은 모두 src/lib/content-schema.mjs 에서 온다.
+// /admin 의 렌더링·검증도 같은 스키마를 쓰므로, admin 이 통과시킨 내용은 여기서도 통과한다.
+const fileMap = Object.fromEntries(MANAGED_FILES.map((f) => [f.replace('.yml', ''), f]));
 
 const baselineInfo = {
   qea: 18,
@@ -79,60 +69,45 @@ function validateNoNullArrayItems(value, pathLabel, errors) {
   }
 }
 
-function ensureKey(obj, key, label, errors) {
-  if (!(key in obj)) errors.push(`[schema] ${label}: missing key "${key}"`);
-}
-
-function ensureArray(obj, key, label, errors) {
-  ensureKey(obj, key, label, errors);
-  if (key in obj && !isArray(obj[key])) {
-    errors.push(`[schema] ${label}.${key} must be an array`);
-  }
-}
-
+/**
+ * 스키마에서 파생한 구조 검사.
+ * 예전에는 12개 파일의 구조를 이 함수에 손으로 나열했는데, 같은 지식이
+ * khhan-admin 에도 따로 있어 어긋날 여지가 있었다. 이제 한 곳만 고치면 된다.
+ */
 function validateExpectedStructure(data, errors) {
-  ensureKey(data.qea, 'qeaAbstract', 'qea.yml', errors);
-  ensureKey(data.qea, 'qeaThesis', 'qea.yml', errors);
-  ensureArray(data.qea, 'qeaJournals', 'qea.yml', errors);
-  ensureArray(data.qea, 'qeaConferences', 'qea.yml', errors);
-  ensureArray(data.qea, 'qeaDomestic', 'qea.yml', errors);
-  ensureKey(data.qea, 'qeaPatent', 'qea.yml', errors);
+  for (const fileSchema of SCHEMA) {
+    const key = fileSchema.file.replace('.yml', '');
+    const parsed = data[key];
+    const label = fileSchema.file;
 
-  ensureArray(data.education, 'education', 'education.yml', errors);
-  ensureArray(data.career, 'career', 'career.yml', errors);
+    if (!isObject(parsed)) {
+      errors.push(`[schema] ${label}: top-level must be an object`);
+      continue;
+    }
 
-  ensureArray(data.research, 'researchInterests', 'research.yml', errors);
-  ensureArray(data.research, 'projects', 'research.yml', errors);
+    // activities.yml 처럼 한 겹 더 감싼 파일 처리
+    if (fileSchema.container && !isObject(parsed[fileSchema.container])) {
+      errors.push(`[schema] ${label}.${fileSchema.container} must be an object`);
+      continue;
+    }
+    const scope = getSectionScope(fileSchema.file, parsed);
+    const scopeLabel = fileSchema.container ? `${label}.${fileSchema.container}` : label;
 
-  ensureArray(data.awards, 'awards', 'awards.yml', errors);
-
-  ensureKey(data.activities, 'activities', 'activities.yml', errors);
-  if ('activities' in data.activities) {
-    const a = data.activities.activities;
-    if (!isObject(a)) {
-      errors.push('[schema] activities.yml.activities must be an object');
-    } else {
-      ['board', 'committee', 'standardization', 'invitedTalks', 'teaching', 'judges', 'reviewers'].forEach((key) => {
-        if (!(key in a)) {
-          errors.push(`[schema] activities.yml.activities: missing key "${key}"`);
-        } else if (!isArray(a[key])) {
-          errors.push(`[schema] activities.yml.activities.${key} must be an array`);
-        }
-      });
+    for (const section of fileSchema.sections) {
+      if (!(section.key in scope)) {
+        errors.push(`[schema] ${scopeLabel}: missing key "${section.key}"`);
+        continue;
+      }
+      const value = scope[section.key];
+      if (isListKind(section.kind)) {
+        if (!isArray(value)) errors.push(`[schema] ${scopeLabel}.${section.key} must be an array`);
+      } else if (section.kind === 'dict') {
+        if (!isObject(value)) errors.push(`[schema] ${scopeLabel}.${section.key} must be an object`);
+      } else if (section.kind === 'scalar') {
+        if (typeof value !== 'string') errors.push(`[schema] ${scopeLabel}.${section.key} must be a string`);
+      }
     }
   }
-
-  ['phdThesis', 'intlJournals', 'intlConferences', 'domesticPapers', 'magazineArticles', 'books'].forEach((key) => {
-    if (key === 'phdThesis') ensureKey(data.publications, key, 'publications.yml', errors);
-    else ensureArray(data.publications, key, 'publications.yml', errors);
-  });
-
-  ensureKey(data.patents, 'patentNote', 'patents.yml', errors);
-  ensureArray(data.patents, 'patentSearchUrls', 'patents.yml', errors);
-  ensureArray(data.honors, 'honors', 'honors.yml', errors);
-  ensureArray(data.ta, 'taActivities', 'ta.yml', errors);
-  ensureArray(data.clubs, 'clubs', 'clubs.yml', errors);
-  ensureKey(data.profile, 'scholarUrl', 'profile.yml', errors);
 }
 
 function collectFileNodes(value, pathLabel, output, errors) {

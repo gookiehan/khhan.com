@@ -16,36 +16,23 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
 import yaml from 'js-yaml';
+// 정규 포맷의 정의는 /admin 이 게시할 때 쓰는 것과 같아야 하므로 한 곳에서 가져온다.
+import { DUMP_OPTS, dumpYaml, toLf } from '../src/lib/admin/yaml.js';
 
 const root = process.cwd();
 const dataDir = path.join(root, 'src', 'data');
 
-// src/lib/admin/yaml.js 가 게시할 때 쓰는 옵션과 반드시 동일해야 한다.
-// 하나라도 어긋나면 게시할 때마다 포맷 드리프트가 되살아난다.
-export const DUMP_OPTS = {
-  noRefs: true, // 같은 문자열이 반복돼도 앵커/별칭(*ref)을 만들지 않는다
-  lineWidth: -1, // 줄 접힘 금지 → 항목 1개 = 라인 1개, git diff 가 사람이 읽힌다
-  indent: 2,
-  quotingType: '"',
-  forceQuotes: false, // ★ true 금지 — 한글/HTML 전체가 이스케이프 재작성돼 diff 폭발
-  sortKeys: false, // 키 순서 보존 (PyYAML sort_keys=False 대응)
-};
-
-export function dumpYaml(data) {
-  return yaml.dump(data, DUMP_OPTS);
-}
+export { DUMP_OPTS, dumpYaml };
 
 const files = fs
   .readdirSync(dataDir)
   .filter((name) => name.endsWith('.yml'))
   .sort();
 
-// 워킹트리는 core.autocrlf 때문에 CRLF일 수 있다. 줄바꿈 차이는 git이
-// .gitattributes(eol=lf)로 흡수하므로 "포맷 드리프트"로 세면 안 된다.
-// 안 그러면 Windows 체크아웃에서 --check 가 영원히 실패한다.
-function toLf(text) {
-  return text.replace(/\r\n/g, '\n');
-}
+// toLf 는 src/lib/admin/yaml.js 에서 가져온다. 워킹트리는 core.autocrlf 때문에
+// CRLF 일 수 있는데, 줄바꿈 차이는 git 이 .gitattributes(eol=lf)로 흡수하므로
+// "포맷 드리프트"로 세면 안 된다. 안 그러면 Windows 체크아웃에서 --check 가
+// 영원히 실패한다.
 
 function countChangedLines(before, after) {
   const a = before.split('\n');

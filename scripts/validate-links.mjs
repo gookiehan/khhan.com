@@ -1,6 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import yaml from 'js-yaml';
+import { MANAGED_FILES } from '../src/lib/content-schema.mjs';
 
 const root = process.cwd();
 const dataDir = path.join(root, 'src', 'data');
@@ -13,20 +14,8 @@ const baselineInfo = {
   missingLocalAssets: 0,
 };
 
-const yamlFiles = [
-  'qea.yml',
-  'education.yml',
-  'career.yml',
-  'research.yml',
-  'awards.yml',
-  'activities.yml',
-  'publications.yml',
-  'patents.yml',
-  'honors.yml',
-  'ta.yml',
-  'clubs.yml',
-  'profile.yml',
-];
+// 대상 파일 목록은 스키마에서 파생한다. 파일이 추가/제거되어도 여기를 고칠 필요가 없다.
+const yamlFiles = MANAGED_FILES;
 
 function isObject(value) {
   return typeof value === 'object' && value !== null && !Array.isArray(value);
