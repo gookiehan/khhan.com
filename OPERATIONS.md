@@ -42,7 +42,7 @@ npx wrangler deploy         # → /admin (수동)
 ### 관리 화면이 안 될 때
 
 - **로그인 후 되돌아옴** — GitHub 세션 문제. 시크릿 창에서 다시 시도
-- **`GITHUB_TOKEN 을 확인하세요`** — PAT 만료(90일). 재발급 후
+- **`GITHUB_TOKEN 을 확인하세요`** — PAT 문제. 재발급 후
   `npx wrangler secret put GITHUB_TOKEN`
 - **`main 이 그 사이 변경되었습니다` (409)** — 다른 곳에서 커밋이 들어온 경우.
   화면 안내대로 다시 불러온 뒤 재시도. 초안은 보존됨
@@ -62,8 +62,15 @@ git push origin main
 
 ## 0-1) 남은 작업 (참고)
 
-- **PAT 만료** — `GITHUB_TOKEN` 은 fine-grained PAT(Contents 권한, 90일).
-  만료되면 게시가 조용히 실패하므로 갱신 일정을 잡아둘 것.
+- **`GITHUB_TOKEN` (무기한 PAT)** — fine-grained PAT, `gookiehan/khhan.com` 의 Contents
+  읽기/쓰기 권한, **만료일 없음**. Cloudflare Worker 시크릿에만 있고 저장소에는 없다.
+  만료가 없으므로 관리 화면의 만료 경고도 뜨지 않는다(정상). 대신 **이 토큰의 존재를
+  상기시켜 줄 장치가 없으므로**, 아래 상황에서는 직접 폐기해야 한다는 점을 기억할 것:
+  - `/admin` 을 더 이상 쓰지 않게 될 때
+  - Cloudflare 계정이나 이 Worker 를 정리할 때
+  - 노트북·계정 유출이 의심될 때
+  폐기: https://github.com/settings/personal-access-tokens → Delete.
+  재발급 후에는 `npx wrangler secret put GITHUB_TOKEN` 으로 다시 등록.
 - **도메인 통합(P5)** — `khhan.com/admin` 으로 합치려면 DNS 를 Cloudflare 로 옮겨야 함.
   MX(`smtp.google.com`)·SPF·DKIM(`google._domainkey`)이 걸려 있어 **메일이 끊기지 않도록**
   레코드를 1:1 대조한 뒤 진행할 것. 옮긴 뒤에는 **`public/_headers` 의 noindex 를 반드시 삭제**
