@@ -8,7 +8,7 @@
  *   - schema  : 렌더링에 필요한 스키마 (클라이언트가 따로 가져오지 않도록)
  */
 import { requireSession, errorResponse, HttpError, env } from '../../../lib/admin/auth.js';
-import { getBranchSha, readDataFiles, getRateLimitRemaining } from '../../../lib/admin/github.js';
+import { getBranchSha, readDataFiles, getRateLimitRemaining, getTokenExpiry } from '../../../lib/admin/github.js';
 import { loadYaml } from '../../../lib/admin/yaml.js';
 import { SCHEMA, MANAGED_FILES } from '../../../lib/content-schema.mjs';
 
@@ -51,6 +51,7 @@ export async function GET(context) {
         files,
         warnings,
         rateLimitRemaining: getRateLimitRemaining(),
+        tokenExpiry: getTokenExpiry(),
       }),
       {
         headers: {

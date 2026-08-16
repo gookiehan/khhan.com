@@ -37,11 +37,27 @@ export function getRateLimitRemaining() {
   return lastRateLimitRemaining;
 }
 
+/**
+ * PAT 만료일. GitHub 이 응답 헤더로 알려준다(만료일이 설정된 토큰에 한함).
+ *
+ * 왜 필요한가: 이 토큰은 관리 화면의 거의 모든 동작에 쓰이므로, 만료되면 화면이
+ * 아예 열리지 않는다. 예고 없이 그렇게 되면 원인을 찾는 데 시간이 걸리므로,
+ * 미리 경고할 수 있게 값을 꺼내 둔다.
+ */
+let lastTokenExpiry = null;
+export function getTokenExpiry() {
+  return lastTokenExpiry;
+}
+
 async function api(pathname, init = {}) {
   const res = await fetch(`${API}${pathname}`, { ...init, headers: { ...headers(), ...(init.headers || {}) } });
 
   const remaining = res.headers.get('x-ratelimit-remaining');
   if (remaining !== null) lastRateLimitRemaining = Number(remaining);
+
+  // 만료일이 없는 토큰에는 이 헤더가 붙지 않는다. 없으면 그대로 둔다.
+  const expiry = res.headers.get('github-authentication-token-expiration');
+  if (expiry) lastTokenExpiry = expiry;
 
   if (!res.ok) {
     let detail = '';
