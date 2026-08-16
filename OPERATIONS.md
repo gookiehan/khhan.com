@@ -1,8 +1,80 @@
-# khhan.com 운영 매뉴얼 (VS Code + Codex + GitHub)
+# khhan.com 운영 매뉴얼
 
 이 문서는 `README.md`보다 실무 중심으로, 운영자가 그대로 복사해서 사용할 수 있는 절차를 정리한 문서입니다.
 
-## 1) 기본 운영 흐름
+---
+
+## 0) 콘텐츠 수정은 관리 화면에서 — 아래 절차는 코드 작업용
+
+**콘텐츠(수상·활동·논문·프로필 등) 추가·수정은 관리 화면에서 합니다.**
+
+> **https://khhan-com.gookie-han.workers.dev/admin**
+
+GitHub 계정(`gookiehan`)으로 로그인합니다. 편집 → `변경사항 보기` → `게시` 를 누르면
+`main` 에 커밋이 생기고, GitHub Actions 가 빌드해 1~2분 뒤 khhan.com 에 반영됩니다.
+이미지·PDF 는 첨부 편집기에 끌어놓으면 올라갑니다(10MB 이하, 이미지·PDF 만).
+
+**1절 이후의 브랜치·PR 절차는 코드나 디자인을 고칠 때만 씁니다.**
+콘텐츠 때문에 터미널을 열 일은 없습니다.
+
+### 지금의 구성 (이원 구조)
+
+| | 담당 | 갱신 방식 |
+|---|---|---|
+| 공개 사이트 `khhan.com` | GitHub Pages | `main` 푸시 → Actions 자동 배포 |
+| 관리 화면 `/admin` | Cloudflare Workers | 코드 변경 시 `npx wrangler deploy` 수동 |
+
+`/admin` 은 GitHub `main` 을 실시간으로 읽으므로 항상 최신입니다.
+다만 **workers.dev 주소로 열리는 공개 페이지는 배포 시점의 사본**이라 최신이 아닙니다.
+그래서 `public/_headers` 로 검색 색인을 막아 두었습니다(khhan.com 은 영향 없음).
+
+사이트를 볼 때는 `khhan.com`, 관리할 때는 `workers.dev/admin` 을 쓰면 됩니다.
+
+### 코드를 고쳤다면 배포가 두 번
+
+```bash
+git push origin main        # → khhan.com (Actions 자동)
+npx wrangler deploy         # → /admin (수동)
+```
+
+콘텐츠만 게시할 때는 해당 없습니다.
+
+### 관리 화면이 안 될 때
+
+- **로그인 후 되돌아옴** — GitHub 세션 문제. 시크릿 창에서 다시 시도
+- **`GITHUB_TOKEN 을 확인하세요`** — PAT 만료(90일). 재발급 후
+  `npx wrangler secret put GITHUB_TOKEN`
+- **`main 이 그 사이 변경되었습니다` (409)** — 다른 곳에서 커밋이 들어온 경우.
+  화면 안내대로 다시 불러온 뒤 재시도. 초안은 보존됨
+- **초안이 사라짐** — 초안은 브라우저 localStorage 에 있음. 다른 브라우저·기기에서는 안 보임
+
+### 잘못 게시했을 때
+
+git 커밋이므로 되돌리면 됩니다.
+
+```bash
+git switch main && git pull
+git revert <커밋 sha> --no-edit
+git push origin main
+```
+
+---
+
+## 0-1) 남은 작업 (참고)
+
+- **PAT 만료** — `GITHUB_TOKEN` 은 fine-grained PAT(Contents 권한, 90일).
+  만료되면 게시가 조용히 실패하므로 갱신 일정을 잡아둘 것.
+- **도메인 통합(P5)** — `khhan.com/admin` 으로 합치려면 DNS 를 Cloudflare 로 옮겨야 함.
+  MX(`smtp.google.com`)·SPF·DKIM(`google._domainkey`)이 걸려 있어 **메일이 끊기지 않도록**
+  레코드를 1:1 대조한 뒤 진행할 것. 옮긴 뒤에는 **`public/_headers` 의 noindex 를 반드시 삭제**
+  (khhan.com 자체를 Worker 가 서비스하게 되므로, 남아 있으면 사이트가 검색에서 사라짐).
+- **`@cloudflare/vite-plugin` override** — `package.json` 에 1.51.3 으로 고정해 둠.
+  최신 1.52.0 이 배포되지 않은 miniflare 알파를 참조해 설치가 실패하기 때문.
+  상류가 고쳐지면 override 를 제거할 것.
+
+---
+
+## 1) 기본 운영 흐름 (코드 작업용)
 
 1. `main` 최신화
 2. 새 작업 브랜치 생성
@@ -120,6 +192,9 @@ src/data/qea.yml 또는 src/data/research.yml에 자료 1건 추가해줘.
 ---
 
 ## 5) PDF/이미지 파일 추가 절차
+
+> 보통은 **관리 화면의 첨부 편집기에 끌어놓으면 됩니다**(0절 참고).
+> 파일명 정규화와 커밋까지 자동으로 처리됩니다. 아래는 손으로 할 때의 절차입니다.
 
 1. 파일을 아래 경로 중 하나에 추가
    - `assets/docs` (PDF 등 문서)
