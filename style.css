@@ -27,6 +27,9 @@ nav .brand { font-weight: 700; color: var(--accent); font-size: 1rem; margin-rig
 .hero { padding: 3.5rem 1.5rem 3.2rem; background: radial-gradient(ellipse 90% 65% at 50% 0%, rgba(79,195,247,.06) 0%, transparent 65%); }
 .hero h1 { font-size: 2rem; color: #fff; line-height: 1.15; }
 .hero p { color: var(--muted); margin-top: .5rem; }
+/* 히어로 링크 색. 예전에는 index.astro 에 style 속성으로 박혀 있었는데, 소속·직함이
+   profile.yml 로 옮겨가면서 살균(sanitizeRichText)이 style 을 제거하므로 여기로 옮겼다. */
+.hero a { color: var(--accent); }
 .hero-inner { max-width: 900px; margin: 0 auto; display: flex; align-items: flex-start; gap: 2.5rem; }
 .hero-text { flex: 1; min-width: 0; }
 .hero-photo-wrap { flex-shrink: 0; padding-top: .2rem; }
