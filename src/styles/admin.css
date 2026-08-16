@@ -411,6 +411,13 @@ button:disabled {
   gap: 0.5rem;
   font-size: 0.88rem;
 }
+/* ★ ID 선택자의 display 는 브라우저 기본 [hidden]{display:none} 을 이긴다.
+   이 규칙이 없으면 hidden 을 걸어도 빈 상자가 계속 보인다. */
+#banner[hidden],
+#panel[hidden],
+#warnings[hidden] {
+  display: none;
+}
 .panel-head {
   display: flex;
   align-items: center;
