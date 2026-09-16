@@ -175,7 +175,7 @@ domesticPapers:
     files:
       - url: assets/docs/20260916_93_103_01_a5296c.pdf
         icon: 📄
-        tip: 93-103 기술논문 01 한국현_최종
+        tip: PDF
   - citation: <b>Kuk-Hyun Han</b>, Jin Wook Baek, Sang-Yun Park, Tae Wan Lim and Jumin Park, "A case study on productivity innovation through convergence of sand 3D printing technology," <i>Journal of the Korean Society for Precision Engineering</i>, Vol. 38, No. 9, pp. 651-657, September 2021. <a href="http://doi.org/10.7736/JKSPE.021.073">DOI</a>
     files:
       - url: http://jkspe.kspe.or.kr/xml/30203/30203.pdf
