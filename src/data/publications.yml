@@ -171,6 +171,11 @@ intlConferences:
   - citation: <b>Kuk-Hyun Han</b>, Jung-Yi Choi, Hoon Kang, Pil-Soon Choi, Se-Joong Lee and Seok-Hyun Moon, "Micro-Robot Design and Strategy for MIROSOT," in <i>Proceedings of the 1996 Micro-Robot World Cup Soccer Tournament</i>, KAIST, pp. 49-52, November 1996.
     files: []
 domesticPapers:
+  - citation: "<b>Kuk-Hyun Han</b>, Tae Wan Lim, Ju Min Park, Seongsig Bahn, Hojun Goh and Seyun Kyoung, \"Conceptualization and Industrial Application of Digital Casting Based on Sand 3D Printing: Transferring Foundry Operations from Physical to Digital Space,\" <i>Journal of Korea Foundry Society</i>, Vol. 46, No. 4, pp. 93-103, August 2026. <a href=\"http://dx.doi.org/10.7777/jkfs.2026.46.4.93\">DOI</a>"
+    files:
+      - url: assets/docs/20260916_93_103_01_a5296c.pdf
+        icon: 📄
+        tip: 93-103 기술논문 01 한국현_최종
   - citation: <b>Kuk-Hyun Han</b>, Jin Wook Baek, Sang-Yun Park, Tae Wan Lim and Jumin Park, "A case study on productivity innovation through convergence of sand 3D printing technology," <i>Journal of the Korean Society for Precision Engineering</i>, Vol. 38, No. 9, pp. 651-657, September 2021. <a href="http://doi.org/10.7736/JKSPE.021.073">DOI</a>
     files:
       - url: http://jkspe.kspe.or.kr/xml/30203/30203.pdf
