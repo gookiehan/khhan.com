@@ -71,10 +71,12 @@ git push origin main
   - 노트북·계정 유출이 의심될 때
   폐기: https://github.com/settings/personal-access-tokens → Delete.
   재발급 후에는 `npx wrangler secret put GITHUB_TOKEN` 으로 다시 등록.
-- **도메인 통합(P5)** — `khhan.com/admin` 으로 합치려면 DNS 를 Cloudflare 로 옮겨야 함.
-  MX(`smtp.google.com`)·SPF·DKIM(`google._domainkey`)이 걸려 있어 **메일이 끊기지 않도록**
-  레코드를 1:1 대조한 뒤 진행할 것. 옮긴 뒤에는 **`public/_headers` 의 noindex 를 반드시 삭제**
-  (khhan.com 자체를 Worker 가 서비스하게 되므로, 남아 있으면 사이트가 검색에서 사라짐).
+- **도메인 통합(P5) — 하지 않기로 결정(종료)**. 관리 화면은 `khhan.com/admin` 이 아니라
+  workers.dev 주소(`/admin`)에서 계속 쓴다. 본인만 쓰는 화면이라 주소가 khhan.com 아래일
+  필요가 없고, DNS 는 가비아에 그대로 두어 GitHub Pages·메일(MX/SPF/DKIM) 설정을 건드리지 않는다.
+  `public/_headers` 의 noindex 는 workers.dev 사본용이므로 **그대로 유지**한다.
+  나중에 통합을 다시 검토한다면: DNS 를 Cloudflare 로 옮길 때 메일 레코드를 1:1 대조하고,
+  옮긴 뒤 `public/_headers` 의 noindex 를 반드시 삭제할 것(남아 있으면 사이트가 검색에서 사라짐).
 - **`@cloudflare/vite-plugin` override** — `package.json` 에 1.51.3 으로 고정해 둠.
   최신 1.52.0 이 배포되지 않은 miniflare 알파를 참조해 설치가 실패하기 때문.
   상류가 고쳐지면 override 를 제거할 것.
