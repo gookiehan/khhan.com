@@ -1,32 +1,26 @@
-﻿---
-import yaml from 'js-yaml';
-import Section from '../components/Section.astro';
-import FileLinks from '../components/FileLinks.astro';
-import ListSection from '../components/ListSection.astro';
-import QeaSection from '../components/QeaSection.astro';
-import PublicationsSection from '../components/PublicationsSection.astro';
-import ActivitiesSection from '../components/ActivitiesSection.astro';
-import { sanitizeRichText } from '../utils/richText.js';
+---
+import Section from './components/Section.astro';
+import FileLinks from './components/FileLinks.astro';
+import ListSection from './components/ListSection.astro';
+import QeaSection from './components/QeaSection.astro';
+import PublicationsSection from './components/PublicationsSection.astro';
+import ActivitiesSection from './components/ActivitiesSection.astro';
+import { sanitizeRichText } from '../../utils/richText.js';
+import { loadYaml } from '../../lib/content.js';
+// 테마 CSS 는 import './style.css' 로 넣지 않는다. 모든 테마 페이지가 [...slug].astro
+// 한 파일에서 만들어지므로, 그렇게 하면 Astro 가 모든 테마의 CSS 를 한 파일로 합쳐
+// 모든 페이지에 붙인다(테마끼리 스타일이 섞임). ?url 로 파일 주소만 받아 직접 링크한다.
+import styleHref from './style.css?url';
 
-// Vite 가 빌드 타임에 src/data/*.yml 을 문자열로 인라인한다.
-// node:fs + process.cwd() 를 쓰지 않으므로
-//   - astro 를 저장소 루트 밖에서 실행해도 깨지지 않고
-//   - Cloudflare 어댑터가 번들할 때 node 내장 모듈이 끼어들지 않는다.
-// 없는 파일명을 넘기면 빌드가 조용히 undefined 를 반환하지 않도록 즉시 던진다.
-const rawYaml = import.meta.glob('../data/*.yml', {
-  query: '?raw',
-  import: 'default',
-  eager: true,
-});
-
-function loadYaml(fileName) {
-  const key = `../data/${fileName}`;
-  const source = rawYaml[key];
-  if (source === undefined) {
-    throw new Error(`[index.astro] src/data/${fileName} 을 찾을 수 없습니다.`);
-  }
-  return yaml.load(source);
+// 2026.05 디자인(클래식 테마). 2026.09 테마 체계로 옮기면서 화면은 그대로 두고
+// 다음만 바꿨다:
+//   - 데이터 읽기를 src/lib/content.js 로 공통화
+//   - style.css 를 이 폴더로 옮겨 Astro 가 번들하게 함(예전엔 루트 → public 복사)
+//   - /preview/classic/ 에서 볼 때는 검색 제외(noindex)
+interface Props {
+  preview?: boolean;
 }
+const { preview = false } = Astro.props as Props;
 
 const qeaData = loadYaml('qea.yml');
 const educationData = loadYaml('education.yml');
@@ -179,7 +173,9 @@ const clubsItems = clubs.map((c) => ({
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>한국현 – Kuk-Hyun Han</title>
-    <link rel="stylesheet" href="style.css">
+    <meta name="khhan-theme" content="classic">
+    {preview && <meta name="robots" content="noindex, nofollow">}
+    <link rel="stylesheet" href={styleHref}>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
   </head>

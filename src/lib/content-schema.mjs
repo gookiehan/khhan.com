@@ -29,11 +29,17 @@
  *             (허용 태그는 src/utils/richText.js 의 sanitizeRichText 와 같다)
  *   url       한 줄 입력 + URL 형식 검사
  *
+ * field.options (선택)
+ *   [{ value, label }] 이 있으면 관리 화면이 목록 상자로 보여 주고, 검증은 그 값들만
+ *   허용한다. value 가 '' 인 선택지를 두면 "비워 둠"을 허용한다는 뜻이다.
+ *
  * required 는 실제 데이터의 출현율을 조사해 정했다. 100% 채워져 있고 의미상
  * 없으면 안 되는 것만 필수로 둔다. 예를 들어 career.desc 는 9건 중 1건만
  * 채워져 있어 선택이고, education.orgUrl 은 6/6 이지만 URL 없는 기관도 있을 수
  * 있으므로 선택으로 둔다.
  */
+
+import { THEMES } from '../themes/registry.mjs';
 
 /** 모든 files[] 원소의 구조. url 만 필수이고, 나머지는 FileLinks.astro 가 기본값을 준다. */
 export const FILE_FIELDS = [
@@ -53,6 +59,28 @@ const F = {
 };
 
 export const SCHEMA = [
+  {
+    // 어떤 디자인(테마)을 khhan.com 에 띄울지. 테마 목록은 src/themes/registry.mjs.
+    file: 'site.yml',
+    label: '사이트 설정',
+    sections: [
+      {
+        key: 'theme',
+        label: '디자인 테마',
+        kind: 'scalar',
+        fields: [
+          {
+            name: 'value',
+            label: '테마 (나머지는 khhan.com/preview/ 에서 미리보기)',
+            type: 'text',
+            required: true,
+            options: THEMES.map((t) => ({ value: t.id, label: t.label })),
+          },
+        ],
+      },
+    ],
+  },
+
   {
     // 사이트 첫 화면(히어로) 내용. 예전에는 index.astro 에 하드코딩되어 있어
     // 관리 화면에서 고칠 수 없었다.
@@ -96,6 +124,31 @@ export const SCHEMA = [
         kind: 'scalar',
         fields: [{ name: 'value', label: 'URL', type: 'url', required: true }],
       },
+      // 아래 셋은 2026.09 테마(paper)부터 쓴다. 클래식 테마는 보여 주지 않는다.
+      {
+        key: 'intro',
+        label: '소개문',
+        kind: 'scalar',
+        fields: [{ name: 'value', label: '소개문 (빈 줄로 문단 구분)', type: 'textarea' }],
+      },
+      {
+        key: 'highlights',
+        label: '대표 성과',
+        kind: 'list',
+        fields: [
+          { name: 'year', label: '연도', type: 'text' },
+          { name: 'title', label: '내용', type: 'richtext', required: true },
+        ],
+      },
+      {
+        key: 'links',
+        label: '외부 링크',
+        kind: 'list',
+        fields: [
+          { name: 'label', label: '이름', type: 'text', required: true },
+          { name: 'url', label: 'URL', type: 'url', required: true },
+        ],
+      },
     ],
   },
 
@@ -114,6 +167,18 @@ export const SCHEMA = [
           { name: 'org', label: '기관', type: 'text', required: true },
           { name: 'orgUrl', label: '기관 URL', type: 'url' },
           F.desc,
+          {
+            // 2026.09 테마가 학력을 "학위"와 "연수·과정"으로 나눠 보여 줄 때 쓴다.
+            // 비워 두면 제목(박사·석사·학사·고등학교)으로 자동 판단한다.
+            name: 'group',
+            label: '구분',
+            type: 'text',
+            options: [
+              { value: '', label: '자동' },
+              { value: 'degree', label: '학위·학교' },
+              { value: 'program', label: '연수·과정' },
+            ],
+          },
         ],
       },
     ],
@@ -286,6 +351,11 @@ export function getSectionScope(fileName, data) {
   const schema = getFileSchema(fileName);
   if (!schema || data == null) return undefined;
   return schema.container ? data[schema.container] : data;
+}
+
+/** 목록 상자 필드의 허용값. options 가 없으면 null(아무 값이나 허용). */
+export function optionValues(field) {
+  return Array.isArray(field?.options) ? field.options.map((o) => o.value) : null;
 }
 
 /** 리스트형 섹션인가 (list | list-scalar) */

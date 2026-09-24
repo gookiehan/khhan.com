@@ -1,0 +1,36 @@
+---
+// 소제목 + 목록. show 를 주면 앞의 몇 건만 펼쳐 두고 나머지는 "N건 더 보기" 로 접는다.
+// <details> 를 써서 스크립트 없이도 동작하고, 페이지 내 검색(Ctrl+F)도 접힌 내용을 찾는다.
+import Entry from './Entry.astro';
+import Cite from './Cite.astro';
+
+interface Props {
+  heading?: string;
+  id?: string;
+  type: 'entry' | 'cite';
+  items: any[];
+  show?: number;
+}
+const { heading, id, type, items = [], show } = Astro.props;
+const visible = show ? items.slice(0, show) : items;
+const rest = show ? items.slice(show) : [];
+const Item = type === 'cite' ? Cite : Entry;
+const itemProps = (it: any) => (type === 'cite' ? { item: it } : it);
+---
+
+{items.length > 0 && (
+  <div class="group" id={id}>
+    {heading && <h3>{heading}<span class="n">{items.length}</span></h3>}
+    <ul class:list={['list', `list-${type}`]}>
+      {visible.map((it) => <Item {...itemProps(it)} />)}
+    </ul>
+    {rest.length > 0 && (
+      <details class="more">
+        <summary><span class="closed">나머지 {rest.length}건 더 보기</span><span class="opened">접기</span></summary>
+        <ul class:list={['list', `list-${type}`]}>
+          {rest.map((it) => <Item {...itemProps(it)} />)}
+        </ul>
+      </details>
+    )}
+  </div>
+)}

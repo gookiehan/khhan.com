@@ -1,0 +1,17 @@
+---
+// 논문·저서 한 건(서지정보 + 첨부)
+import Refs from './Refs.astro';
+import { sanitizeRichText } from '../../../utils/richText.js';
+
+interface Props {
+  item?: { citation?: string; files?: Array<{ url: string; icon?: string; tip?: string }> };
+}
+const { item } = Astro.props;
+---
+
+{item?.citation && (
+  <li class="cite">
+    <p set:html={sanitizeRichText(item.citation)} />
+    <Refs files={item.files} />
+  </li>
+)}

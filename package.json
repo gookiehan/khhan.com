@@ -12,7 +12,9 @@
     "normalize:yaml": "node scripts/normalize-yaml.mjs",
     "dev": "npm run sync:static && astro dev",
     "build": "npm run sync:static && astro build",
-    "preview": "astro preview"
+    "preview": "astro preview",
+    "test": "node --test tests/unit.test.mjs",
+    "check:dist": "node scripts/check-dist.mjs"
   },
   "devDependencies": {
     "@astrojs/cloudflare": "^14.2.1",

@@ -9,7 +9,6 @@ const publicDataJs = path.join(publicDir, 'data.js');
 await mkdir(publicDir, { recursive: true });
 await rm(publicDataJs, { force: true });
 
-await copyFile(path.join(root, 'style.css'), path.join(publicDir, 'style.css'));
 await copyFile(path.join(root, 'CNAME'), path.join(publicDir, 'CNAME'));
 
 const publicAssets = path.join(publicDir, 'assets');

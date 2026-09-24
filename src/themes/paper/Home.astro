@@ -1,0 +1,375 @@
+---
+// 2026.09 디자인(페이퍼 테마) — "조용한 이력서".
+// 소개형 첫 화면(소개문·현재·대표 성과) + 한 페이지 이력. PC 는 왼쪽 고정 목차,
+// 휴대폰은 상단 "목차" 버튼. 링크는 이모지 대신 "PDF · 기사 · 영상" 글자로 표시.
+import Group from './components/Group.astro';
+import Cite from './components/Cite.astro';
+import { loadYaml } from '../../lib/content.js';
+import { sanitizeRichText } from '../../utils/richText.js';
+import { safeHref, splitName, plainText, paragraphs } from '../../lib/format.js';
+// 테마 CSS 는 import './style.css' 로 넣지 않는다. 모든 테마 페이지가 [...slug].astro
+// 한 파일에서 만들어지므로, 그렇게 하면 Astro 가 모든 테마의 CSS 를 한 파일로 합쳐
+// 모든 페이지에 붙인다(테마끼리 스타일이 섞임). ?url 로 파일 주소만 받아 직접 링크한다.
+import styleHref from './style.css?url';
+
+interface Props {
+  preview?: boolean;
+}
+const { preview = false } = Astro.props as Props;
+
+const profile = loadYaml('profile.yml');
+const { education } = loadYaml('education.yml');
+const { career } = loadYaml('career.yml');
+const { researchInterests, projects } = loadYaml('research.yml');
+const qea = loadYaml('qea.yml');
+const { awards } = loadYaml('awards.yml');
+const { activities } = loadYaml('activities.yml');
+const pubs = loadYaml('publications.yml');
+const patents = loadYaml('patents.yml');
+const { honors } = loadYaml('honors.yml');
+const { taActivities } = loadYaml('ta.yml');
+const { clubs } = loadYaml('clubs.yml');
+
+const esc = (v: unknown) =>
+  String(v ?? '')
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#39;');
+const list = <T,>(v: T[] | undefined | null): T[] => (Array.isArray(v) ? v : []);
+
+// ── 첫 화면 ──────────────────────────────────────────────
+const name = splitName(profile.name);
+const introParas = paragraphs(profile.intro);
+const affiliations = list<string>(profile.affiliations);
+const highlights = list<{ year?: string; title: string }>(profile.highlights).filter((h) => h?.title);
+const extLinks = [
+  { label: 'Google Scholar', url: profile.scholarUrl },
+  ...list<{ label: string; url: string }>(profile.links),
+]
+  .map((l) => ({ label: l?.label, href: safeHref(l?.url) }))
+  .filter((l) => l.label && l.href);
+const photo = safeHref(profile.photoUrl);
+
+// 빌드 날짜(한국 시간) = 마지막 게시 시점. 사이트가 관리되고 있다는 신호로 보여 준다.
+const today = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Seoul' }).format(new Date());
+const updated = today.replaceAll('-', '.');
+const year = today.slice(0, 4);
+
+// ── 학력: 학위·학교 / 연수·과정 ───────────────────────────
+const DEGREE_RE = /^(박사|석사|학사)|고등학교|ph\.?\s?d|master|bachelor/i;
+const eduItems = list<any>(education).map((e) => {
+  const href = safeHref(e.orgUrl);
+  const org = e.org ? (href ? `<a href="${esc(href)}">${esc(e.org)}</a>` : esc(e.org)) : '';
+  return {
+    group: e.group === 'degree' || e.group === 'program' ? e.group : DEGREE_RE.test(plainText(e.title)) ? 'degree' : 'program',
+    when: e.period,
+    titleHtml: e.title,
+    subHtml: [org, e.desc].filter(Boolean).join('<br>'),
+    files: e.files,
+  };
+});
+const degrees = eduItems.filter((e) => e.group === 'degree');
+const programs = eduItems.filter((e) => e.group === 'program');
+
+// ── 나머지 목록 ──────────────────────────────────────────
+const careerItems = list<any>(career).map((c) => ({ when: c.period, titleHtml: c.title, subHtml: c.desc, files: c.files }));
+const awardItems = list<any>(awards).map((a) => ({ when: a.date, titleHtml: a.title, files: a.files }));
+const projectItems = list<any>(projects).map((p) => ({
+  when: p.period,
+  titleHtml: p.title,
+  subHtml: [p.org, p.role && esc(p.role)].filter(Boolean).join(' · '),
+  files: p.files,
+}));
+const dated = (key: 'period' | 'date') => (x: any) => ({ when: x[key], titleHtml: x.title, files: x.files });
+const act = activities ?? {};
+const boardItems = list<any>(act.board).map(dated('period'));
+const committeeItems = list<any>(act.committee).map(dated('period'));
+const stdItems = list<any>(act.standardization).map(dated('period'));
+const talkItems = list<any>(act.invitedTalks).map(dated('date'));
+const teachingItems = list<any>(act.teaching).map(dated('date'));
+const judgeItems = list<any>(act.judges).map(dated('period'));
+const reviewers = list<string>(act.reviewers);
+const honorItems = list<any>(honors).map((h) => ({ titleHtml: h.title, files: h.files }));
+const taItems = list<any>(taActivities).map(dated('period'));
+const clubItems = list<any>(clubs).map((c) => ({ titleHtml: c.title, subHtml: c.desc, files: c.files }));
+
+const pubLists = {
+  intlJournals: list<any>(pubs.intlJournals),
+  intlConferences: list<any>(pubs.intlConferences),
+  domesticPapers: list<any>(pubs.domesticPapers),
+  magazineArticles: list<any>(pubs.magazineArticles),
+  books: list<any>(pubs.books),
+};
+const pubCount = (pubs.phdThesis?.citation ? 1 : 0) + Object.values(pubLists).reduce((n, l) => n + l.length, 0);
+const actCount = boardItems.length + committeeItems.length + stdItems.length + talkItems.length + teachingItems.length + judgeItems.length + reviewers.length;
+const moreCount = honorItems.length + taItems.length + clubItems.length;
+const patentLinks = list<any>(patents.patentSearchUrls)
+  .map((p) => ({ label: p?.label, href: safeHref(p?.url) }))
+  .filter((p) => p.label && p.href);
+
+const nav = [
+  { id: 'education', label: '학력', n: eduItems.length },
+  { id: 'career', label: '경력', n: careerItems.length },
+  { id: 'awards', label: '수상', n: awardItems.length },
+  { id: 'research', label: '연구', n: projectItems.length },
+  { id: 'publications', label: '논문·저서', n: pubCount },
+  { id: 'patents', label: '특허' },
+  { id: 'activities', label: '대외활동', n: actCount },
+  { id: 'more', label: '그 밖의 활동', n: moreCount },
+];
+
+const title = `${name.primary}${name.secondary ? ` (${name.secondary.replace(/,\s*Ph\.?D\.?$/i, '')})` : ''}`;
+const description = plainText(introParas[0] ?? profile.tagline).slice(0, 160);
+const ogImage = photo ? new URL(photo, 'https://khhan.com').href : null;
+---
+
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="khhan-theme" content="paper" />
+    {preview ? <meta name="robots" content="noindex, nofollow" /> : <link rel="canonical" href="https://khhan.com/" />}
+    <meta property="og:type" content="profile" />
+    <meta property="og:locale" content="ko_KR" />
+    <meta property="og:site_name" content="khhan.com" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content="https://khhan.com/" />
+    {ogImage && <meta property="og:image" content={ogImage} />}
+    <meta name="theme-color" content="#fbfbfa" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#141619" media="(prefers-color-scheme: dark)" />
+    <link rel="stylesheet" href={styleHref} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+KR:wght@400;500;600&display=swap" />
+  </head>
+
+  <body>
+    <a class="skip" href="#main">본문으로 건너뛰기</a>
+
+    <!-- 휴대폰·태블릿: 상단 막대 + 목차 -->
+    <header class="bar">
+      <a class="bar-name" href="#top">{name.primary}</a>
+      <details class="toc-m">
+        <summary>목차</summary>
+        <nav aria-label="목차">
+          <ul>
+            {nav.map((s) => <li><a href={`#${s.id}`}>{s.label}{s.n ? <span class="n">{s.n}</span> : null}</a></li>)}
+          </ul>
+        </nav>
+      </details>
+    </header>
+
+    <div class="page">
+      <!-- PC: 왼쪽 고정 목차 -->
+      <aside class="index" aria-label="목차">
+        <a class="index-name" href="#top">{name.primary}</a>
+        <ul>
+          {nav.map((s) => <li><a href={`#${s.id}`} data-spy={s.id}><span>{s.label}</span>{s.n ? <span class="n">{s.n}</span> : null}</a></li>)}
+        </ul>
+      </aside>
+
+      <main id="main">
+        <header class="hero" id="top">
+          <div class="id">
+            <h1>{name.primary}{name.secondary && <span class="en">{name.secondary}</span>}</h1>
+            {profile.tagline && <p class="tagline">{profile.tagline}</p>}
+          </div>
+          {photo && <img class="photo" src={photo} alt={profile.photoAlt || name.primary} width="120" height="152" loading="eager" decoding="async" />}
+
+          {introParas.length > 0 && (
+            <div class="intro">
+              {introParas.map((p) => <p>{p}</p>)}
+            </div>
+          )}
+
+          <div class="facts">
+            {affiliations.length > 0 && (
+              <section class="fact" aria-labelledby="h-now">
+                <h2 id="h-now" class="label">현재</h2>
+                <ul class="now-list">
+                  {affiliations.map((a) => <li set:html={sanitizeRichText(a)} />)}
+                </ul>
+              </section>
+            )}
+            {highlights.length > 0 && (
+              <section class="fact" aria-labelledby="h-hl">
+                <h2 id="h-hl" class="label">대표 성과</h2>
+                <ul class="hl-list">
+                  {highlights.map((h) => (
+                    <li>{h.year && <span class="y">{h.year}</span>}<span set:html={sanitizeRichText(h.title)} /></li>
+                  ))}
+                </ul>
+              </section>
+            )}
+          </div>
+
+          <div class="hero-foot">
+            {extLinks.length > 0 && (
+              <ul class="ext">
+                {extLinks.map((l) => <li><a href={l.href} target="_blank" rel="noopener noreferrer">{l.label}</a></li>)}
+              </ul>
+            )}
+            <p class="rev">최종 갱신 <time datetime={today}>{updated}</time></p>
+          </div>
+        </header>
+
+        <section class="sec" id="education" aria-labelledby="h-education">
+          <h2 id="h-education">학력<span class="n">{eduItems.length}</span></h2>
+          <Group heading={programs.length ? '학위·학교' : undefined} type="entry" items={degrees} />
+          <Group heading="연수·과정" type="entry" items={programs} />
+        </section>
+
+        <section class="sec" id="career" aria-labelledby="h-career">
+          <h2 id="h-career">경력<span class="n">{careerItems.length}</span></h2>
+          <Group type="entry" items={careerItems} />
+        </section>
+
+        <section class="sec" id="awards" aria-labelledby="h-awards">
+          <h2 id="h-awards">수상<span class="n">{awardItems.length}</span></h2>
+          <Group type="entry" items={awardItems} show={8} />
+        </section>
+
+        <section class="sec" id="research" aria-labelledby="h-research">
+          <h2 id="h-research">연구</h2>
+          {list(researchInterests).length > 0 && (
+            <div class="group">
+              <h3>관심 분야</h3>
+              <ul class="inline-list">{list<string>(researchInterests).map((t) => <li>{t}</li>)}</ul>
+            </div>
+          )}
+          <Group heading="연구과제" type="entry" items={projectItems} show={5} />
+
+          <div class="group feature" id="qea">
+            <h3>대표 연구 · QEA<span class="sub-h">Quantum-inspired Evolutionary Algorithm</span></h3>
+            {qea.qeaAbstract && <p class="abstract" lang="en">{qea.qeaAbstract}</p>}
+            {qea.qeaThesis?.citation && (
+              <>
+                <h4>박사학위논문</h4>
+                <ul class="list list-cite"><Cite item={qea.qeaThesis} /></ul>
+              </>
+            )}
+            <Group heading="학술지 논문" type="cite" items={list(qea.qeaJournals)} />
+            <Group heading="학술대회 논문" type="cite" items={list(qea.qeaConferences)} show={3} />
+            <Group heading="국내 학술대회 논문" type="cite" items={list(qea.qeaDomestic)} />
+            {qea.qeaPatent?.citation && (
+              <>
+                <h4>특허</h4>
+                <ul class="list list-cite"><Cite item={qea.qeaPatent} /></ul>
+              </>
+            )}
+          </div>
+        </section>
+
+        <section class="sec" id="publications" aria-labelledby="h-publications">
+          <h2 id="h-publications">논문·저서<span class="n">{pubCount}</span></h2>
+          {pubs.phdThesis?.citation && (
+            <div class="group">
+              <h3>박사학위논문</h3>
+              <ul class="list list-cite"><Cite item={pubs.phdThesis} /></ul>
+            </div>
+          )}
+          <Group heading="국제 학술지 논문" type="cite" items={pubLists.intlJournals} />
+          <Group heading="국제 학술대회 논문" type="cite" items={pubLists.intlConferences} show={3} />
+          <Group heading="국내 학술대회·학술지 논문" type="cite" items={pubLists.domesticPapers} show={3} />
+          <Group heading="기고" type="cite" items={pubLists.magazineArticles} show={3} />
+          <Group heading="저서" type="cite" items={pubLists.books} />
+        </section>
+
+        <section class="sec" id="patents" aria-labelledby="h-patents">
+          <h2 id="h-patents">특허</h2>
+          {patents.patentNote && <p class="note" lang="en">{patents.patentNote}</p>}
+          {patentLinks.length > 0 && (
+            <ul class="link-list">
+              {patentLinks.map((p) => <li><a href={p.href} target="_blank" rel="noopener noreferrer">{p.label}</a></li>)}
+            </ul>
+          )}
+        </section>
+
+        <section class="sec" id="activities" aria-labelledby="h-activities">
+          <h2 id="h-activities">대외활동<span class="n">{actCount}</span></h2>
+          <Group heading="학회·기관 이사" type="entry" items={boardItems} />
+          <Group heading="자문·위원" type="entry" items={committeeItems} />
+          <Group heading="표준화" type="entry" items={stdItems} />
+          <Group heading="초청 강연" type="entry" items={talkItems} show={5} />
+          <Group heading="강의" type="entry" items={teachingItems} show={3} />
+          <Group heading="심사·프로그램위원" type="entry" items={judgeItems} />
+          {reviewers.length > 0 && (
+            <div class="group">
+              <h3>학술지 심사<span class="n">{reviewers.length}</span></h3>
+              <ul class="plain-list">{reviewers.map((r) => <li set:html={sanitizeRichText(r)} />)}</ul>
+            </div>
+          )}
+        </section>
+
+        <section class="sec" id="more" aria-labelledby="h-more">
+          <h2 id="h-more">그 밖의 활동<span class="n">{moreCount}</span></h2>
+          <Group heading="인명사전 등재" type="entry" items={honorItems} show={3} />
+          <Group heading="조교" type="entry" items={taItems} show={3} />
+          <Group heading="동아리" type="entry" items={clubItems} />
+        </section>
+
+        <footer class="foot">
+          <p>© {year} {name.primary}{name.secondary ? ` (${name.secondary.replace(/,\s*Ph\.?D\.?$/i, '')})` : ''}</p>
+          <p><a href="#top">맨 위로</a></p>
+        </footer>
+      </main>
+    </div>
+
+    <script is:inline>
+      (function () {
+        // 휴대폰 목차: 항목을 누르거나 바깥을 누르거나 Esc 를 누르면 닫는다.
+        var menu = document.querySelector('.toc-m');
+        if (menu) {
+          menu.addEventListener('click', function (e) {
+            if (e.target.closest && e.target.closest('a')) menu.open = false;
+          });
+          document.addEventListener('click', function (e) {
+            if (menu.open && !menu.contains(e.target)) menu.open = false;
+          });
+          document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape' && menu.open) {
+              menu.open = false;
+              menu.querySelector('summary').focus();
+            }
+          });
+        }
+
+        // PC 목차: 지금 읽고 있는 섹션 표시
+        var links = document.querySelectorAll('[data-spy]');
+        if ('IntersectionObserver' in window && links.length) {
+          var byId = {};
+          links.forEach(function (a) { byId[a.getAttribute('data-spy')] = a; });
+          var io = new IntersectionObserver(function (entries) {
+            entries.forEach(function (en) {
+              if (!en.isIntersecting) return;
+              links.forEach(function (a) { a.removeAttribute('aria-current'); });
+              var a = byId[en.target.id];
+              if (a) a.setAttribute('aria-current', 'true');
+            });
+          }, { rootMargin: '-20% 0px -70% 0px' });
+          Object.keys(byId).forEach(function (id) {
+            var s = document.getElementById(id);
+            if (s) io.observe(s);
+          });
+        }
+
+        // 인쇄할 때는 접힌 목록을 모두 펼친다.
+        window.addEventListener('beforeprint', function () {
+          document.querySelectorAll('details.more').forEach(function (d) {
+            if (!d.open) { d.open = true; d.setAttribute('data-print-opened', ''); }
+          });
+        });
+        window.addEventListener('afterprint', function () {
+          document.querySelectorAll('details[data-print-opened]').forEach(function (d) {
+            d.open = false; d.removeAttribute('data-print-opened');
+          });
+        });
+      })();
+    </script>
+  </body>
+</html>
