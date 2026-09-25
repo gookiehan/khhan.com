@@ -44,10 +44,9 @@ const name = splitName(profile.name);
 const introParas = paragraphs(profile.intro);
 const affiliations = list<string>(profile.affiliations);
 const highlights = list<{ year?: string; title: string }>(profile.highlights).filter((h) => h?.title);
-const extLinks = [
-  { label: 'Google Scholar', url: profile.scholarUrl },
-  ...list<{ label: string; url: string }>(profile.links),
-]
+// Google Scholar 는 이름 아래(소속 다음)에, 나머지 외부 링크는 첫 화면 맨 아래에 둔다.
+const scholarHref = safeHref(profile.scholarUrl);
+const extLinks = list<{ label: string; url: string }>(profile.links)
   .map((l) => ({ label: l?.label, href: safeHref(l?.url) }))
   .filter((l) => l.label && l.href);
 const photo = safeHref(profile.photoUrl);
@@ -178,6 +177,14 @@ const ogImage = photo ? new URL(photo, 'https://khhan.com').href : null;
           <div class="id">
             <h1>{name.primary}{name.secondary && <span class="en">{name.secondary}</span>}</h1>
             {profile.tagline && <p class="tagline">{profile.tagline}</p>}
+            {affiliations.length > 0 && (
+              <ul class="affil" aria-label="현재 소속·직함">
+                {affiliations.map((a) => <li set:html={sanitizeRichText(a)} />)}
+              </ul>
+            )}
+            {scholarHref && (
+              <p class="scholar"><a href={scholarHref} target="_blank" rel="noopener noreferrer">Google Scholar</a></p>
+            )}
           </div>
           {photo && <img class="photo" src={photo} alt={profile.photoAlt || name.primary} width="120" height="152" loading="eager" decoding="async" />}
 
@@ -188,14 +195,6 @@ const ogImage = photo ? new URL(photo, 'https://khhan.com').href : null;
           )}
 
           <div class="facts">
-            {affiliations.length > 0 && (
-              <section class="fact" aria-labelledby="h-now">
-                <h2 id="h-now" class="label">현재</h2>
-                <ul class="now-list">
-                  {affiliations.map((a) => <li set:html={sanitizeRichText(a)} />)}
-                </ul>
-              </section>
-            )}
             {highlights.length > 0 && (
               <section class="fact" aria-labelledby="h-hl">
                 <h2 id="h-hl" class="label">대표 성과</h2>
