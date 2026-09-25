@@ -110,9 +110,11 @@ git push origin main
   `public/_headers` 의 noindex 는 workers.dev 사본용이므로 **그대로 유지**한다.
   나중에 통합을 다시 검토한다면: DNS 를 Cloudflare 로 옮길 때 메일 레코드를 1:1 대조하고,
   옮긴 뒤 `public/_headers` 의 noindex 를 반드시 삭제할 것(남아 있으면 사이트가 검색에서 사라짐).
-- **`@cloudflare/vite-plugin` override** — `package.json` 에 1.51.3 으로 고정해 둠.
-  최신 1.52.0 이 배포되지 않은 miniflare 알파를 참조해 설치가 실패하기 때문.
-  상류가 고쳐지면 override 를 제거할 것.
+- **의존성 보안 점검** — 가끔 `npm audit` 으로 확인하고, 호환 범위 업데이트(`npm update` /
+  `npm audit fix`) 후 `npm test` → `npm run build` → `npm run check:dist` 로 확인한다.
+  2026-09-25 에 astro 7.3.5, wrangler 4.140, sanitize-html 2.17.7, js-yaml 4.3.2 등으로 올려
+  취약점 0건. 예전에 1.51.3 으로 고정했던 `@cloudflare/vite-plugin` override 는 상류가 고쳐져
+  이때 제거했다(1.60.1).
 
 ---
 
