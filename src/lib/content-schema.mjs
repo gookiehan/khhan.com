@@ -168,7 +168,7 @@ export const SCHEMA = [
           { name: 'orgUrl', label: '기관 URL', type: 'url' },
           F.desc,
           {
-            // 2026.09 테마가 학력을 "학위"와 "연수·과정"으로 나눠 보여 줄 때 쓴다.
+            // 2026.09 테마가 학력을 "학위"와 "리더십 과정"으로 나눠 보여 줄 때 쓴다.
             // 비워 두면 제목(박사·석사·학사·고등학교)으로 자동 판단한다.
             name: 'group',
             label: '구분',
@@ -176,7 +176,7 @@ export const SCHEMA = [
             options: [
               { value: '', label: '자동' },
               { value: 'degree', label: '학위·학교' },
-              { value: 'program', label: '연수·과정' },
+              { value: 'program', label: '리더십 과정' },
             ],
           },
         ],
