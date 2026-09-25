@@ -222,13 +222,16 @@ function filesEditor(item, rerender) {
   picker.hidden = true;
 
   async function upload(fileList) {
+    // 업로드가 끝날 때까지 편집 화면 전체를 잠근다. 결과는 지금 열린 편집기의 사본(working)에
+    // 들어가는데, 그 사이 취소하거나 다른 섹션으로 옮기면 사본이 버려져 첨부가 사라지기 때문이다.
+    // 게시·버리기도 함께 막힌다(renderToolbar 가 state.uploading 을 본다).
     state.uploading += 1;
-    renderToolbar();
+    setBusy(true);
     try {
       await uploadAll(fileList);
     } finally {
       state.uploading -= 1;
-      renderToolbar();
+      setBusy(false);
     }
   }
 
@@ -671,8 +674,10 @@ async function postJson(url, body) {
 }
 
 /**
- * 게시하는 동안 편집 화면을 잠근다. 요청을 보낸 뒤 고친 내용은 게시에 들어가지 않는데,
- * 게시가 끝나면 초안을 비우고 다시 불러오므로 그 편집이 조용히 사라지기 때문이다.
+ * 게시하거나 첨부를 올리는 동안 편집 화면을 잠근다.
+ * - 게시: 요청을 보낸 뒤 고친 내용은 게시에 들어가지 않는데, 게시가 끝나면 초안을 비우고
+ *   다시 불러오므로 그 편집이 조용히 사라진다.
+ * - 업로드: 결과가 열린 편집기의 사본에 들어가므로, 그 사이 편집기를 닫으면 첨부가 사라진다.
  */
 function setBusy(busy) {
   for (const id of ['nav', 'main', 'banner']) {
@@ -966,7 +971,7 @@ document.getElementById('btn-discard').addEventListener('click', discard);
 
 // 게시하지 않은 변경이 있으면 실수로 닫는 것을 막는다.
 window.addEventListener('beforeunload', (e) => {
-  if (dirtyFiles().length > 0) {
+  if (dirtyFiles().length > 0 || state.uploading > 0) {
     e.preventDefault();
     e.returnValue = '';
   }
