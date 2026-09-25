@@ -261,7 +261,10 @@ main { min-width: 0; }
   line-height: 1.75;
   color: var(--sub);
 }
-.affil li { display: inline; }
+/* 항목(예: "한국주조공학회 부회장")은 한 덩어리로 두어 중간에서 줄이 바뀌지 않게 한다.
+   줄이 모자라면 항목째 다음 줄로 넘어가고, 항목이 한 줄보다 길 때만 그 안에서 줄바꿈된다
+   (max-width). 데이터를 고치거나 추가해도 따로 손볼 필요가 없다. */
+.affil li { display: inline-block; max-width: 100%; }
 /* 구분선은 항목 글자(span)에 붙여 둔다. 줄은 폭에 따라 자연스럽게 바뀌되(강제 줄바꿈 없음),
    구분선은 항상 앞 항목 끝에 남아 다음 줄 맨 앞에 오지 않는다. */
 .affil li:not(:last-child) > span::after {
