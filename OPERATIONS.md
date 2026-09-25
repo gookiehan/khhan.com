@@ -60,6 +60,39 @@ git push origin main
 
 ---
 
+## 0-0) 디자인(테마) 바꾸기
+
+사이트의 디자인과 페이지 구성은 **테마** 단위로 보관합니다. 콘텐츠(YAML)는 모든 테마가
+같이 쓰므로, 테마를 바꿔도 내용은 그대로입니다.
+
+| 테마 | 내용 |
+|---|---|
+| `classic` | 2026.05 디자인. 어두운 배경, 한 페이지 |
+| `paper` | 2026.09 디자인. 밝은 이력서형, 소개문·대표 성과가 있는 첫 화면 + 한 페이지 |
+
+- **미리보기**: 모든 테마가 늘 함께 배포됩니다. https://khhan.com/preview/ 에서 골라 볼 수 있고,
+  검색에는 잡히지 않습니다(noindex).
+- **바꾸는 법**: 관리 화면 → **사이트 설정 → 디자인 테마** 에서 고르고 게시. 1~2분 뒤 khhan.com 에 반영.
+  (터미널로 한다면 `src/data/site.yml` 의 `theme:` 한 줄을 바꿔 커밋)
+- **되돌리기**: 같은 방법으로 예전 테마를 고르면 됩니다. 예전 테마는 지우지 않고 계속 남겨 둡니다.
+- 관리 화면의 **프로필 → 소개문 / 대표 성과 / 외부 링크** 는 `paper` 테마부터 보입니다.
+  학력 항목의 **구분**(학위·학교 / 연수·과정)은 비워 두면 제목을 보고 자동으로 나눕니다.
+
+### 새 테마를 추가할 때 (코드 작업)
+
+1. `src/themes/<id>/Home.astro` 를 만든다(기존 테마 폴더를 복사해 시작하면 편함).
+   CSS 는 `import styleHref from './style.css?url'` 로 받아 `<link>` 로 넣는다
+   (`import './style.css'` 로 넣으면 모든 테마의 CSS 가 한 파일로 합쳐져 섞인다).
+2. `src/themes/registry.mjs` 의 `THEMES` 에 한 줄, `src/themes/index.js` 의 `PAGES` 에 페이지 목록 추가.
+   여러 페이지짜리 구성이면 `PAGES` 에 `{ slug: 'cv', component: … }` 처럼 더 넣는다.
+3. 콘텐츠 항목이 새로 필요하면 `src/lib/content-schema.mjs` 에 **비워 둬도 되는 항목**으로 추가한다
+   (예전 테마가 깨지지 않게). 관리 화면은 스키마를 따라 자동으로 입력 칸이 생긴다.
+4. `npm test` → `npm run build` → `npm run check:dist` 통과 확인. `/preview/<id>/` 에서 확인 후 전환.
+5. 스키마를 바꿨다면 `main` 에 push 한 **다음** `npx wrangler deploy` (관리 화면 갱신).
+   순서가 바뀌면 관리 화면이 아직 없는 파일을 찾거나, 옛 관리 화면이 새 항목을 "스키마에 없는 항목"으로 거부한다.
+
+---
+
 ## 0-1) 남은 작업 (참고)
 
 - **`GITHUB_TOKEN` (무기한 PAT)** — fine-grained PAT, `gookiehan/khhan.com` 의 Contents

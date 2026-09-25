@@ -33,8 +33,14 @@ jobs:
       - name: Validate content and links
         run: npm run validate
 
+      - name: Unit tests
+        run: npm test
+
       - name: Build
         run: npm run build
+
+      - name: Check build output (pages, links, noindex on previews)
+        run: npm run check:dist
 
       - name: Verify CNAME in dist
         run: |

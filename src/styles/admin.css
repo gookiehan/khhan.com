@@ -337,6 +337,7 @@ button:disabled {
   margin-bottom: 0.6rem;
 }
 .field-edit input,
+.field-edit select,
 .field-edit textarea {
   display: block;
   width: 100%;
@@ -354,6 +355,7 @@ button:disabled {
   resize: vertical;
 }
 .field-edit input:focus,
+.field-edit select:focus,
 .field-edit textarea:focus {
   outline: none;
   border-color: var(--accent);

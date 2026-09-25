@@ -1,0 +1,19 @@
+---
+// 공개 페이지는 모두 여기서 테마로 넘긴다. 어느 테마를 쓸지는 src/data/site.yml.
+// /admin 은 src/pages/admin/ 의 더 구체적인 경로가 먼저 잡으므로 여기로 오지 않는다.
+import { buildThemeRoutes, getPageComponent } from '../themes/index.js';
+
+export function getStaticPaths() {
+  return buildThemeRoutes();
+}
+
+interface Props {
+  themeId: string;
+  slug: string;
+  preview: boolean;
+}
+const { themeId, slug, preview } = Astro.props as Props;
+const Page = getPageComponent(themeId, slug);
+---
+
+<Page preview={preview} />

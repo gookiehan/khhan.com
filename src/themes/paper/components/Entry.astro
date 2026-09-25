@@ -1,0 +1,24 @@
+---
+// 날짜 열 + 내용 한 줄. 날짜가 없는 항목(인명사전 등재, 동아리)은 nodate.
+import Refs from './Refs.astro';
+import { sanitizeRichText } from '../../../utils/richText.js';
+import { formatPeriod, isOngoing } from '../../../lib/format.js';
+
+interface Props {
+  when?: string;
+  titleHtml: string;
+  subHtml?: string;
+  files?: Array<{ url: string; icon?: string; tip?: string }>;
+}
+const { when, titleHtml, subHtml, files } = Astro.props;
+const period = formatPeriod(when);
+---
+
+<li class:list={['ent', { nodate: !period }]}>
+  {period && <span class:list={['when', { now: isOngoing(when) }]}>{period}</span>}
+  <div class="body">
+    <p class="what" set:html={sanitizeRichText(titleHtml)} />
+    {subHtml && <p class="sub" set:html={sanitizeRichText(subHtml)} />}
+    <Refs files={files} />
+  </div>
+</li>

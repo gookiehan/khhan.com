@@ -116,6 +116,24 @@ function fieldInput(field, value, onInput) {
   const labelText = field.label + (field.required ? ' *' : '');
   wrap.appendChild(el('span', 'field-label', labelText));
 
+  // 선택지가 정해진 필드(사이트 테마 등)는 목록 상자로. 검증도 이 값들만 허용한다.
+  if (Array.isArray(field.options)) {
+    const select = el('select');
+    const current = value ?? '';
+    const values = field.options.map((o) => o.value);
+    // 데이터에 목록에 없는 값이 들어 있으면 지우지 말고 그대로 보여 준다(게시 전 검증이 알려 줌).
+    const options = values.includes(current) ? field.options : [...field.options, { value: current, label: `${current} (알 수 없는 값)` }];
+    for (const o of options) {
+      const opt = el('option', null, o.label);
+      opt.value = o.value;
+      if (o.value === current) opt.selected = true;
+      select.appendChild(opt);
+    }
+    select.addEventListener('change', () => onInput(select.value));
+    wrap.appendChild(select);
+    return wrap;
+  }
+
   const multiline = field.type === 'textarea' || field.type === 'richtext';
   const input = multiline ? el('textarea') : el('input');
   if (!multiline) input.type = 'text';

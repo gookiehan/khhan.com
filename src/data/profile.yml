@@ -9,3 +9,27 @@ affiliations:
 photoUrl: /assets/images/profile.jpg
 photoAlt: 한국현 (Kuk-Hyun Han)
 scholarUrl: https://scholar.google.co.kr/citations?user=xvZ1DRwAAAAJ&hl=ko
+intro: |-
+  KAIST 전기및전자공학 전공으로 학사·석사·박사 학위를 받았고, 박사과정에서는 양자 컴퓨팅의 원리를 진화 알고리즘에 접목한 QEA(Quantum-inspired Evolutionary Algorithm)를 제안했습니다.
+
+  삼성전자 DMC연구소에서 책임·수석연구원으로 일했고, MIT 미디어랩에서 방문연구원, 미국 산호세의 삼성 User Experience Center America 및 Think Tank Team에서 주재원으로 근무했습니다.
+
+  2013년 삼영기계에 합류해 현재 사장 겸 연구소장을 맡고 있습니다. 샌드 3D 프린팅으로 주조 공정을 디지털전환하는 일을 이끌고 있으며, 스마트팩토리와 AI 전환(AX) 분야로 순천향대학교 겸임교수와 호서대학교 산학특임교수를 맡고 있습니다.
+highlights:
+  - year: "2025"
+    title: 전국뿌리기술경기대회 1위 — 대통령상 (삼영기계)
+  - year: "2024"
+    title: 방산혁신기업100 선정 — 방위사업청 (삼영기계)
+  - year: "2022"
+    title: 샌드 3D 프린터 기술로 ‘한국의 산업을 이끈 산업기술성과 19선’ 선정 — 한국공학한림원 (삼영기계)
+  - year: 2019–2023
+    title: 장관 표창 3건
+links:
+  - label: 삼영기계(주)
+    url: http://www.sym.co.kr/
+  - label: 루모스캔들(주)
+    url: http://lumoscandle.com/
+  - label: 브런치
+    url: https://brunch.co.kr/@breakthrough
+  - label: Facebook
+    url: https://www.facebook.com/kukhyun.han

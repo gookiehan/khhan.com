@@ -1,0 +1,18 @@
+---
+// 첨부 링크 줄: "PDF 박사논문   기사 한경   영상 1"
+// 종류는 데이터의 이모지 아이콘으로 판별하지만 화면에는 글자로만 보인다.
+import { describeFiles } from '../../../lib/format.js';
+
+interface Props {
+  files?: Array<{ url: string; icon?: string; tip?: string }>;
+}
+const rows = describeFiles(Astro.props.files);
+---
+
+{rows.length > 0 && (
+  <ul class="refs">
+    {rows.map((r) => (
+      <li><a href={r.href} target="_blank" rel="noopener noreferrer">{r.text ? <><span class="k">{r.kind}</span><span class="t">{r.text}</span></> : <span class="t">{r.kind}</span>}</a></li>
+    ))}
+  </ul>
+)}

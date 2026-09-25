@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import yaml from 'js-yaml';
-import { SCHEMA, MANAGED_FILES, getSectionScope, isListKind } from '../src/lib/content-schema.mjs';
+import { SCHEMA, MANAGED_FILES, getSectionScope, isListKind, optionValues } from '../src/lib/content-schema.mjs';
 
 const root = process.cwd();
 const dataDir = path.join(root, 'src', 'data');
@@ -69,6 +69,19 @@ function validateNoNullArrayItems(value, pathLabel, errors) {
   }
 }
 
+/** options 가 정해진 필드(사이트 테마 등)에 허용된 값만 있는지. /admin 의 검증과 같은 규칙. */
+function validateOptions(section, item, where, errors) {
+  if (!isObject(item)) return;
+  for (const field of section.fields) {
+    const allowed = optionValues(field);
+    if (!allowed) continue;
+    const v = typeof item[field.name] === 'string' ? item[field.name] : '';
+    if (!allowed.includes(v)) {
+      errors.push(`[option] ${where}${section.kind === 'scalar' ? '' : `.${field.name}`}: "${v}" is not one of ${allowed.filter(Boolean).join(', ')}`);
+    }
+  }
+}
+
 /**
  * 스키마에서 파생한 구조 검사.
  * 예전에는 12개 파일의 구조를 이 함수에 손으로 나열했는데, 같은 지식이
@@ -99,12 +112,16 @@ function validateExpectedStructure(data, errors) {
         continue;
       }
       const value = scope[section.key];
+      const where = `${scopeLabel}.${section.key}`;
       if (isListKind(section.kind)) {
-        if (!isArray(value)) errors.push(`[schema] ${scopeLabel}.${section.key} must be an array`);
+        if (!isArray(value)) errors.push(`[schema] ${where} must be an array`);
+        else if (section.kind === 'list') value.forEach((item, i) => validateOptions(section, item, `${where}[${i}]`, errors));
       } else if (section.kind === 'dict') {
-        if (!isObject(value)) errors.push(`[schema] ${scopeLabel}.${section.key} must be an object`);
+        if (!isObject(value)) errors.push(`[schema] ${where} must be an object`);
+        else validateOptions(section, value, where, errors);
       } else if (section.kind === 'scalar') {
-        if (typeof value !== 'string') errors.push(`[schema] ${scopeLabel}.${section.key} must be a string`);
+        if (typeof value !== 'string') errors.push(`[schema] ${where} must be a string`);
+        else validateOptions(section, { value }, where, errors);
       }
     }
   }
@@ -220,6 +237,7 @@ function run() {
     ta: readYaml(fileMap.ta, errors),
     clubs: readYaml(fileMap.clubs, errors),
     profile: readYaml(fileMap.profile, errors),
+    site: readYaml(fileMap.site, errors),
   };
 
   validateExpectedStructure(data, errors);

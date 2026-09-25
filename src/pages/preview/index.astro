@@ -1,0 +1,41 @@
+---
+// 테마 미리보기 목록. 검색에는 잡히지 않게 한다.
+import { THEMES } from '../../themes/registry.mjs';
+import { getSiteConfig } from '../../lib/content.js';
+
+const active = getSiteConfig().theme;
+---
+
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>테마 미리보기 | khhan.com</title>
+    <style>
+      body { margin: 0; padding: 48px 20px; font: 15px/1.7 -apple-system, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif; background: #fbfbfa; color: #1c1f23; }
+      main { max-width: 36rem; margin: 0 auto; }
+      h1 { font-size: 22px; margin: 0 0 4px; }
+      p { color: #5c626a; margin: 0 0 24px; }
+      ul { list-style: none; padding: 0; margin: 0; border-top: 1px solid #e3e4e2; }
+      li { padding: 14px 0; border-bottom: 1px solid #e3e4e2; display: flex; justify-content: space-between; gap: 12px; align-items: baseline; flex-wrap: wrap; }
+      a { color: #24468a; }
+      .on { font-size: 12px; color: #fff; background: #24468a; padding: 2px 8px; border-radius: 4px; }
+      code { font-size: 13px; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>테마 미리보기</h1>
+      <p>khhan.com 에 보이는 테마는 <code>src/data/site.yml</code> 의 <code>theme</code> 값으로 정해집니다. 관리 화면의 “사이트 설정”에서 바꿀 수 있습니다.</p>
+      <ul>
+        {THEMES.map((t) => (
+          <li>
+            <a href={`/preview/${t.id}/`}>{t.label}</a>
+            {t.id === active && <span class="on">지금 사용 중</span>}
+          </li>
+        ))}
+      </ul>
+    </main>
+  </body>
+</html>
