@@ -7,6 +7,7 @@ import PublicationsSection from './components/PublicationsSection.astro';
 import ActivitiesSection from './components/ActivitiesSection.astro';
 import { sanitizeRichText } from '../../utils/richText.js';
 import { loadYaml } from '../../lib/content.js';
+import { safeHref } from '../../lib/format.js';
 // 테마 CSS 는 import './style.css' 로 넣지 않는다. 모든 테마 페이지가 [...slug].astro
 // 한 파일에서 만들어지므로, 그렇게 하면 Astro 가 모든 테마의 CSS 를 한 파일로 합쳐
 // 모든 페이지에 붙인다(테마끼리 스타일이 섞임). ?url 로 파일 주소만 받아 직접 링크한다.
@@ -82,12 +83,19 @@ function escapeHtml(value) {
     .replaceAll("'", '&#39;');
 }
 
-const educationItems = education.map((e) => ({
-  period: e.period,
-  titleHtml: `${e.title}, <a href="${e.orgUrl}" target="_blank" rel="noopener noreferrer">${e.org}</a>`,
-  descHtml: e.desc,
-  files: e.files,
-}));
+// 기관 URL 은 선택 항목이다. 없으면 href="undefined" 가 되지 않게 링크 없이 이름만 쓴다.
+const educationItems = education.map((e) => {
+  const orgHref = safeHref(e.orgUrl);
+  const org = orgHref
+    ? `<a href="${escapeHtml(orgHref)}" target="_blank" rel="noopener noreferrer">${e.org}</a>`
+    : e.org;
+  return {
+    period: e.period,
+    titleHtml: `${e.title}, ${org}`,
+    descHtml: e.desc,
+    files: e.files,
+  };
+});
 
 const careerItems = career.map((c) => ({
   period: c.period,
