@@ -685,10 +685,10 @@ function setBusy(busy) {
     if (node) node.inert = busy;
   }
   document.body.classList.toggle('busy', busy);
+  // 상단 문구("업로드 중…" 등)는 잠글 때도 풀 때도 다시 그린다. 잠글 때는 그다음에 버튼을 모두 막는다.
+  renderToolbar();
   if (busy) {
     for (const id of ['btn-diff', 'btn-publish', 'btn-discard']) document.getElementById(id).disabled = true;
-  } else {
-    renderToolbar();
   }
 }
 
