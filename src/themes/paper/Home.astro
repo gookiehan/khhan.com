@@ -57,7 +57,7 @@ const today = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Seoul' }).forma
 const updated = today.replaceAll('-', '.');
 const year = today.slice(0, 4);
 
-// ── 학력: 학위·학교 / 연수·과정 ───────────────────────────
+// ── 학력: 학위·학교 / 리더십 과정 ───────────────────────────
 const DEGREE_RE = /^(박사|석사|학사)|고등학교|ph\.?\s?d|master|bachelor/i;
 const eduItems = list<any>(education).map((e) => {
   const href = safeHref(e.orgUrl);
@@ -221,7 +221,7 @@ const ogImage = photo ? new URL(photo, 'https://khhan.com').href : null;
         <section class="sec" id="education" aria-labelledby="h-education">
           <h2 id="h-education">학력<span class="n">{eduItems.length}</span></h2>
           <Group heading={programs.length ? '학위·학교' : undefined} type="entry" items={degrees} />
-          <Group heading="연수·과정" type="entry" items={programs} />
+          <Group heading="리더십 과정" type="entry" items={programs} />
         </section>
 
         <section class="sec" id="career" aria-labelledby="h-career">
