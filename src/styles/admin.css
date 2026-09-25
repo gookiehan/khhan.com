@@ -524,3 +524,8 @@ button:disabled {
   padding: 2rem 1.2rem;
   color: var(--muted);
 }
+
+/* 게시·첨부 업로드 중에는 편집 화면이 잠겨 있다(app.js 의 setBusy) */
+body.busy #app {
+  cursor: progress;
+}
