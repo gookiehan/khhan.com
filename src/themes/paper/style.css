@@ -198,10 +198,7 @@ main { min-width: 0; }
 }
 
 /* ── 첫 화면 ───────────────────────────────────────────── */
-/* 사진은 오른쪽에 띄우고(float) 이름·소속·소개가 그 옆을 감싸 흐른다.
-   사진 아래로 내려간 줄은 오른쪽 끝까지 넓어져, 휴대폰에서 글이 길게 늘어지지 않는다. */
 .hero {
-  display: flow-root;
   padding: 2.25rem 0 2rem;
   border-bottom: 1px solid var(--rule);
   scroll-margin-top: var(--bar-h);
@@ -224,6 +221,28 @@ main { min-width: 0; }
   font-size: .95rem;
   color: var(--sub);
 }
+
+/* 이름·사진·소속 배치(격자).
+   휴대폰: 이름 블록만 사진 옆에 두고, 소속·Google Scholar 는 사진 아래에서 전체 폭을 쓴다.
+   넓은 화면: 소속까지 사진 옆 칸에 둔다.
+   (사진을 float 으로 띄워 글이 감싸게 하던 방식은 크롬에서 사진 아래 줄도 좁게 끊기는
+   문제가 있어 격자로 바꿨다.) */
+.head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  column-gap: 1.25rem;
+  align-items: start;
+}
+.head .id { grid-column: 1; grid-row: 1; min-width: 0; }
+.head .photo { grid-column: 2; grid-row: 1; }
+.head .affil,
+.head .scholar { grid-column: 1 / -1; }
+@media (min-width: 40rem) {
+  .head { column-gap: 2rem; }
+  .head .photo { grid-row: 1 / span 3; }
+  .head .affil,
+  .head .scholar { grid-column: 1; }
+}
 .photo {
   width: 5rem;
   height: auto;
@@ -231,11 +250,9 @@ main { min-width: 0; }
   object-fit: cover;
   border-radius: 3px;
   background: var(--wash);
-  float: right;
-  margin: .2rem 0 .75rem 1.25rem;
+  margin-top: .2rem;
 }
 /* 소속·직함: "삼영기계 사장 | 순천향대학교 겸임교수 | …" 한 줄로 이어 쓰고 넘치면 줄바꿈.
-   항목을 인라인으로 두어 사진(float) 옆과 아래를 자연스럽게 흐른다.
    구분선(|)은 뒤에서 줄바꿈이 허용되는 문자라, 줄은 구분선 뒤에서 바뀌고
    다음 줄 맨 앞에 구분선이나 공백이 남지 않는다(간격은 공백 대신 padding). */
 .affil {
@@ -258,9 +275,6 @@ main { min-width: 0; }
 .scholar { margin-top: .6rem; font-size: .9rem; }
 .scholar a { border-bottom: 1px solid var(--accent-line); }
 .scholar a:hover { text-decoration: none; border-bottom-color: var(--accent); }
-
-.facts,
-.hero-foot { clear: both; }
 
 .intro {
   margin-top: 1.6rem;
@@ -311,7 +325,6 @@ main { min-width: 0; }
 
 @media (min-width: 40rem) {
   .hero { padding-top: 3.25rem; }
-  .photo { margin-left: 2rem; }
   .hero h1 { font-size: 2.35rem; }
   .photo { width: 6.5rem; }
 }
