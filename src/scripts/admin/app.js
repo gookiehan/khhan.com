@@ -9,7 +9,7 @@
  *   그래서 모든 값은 textContent / input.value 로만 넣는다.
  *   이 파일에서 innerHTML 은 쓰지 않는다.
  */
-import { loadDraft, saveDraft, clearDraft } from './store.js';
+import { loadDraft, saveDraft, clearDraft, makeDraft, rebaseDraft } from './store.js';
 
 const el = (tag, className, text) => {
   const node = document.createElement(tag);
@@ -56,13 +56,19 @@ function note(message) {
   persist();
 }
 
-function persist() {
-  saveDraft({
+/** 지금 편집 상태에서 바뀐 파일(과 그 기준 내용)만 담은 초안 */
+function currentDraft() {
+  return makeDraft({
     baseSha: state.baseSha,
-    files: state.draft,
+    original: state.original,
+    draft: state.draft,
     changeLog: state.changeLog,
     assets: state.assets,
   });
+}
+
+function persist() {
+  saveDraft(currentDraft());
 }
 
 /** 업로드한 자산을 초안에 기록한다(같은 경로가 두 번 들어가지 않게). */
@@ -631,13 +637,39 @@ function draftPayload() {
 }
 
 async function postJson(url, body) {
-  const res = await fetch(url, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(body),
-  });
-  const data = await res.json().catch(() => ({}));
-  return { ok: res.ok, status: res.status, data };
+  try {
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    });
+    const data = await res.json().catch(() => ({}));
+    return { ok: res.ok, status: res.status, data };
+  } catch {
+    // 통신 자체가 끊긴 경우. 예외로 흘려보내면 버튼이 "게시 중…"에 멈춘다.
+    return {
+      ok: false,
+      status: 0,
+      data: { error: '서버에 연결하지 못했습니다. 네트워크를 확인한 뒤 다시 시도하세요. 초안은 그대로 있습니다.' },
+    };
+  }
+}
+
+/**
+ * 게시하는 동안 편집 화면을 잠근다. 요청을 보낸 뒤 고친 내용은 게시에 들어가지 않는데,
+ * 게시가 끝나면 초안을 비우고 다시 불러오므로 그 편집이 조용히 사라지기 때문이다.
+ */
+function setBusy(busy) {
+  for (const id of ['nav', 'main', 'banner']) {
+    const node = document.getElementById(id);
+    if (node) node.inert = busy;
+  }
+  document.body.classList.toggle('busy', busy);
+  if (busy) {
+    for (const id of ['btn-diff', 'btn-publish', 'btn-discard']) document.getElementById(id).disabled = true;
+  } else {
+    renderToolbar();
+  }
 }
 
 function showPanel(title, build) {
@@ -692,18 +724,23 @@ async function publish() {
   if (!confirm(`게시할까요?\n\n파일 ${changed.length}개, 변경 ${state.changeLog.length}건\n\nmain 에 커밋되고 1~2분 뒤 사이트에 반영됩니다.`)) return;
 
   const publishBtn = document.getElementById('btn-publish');
-  publishBtn.disabled = true;
   publishBtn.textContent = '게시 중…';
+  setBusy(true);
+  try {
+    await publishNow();
+  } finally {
+    publishBtn.textContent = '게시';
+    setBusy(false);
+  }
+}
 
+async function publishNow() {
   const { ok, status, data } = await postJson('/admin/api/publish', {
     baseSha: state.baseSha,
     files: draftPayload(),
     changeLog: state.changeLog,
     assets: state.assets,
   });
-
-  publishBtn.textContent = '게시';
-  renderToolbar();
 
   if (ok) {
     clearDraft();
@@ -765,9 +802,40 @@ function discard() {
 
 // ── 시작 ─────────────────────────────────────────────────────────────────
 
+/** 초안을 최신 원본 위에 얹는다. 겹치는 파일이 있으면 알린다. */
+function applyKept(kept, currentSha) {
+  const { draft, conflicts, unsafe } = rebaseDraft(kept, state.original, currentSha);
+  if (unsafe) return false;
+  state.draft = draft;
+  state.changeLog = kept.changeLog || [];
+  state.assets = kept.assets || [];
+  persist();
+  showConflicts(conflicts);
+  return true;
+}
+
+function showConflicts(conflicts) {
+  if (!conflicts.length) return;
+  const banner = document.getElementById('banner');
+  banner.hidden = false;
+  banner.replaceChildren();
+  banner.appendChild(el('strong', null, '확인 필요: '));
+  banner.appendChild(
+    el(
+      'span',
+      null,
+      `${conflicts.join(', ')} 은(는) 초안을 만든 뒤 main 에서도 바뀌었습니다. ` +
+        '게시하면 main 쪽 변경이 초안 내용으로 덮어써지니, "변경사항 보기"로 확인한 뒤 게시하세요. '
+    )
+  );
+  banner.appendChild(btn('닫기', 'small-btn', () => { banner.hidden = true; }));
+}
+
 async function boot({ keepDraft = false, silent = false } = {}) {
   const status = document.getElementById('status');
   if (!silent) status.hidden = false;
+  // "초안 유지" 재불러오기: 원본을 바꾸기 전에 지금의 변경분(바뀐 파일 + 기준 내용)을 챙긴다.
+  const carried = keepDraft ? currentDraft() : null;
 
   try {
     const res = await fetch('/admin/api/bootstrap', { headers: { Accept: 'application/json' } });
@@ -786,42 +854,42 @@ async function boot({ keepDraft = false, silent = false } = {}) {
     state.original = {};
     for (const [name, entry] of Object.entries(data.files)) state.original[name] = entry.data;
 
-    const kept = keepDraft
-      ? { files: state.draft, changeLog: state.changeLog, assets: state.assets }
-      : loadDraft();
+    const kept = carried || loadDraft();
     const banner = document.getElementById('banner');
     banner.hidden = true;
 
-    if (kept && !keepDraft && kept.baseSha && kept.baseSha !== data.baseSha) {
-      // 초안을 만든 뒤 main 이 움직였다. 버릴지 유지할지는 사용자가 정한다.
-      state.draft = clone(state.original);
-      state.changeLog = [];
-      state.assets = [];
+    // 기본은 최신 원본. 초안이 있으면 아래에서 그 위에 바뀐 파일만 얹는다.
+    state.draft = clone(state.original);
+    state.changeLog = [];
+    state.assets = [];
+
+    if (kept && !carried && kept.baseSha && kept.baseSha !== data.baseSha) {
+      // 초안을 만든 뒤 main 이 움직였다. 적용할지 버릴지는 사용자가 정한다.
+      const safe = Boolean(kept.bases);
       banner.hidden = false;
       banner.replaceChildren();
       banner.appendChild(el('strong', null, 'main 이 갱신되었습니다. '));
       banner.appendChild(
-        el('span', null, '보관 중이던 초안은 그 이전 내용 기준이라 자동으로 적용하지 않았습니다.')
+        el(
+          'span',
+          null,
+          safe
+            ? '보관 중이던 초안은 그 이전 내용 기준이라 자동으로 적용하지 않았습니다. 적용하면 바꾼 파일만 최신 내용 위에 다시 얹습니다. '
+            : '보관 중이던 초안은 이전 형식이라 최신 내용과 안전하게 합칠 수 없습니다. 초안을 버리고 다시 편집해 주세요. '
+        )
       );
-      banner.appendChild(
-        btn('보관된 초안 적용', 'small-btn', () => {
-          state.draft = kept.files;
-          state.changeLog = kept.changeLog || [];
-          state.assets = kept.assets || [];
-          banner.hidden = true;
-          persist();
-          render();
-        })
-      );
+      if (safe) {
+        banner.appendChild(
+          btn('보관된 초안 적용', 'small-btn', () => {
+            banner.hidden = true;
+            applyKept(kept, data.baseSha);
+            render();
+          })
+        );
+      }
       banner.appendChild(btn('초안 버리기', 'small-btn', () => { clearDraft(); banner.hidden = true; }));
     } else if (kept) {
-      state.draft = kept.files;
-      state.changeLog = kept.changeLog || [];
-      state.assets = kept.assets || [];
-    } else {
-      state.draft = clone(state.original);
-      state.changeLog = [];
-      state.assets = [];
+      if (!applyKept(kept, data.baseSha)) clearDraft();
     }
 
     // 원본에는 있는데 초안에 없는 파일(스키마 추가 등)을 보정한다.

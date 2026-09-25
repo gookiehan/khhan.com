@@ -211,3 +211,78 @@ test('관리 화면 검증: 학력 구분 선택지', () => {
   bad.education[0].group = 'phd';
   assert.equal(validateFile('education.yml', bad).length, 1);
 });
+
+// ── 관리 화면 초안(store.js) ───────────────────────────
+import { makeDraft, rebaseDraft, saveDraft, loadDraft, clearDraft } from '../src/scripts/admin/store.js';
+
+const V1 = { 'career.yml': { career: ['c1'] }, 'awards.yml': { awards: ['a1'] }, 'site.yml': { theme: 'classic' } };
+const withChange = (base, name, value) => ({ ...structuredClone(base), [name]: value });
+
+test('makeDraft: 바뀐 파일과 그 기준 내용만 담는다', () => {
+  const draft = withChange(V1, 'career.yml', { career: ['c1', 'c2'] });
+  const d = makeDraft({ baseSha: 'A', original: V1, draft, changeLog: ['x'], assets: [{ path: 'assets/images/p.jpg', blobSha: 'b1', size: 1 }] });
+  assert.deepEqual(Object.keys(d.files), ['career.yml']);
+  assert.deepEqual(d.bases['career.yml'], V1['career.yml']);
+  assert.equal(d.assets[0].blobSha, 'b1');
+  assert.equal(d.version, 2);
+});
+
+test('rebaseDraft: 남이 바꾼 다른 파일은 되돌리지 않는다 (Codex 지적 1)', () => {
+  const kept = makeDraft({ baseSha: 'A', original: V1, draft: withChange(V1, 'career.yml', { career: ['c1', 'c2'] }) });
+  // 그 사이 main 에서 awards 가 바뀌었다
+  const V2 = withChange(V1, 'awards.yml', { awards: ['a1', 'a2'] });
+  const r = rebaseDraft(kept, V2, 'B');
+  assert.equal(r.unsafe, false);
+  assert.deepEqual(r.draft['awards.yml'], { awards: ['a1', 'a2'] }, '남의 변경 유지');
+  assert.deepEqual(r.draft['career.yml'], { career: ['c1', 'c2'] }, '내 변경 유지');
+  assert.deepEqual(r.conflicts, []);
+  // 다시 초안을 만들면 게시 대상은 내가 바꾼 파일뿐
+  assert.deepEqual(Object.keys(makeDraft({ baseSha: 'B', original: V2, draft: r.draft }).files), ['career.yml']);
+});
+
+test('rebaseDraft: 같은 파일이 양쪽에서 바뀌면 conflicts 로 알린다', () => {
+  const kept = makeDraft({ baseSha: 'A', original: V1, draft: withChange(V1, 'career.yml', { career: ['mine'] }) });
+  const V2 = withChange(V1, 'career.yml', { career: ['theirs'] });
+  const r = rebaseDraft(kept, V2, 'B');
+  assert.deepEqual(r.conflicts, ['career.yml']);
+  assert.deepEqual(r.draft['career.yml'], { career: ['mine'] });
+});
+
+test('rebaseDraft: 예전(v1) 초안 — 같은 커밋이면 적용, 다르면 unsafe', () => {
+  const v1Same = { baseSha: 'A', files: withChange(V1, 'career.yml', { career: ['c9'] }) };
+  const r1 = rebaseDraft(v1Same, V1, 'A');
+  assert.equal(r1.unsafe, false);
+  assert.deepEqual(r1.draft['career.yml'], { career: ['c9'] });
+  assert.deepEqual(r1.draft['awards.yml'], V1['awards.yml']);
+  const r2 = rebaseDraft({ baseSha: 'A', files: V1 }, V1, 'B');
+  assert.equal(r2.unsafe, true);
+});
+
+test('saveDraft/loadDraft: 업로드 자산 정보를 잃지 않는다 (Codex 지적 2)', () => {
+  const mem = new Map();
+  globalThis.localStorage = {
+    getItem: (k) => (mem.has(k) ? mem.get(k) : null),
+    setItem: (k, v) => mem.set(k, String(v)),
+    removeItem: (k) => mem.delete(k),
+  };
+  try {
+    const asset = { path: 'assets/images/new.jpg', blobSha: 'abc123', size: 10 };
+    saveDraft(makeDraft({ baseSha: 'A', original: V1, draft: V1, assets: [asset] }));
+    assert.deepEqual(loadDraft().assets, [asset]);
+    clearDraft();
+    assert.equal(loadDraft(), null);
+  } finally {
+    delete globalThis.localStorage;
+  }
+});
+
+test('관리 화면 검증: 사진 경로 등 url 필드의 로컬 자산 존재 확인 (Codex 지적 5)', () => {
+  const profile = load('profile.yml');
+  const known = new Set(['assets/images/profile.jpg']);
+  assert.deepEqual(validateFile('profile.yml', profile, known), []);
+  const bad = structuredClone(profile);
+  bad.photoUrl = '/assets/images/nope.jpg';
+  assert.ok(validateFile('profile.yml', bad, known).some((e) => e.includes('photoUrl') && e.includes('저장소에 없는 자산')));
+  // 자산 목록을 모를 때(트리 조회가 잘린 경우)는 막지 않는다
+  assert.deepEqual(validateFile('profile.yml', bad, undefined), []);
+});

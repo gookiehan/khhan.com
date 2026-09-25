@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import yaml from 'js-yaml';
-import { MANAGED_FILES } from '../src/lib/content-schema.mjs';
+import { MANAGED_FILES, SCHEMA, getSectionScope } from '../src/lib/content-schema.mjs';
 
 const root = process.cwd();
 const dataDir = path.join(root, 'src', 'data');
@@ -133,6 +133,28 @@ function run() {
       }
     });
   });
+
+  // files[] 밖의 url 형식 필드(프로필 사진 경로, 기관 URL 등)도 로컬 자산이면 존재를 확인한다.
+  // /admin 의 게시 전 검증(src/lib/admin/validate.js)과 같은 규칙.
+  for (const fileSchema of SCHEMA) {
+    const scope = getSectionScope(fileSchema.file, parsedByFile[fileSchema.file]);
+    if (!scope) continue;
+    for (const section of fileSchema.sections) {
+      const urlFields = section.fields.filter((f) => f.type === 'url');
+      if (!urlFields.length) continue;
+      const value = scope[section.key];
+      const items = section.kind === 'scalar' ? [{ value }] : Array.isArray(value) ? value : [value];
+      items.forEach((item, i) => {
+        for (const f of urlFields) {
+          const url = typeof item?.[f.name] === 'string' ? item[f.name].trim() : '';
+          if (url && isLocalUrl(url) && !checkLocalAssetExists(normalizeLocalPath(url))) {
+            const at = section.kind === 'scalar' ? `${fileSchema.file}.${section.key}` : `${fileSchema.file}.${section.key}[${i}].${f.name}`;
+            missingLocalAssets.push({ url, path: at });
+          }
+        }
+      });
+    }
+  }
 
   const uniqueUrls = new Set(allUrls).size;
   if (missingLocalAssets.length > 0) {
