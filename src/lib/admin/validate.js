@@ -8,10 +8,21 @@
  *   쓴다. 그래서 여기를 통과한 내용은 CI 도 통과한다. 검사 항목을 늘릴 때는
  *   두 곳이 어긋나지 않는지 항상 확인할 것.
  */
-import { SCHEMA, getSectionScope, isListKind } from '../content-schema.mjs';
+import { SCHEMA, getSectionScope, isListKind, optionValues } from '../content-schema.mjs';
 
 const isObject = (v) => typeof v === 'object' && v !== null && !Array.isArray(v);
 const isBlank = (v) => v === undefined || v === null || (typeof v === 'string' && v.trim() === '');
+
+/** 목록 상자 필드(options)에 정해진 값만 들어갔는지 */
+function checkOption(field, value, where, errors) {
+  const allowed = optionValues(field);
+  if (!allowed) return;
+  const v = typeof value === 'string' ? value : '';
+  if (!allowed.includes(v)) {
+    const shown = allowed.filter(Boolean).join(', ');
+    errors.push(`${where}: 허용되지 않는 값입니다 — "${v}" (가능: ${shown})`);
+  }
+}
 
 /**
  * 콘텐츠에 허용하는 인라인 HTML.
@@ -110,6 +121,7 @@ function validateItem(item, section, where, errors, knownAssets) {
     if (field.type === 'url' && !isBlank(value) && !isAllowedUrl(value)) {
       errors.push(`${at}: 허용되지 않는 URL 형식입니다 — ${value}`);
     }
+    checkOption(field, value, at, errors);
     // textarea/text 는 HTML 을 쓰지 않는 필드이므로 richtext 보다 엄격히 볼 수도
     // 있으나, 기존 데이터에 <br> 등이 섞여 있을 수 있어 위험한 것만 막는다.
     checkDangerousHtml(value, at, errors);
@@ -165,6 +177,7 @@ export function validateFile(fileName, data, knownAssets) {
         if (section.fields[0]?.type === 'url' && !isBlank(value) && !isAllowedUrl(value)) {
           errors.push(`${where}: 허용되지 않는 URL 형식입니다 — ${value}`);
         }
+        checkOption(section.fields[0], value, where, errors);
         checkDangerousHtml(value, where, errors);
       }
       continue;

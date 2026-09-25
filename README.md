@@ -3,9 +3,11 @@
 ## 1) 사이트 개요
 
 - 이 저장소는 **Astro 기반 정적 사이트**입니다.
-- 화면 렌더링은 `src/pages/index.astro`가 담당합니다.
-- 콘텐츠 원본은 `src/data/*.yml`(YAML)입니다.
-- 배포 대상은 `dist/`이며, GitHub Pages로 배포됩니다.
+- 화면은 **테마** 단위로 `src/themes/<id>/` 에 있습니다(`classic`, `paper`).
+  어떤 테마를 khhan.com 에 띄울지는 `src/data/site.yml` 의 `theme` 값이 정하고,
+  나머지 테마는 `/preview/<id>/` 에서 볼 수 있습니다. 자세한 내용은 `OPERATIONS.md` 0-0절.
+- 콘텐츠 원본은 `src/data/*.yml`(YAML)이고, 모든 테마가 같이 씁니다.
+- 공개 사이트는 `dist/client` 가 GitHub Pages 로 배포되고, 관리 화면(/admin)은 Cloudflare Worker 입니다.
 
 ## 2) 로컬 실행 방법
 
@@ -18,7 +20,8 @@ npm run dev
 
 ## 3) 콘텐츠 수정 위치
 
-- 프로필/기본 정보: `src/data/profile.yml`
+- 사이트 설정(디자인 테마): `src/data/site.yml`
+- 프로필/기본 정보·소개문·대표 성과·외부 링크: `src/data/profile.yml`
 - QEA: `src/data/qea.yml`
 - 학력: `src/data/education.yml`
 - 경력: `src/data/career.yml`
@@ -65,7 +68,9 @@ npm run validate
 
 - `validate:content`: 콘텐츠 구조/개수 검증
 - `validate:links`: `files[].url` 링크 형식/로컬 파일 존재 검증
-- `validate`: 위 두 검증을 순서대로 실행
+- `validate`: 위 검증들을 순서대로 실행
+- `npm test`: 표시 도우미·살균·테마 등록·관리 화면 검증 단위 테스트
+- `npm run check:dist`: 빌드 후 결과 점검(페이지 존재, 링크 대상, 미리보기 noindex 등)
 
 새 콘텐츠 추가로 항목 수(예: 논문/수상/링크 개수)가 증가하는 것은 정상입니다. 현재 검증은 고정 개수 일치가 아니라 구조/필수 필드 유효성 중심으로 통과 여부를 판단합니다.
 링크 검증도 동일하게 운영형으로 동작하며, 링크 수 증가는 정상으로 허용되고 링크 형식/허용 스킴/로컬 파일 존재 여부만 엄격히 검증합니다.
@@ -77,12 +82,12 @@ npm run build
 npm run preview
 ```
 
-- `build`는 `scripts/sync-static.mjs`를 먼저 실행한 뒤 Astro 빌드를 수행합니다.
+- `build`는 `scripts/sync-static.mjs`(assets·CNAME 을 public 으로 복사)를 먼저 실행한 뒤 Astro 빌드를 수행합니다.
 
 ## 9) GitHub Pages 배포 방식
 
 - 워크플로우: `.github/workflows/deploy.yml`
-- PR: `npm ci` + `npm run validate` + `npm run build`만 실행 (배포 없음)
+- PR: `npm ci` + `npm run validate` + `npm test` + `npm run build` + `npm run check:dist` (배포 없음)
 - `main` push/merge: 검증+빌드 후 Pages artifact 업로드 및 배포 실행
 
 ## 10) khhan.com custom domain / CNAME 유지 방식
@@ -110,7 +115,7 @@ git switch -c hotfix/rollback-main main
 ## 12) Codex에게 작업 맡길 때 권장 방식
 
 - 요청에 아래를 항상 포함하면 안정적입니다.
-  - 변경 금지 파일 명시 (`index.html`, `data.js`, `style.css`, `public/CNAME` 등)
+  - 변경 금지 파일 명시 (예전 테마 폴더 `src/themes/classic/`, `public/CNAME` 등)
   - 목표 범위 명시 (예: 문서만 수정, 스크립트만 추가)
   - 완료 조건 명시 (예: `npm run validate`, `npm run build` 통과)
   - 보고 형식 명시 (변경 파일 목록, 실행 결과, 커밋 메시지)
@@ -120,4 +125,4 @@ git switch -c hotfix/rollback-main main
 
 - 루트 `index.html`, `data.js`, `scripts/export-data-to-yaml.mjs`는 최종 정리 단계에서 제거되었습니다.
 - 현재 운영 기준 콘텐츠 소스는 `src/data/*.yml`입니다.
-- 렌더링/배포에 필요한 정적 리소스는 `style.css`, `assets/`, `CNAME`입니다.
+- 렌더링/배포에 필요한 정적 리소스는 `assets/`, `CNAME`입니다. 스타일은 테마 폴더(`src/themes/<id>/style.css`)에 있습니다.

@@ -9,13 +9,20 @@ interface Props {
   files?: FileLink[];
 }
 
+import { safeHref } from '../../../lib/format.js';
+
 const { files = [] } = Astro.props as Props;
+// assets/… 를 /assets/… 로 바꿔 /preview/classic/ 에서도 같은 파일을 가리키게 하고,
+// 허용되지 않는 스킴(javascript: 등)의 링크는 그리지 않는다.
+const links = files
+  .map((f) => ({ ...f, url: safeHref(f.url) }))
+  .filter((f) => f.url);
 ---
 
 {
-  files.length > 0 && (
+  links.length > 0 && (
     <div class="files">
-      {files.map((f) => (
+      {links.map((f) => (
         // 링크 내용은 반드시 한 줄로 둔다 — "📄박사논문 PDF".
         // Astro 5 의 compressHTML 이 아이콘/라벨 사이와 앵커 안쪽 여백을
         // 지워왔고 그게 현재 사이트의 모양이다. Astro 7 은 원문의 공백을
