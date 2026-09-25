@@ -201,7 +201,7 @@ const ogImage = photo ? new URL(photo, 'https://khhan.com').href : null;
                 <h2 id="h-hl" class="label">대표 성과</h2>
                 <ul class="hl-list">
                   {highlights.map((h) => (
-                    <li>{h.year && <span class="y">{h.year}</span>}<span set:html={sanitizeRichText(h.title)} /></li>
+                    <li><span class="y">{h.year}</span><span set:html={sanitizeRichText(h.title)} /></li>
                   ))}
                 </ul>
               </section>
@@ -282,7 +282,7 @@ const ogImage = photo ? new URL(photo, 'https://khhan.com').href : null;
 
         <section class="sec" id="patents" aria-labelledby="h-patents">
           <h2 id="h-patents">특허</h2>
-          {patents.patentNote && <p class="note" lang="en">{patents.patentNote}</p>}
+          {patents.patentNote && <p class="note">{patents.patentNote}</p>}
           {patentLinks.length > 0 && (
             <ul class="link-list">
               {patentLinks.map((p) => <li><a href={p.href} target="_blank" rel="noopener noreferrer">{p.label}</a></li>)}

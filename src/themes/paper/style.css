@@ -265,9 +265,12 @@ main { min-width: 0; }
 .hl-list a { color: inherit; border-bottom: 1px solid var(--accent-line); }
 .now-list a:hover,
 .hl-list a:hover { color: var(--accent); text-decoration: none; }
-.hl-list li { display: flex; gap: .75rem; align-items: baseline; }
+/* 연도 칸 너비를 가장 긴 값("2019–2023")에 맞춰 내용이 세로로 가지런하게 */
+.hl-list { display: grid; grid-template-columns: max-content minmax(0, 1fr); column-gap: .75rem; align-items: baseline; }
+.hl-list li { display: contents; }
+.hl-list li > span { padding: .12rem 0; }
 .hl-list .y {
-  flex: none;
+  white-space: nowrap;
   font: 400 .8rem/1 var(--mono);
   color: var(--faint);
   font-variant-numeric: tabular-nums;
