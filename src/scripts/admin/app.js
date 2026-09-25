@@ -39,6 +39,9 @@ const state = {
   assets: [],
   current: null,
   editing: null, // { file, sectionKey, index }  index === -1 이면 새 항목
+  // 진행 중인 업로드 수. 업로드 중에 게시하면 그 첨부는 게시에 빠지고, 게시 성공 시
+  // 초안을 비우므로 업로드 결과가 사라진다. 그래서 업로드가 끝날 때까지 게시·버리기를 막는다.
+  uploading: 0,
 };
 
 // ── 초안 상태 ────────────────────────────────────────────────────────────
@@ -219,6 +222,17 @@ function filesEditor(item, rerender) {
   picker.hidden = true;
 
   async function upload(fileList) {
+    state.uploading += 1;
+    renderToolbar();
+    try {
+      await uploadAll(fileList);
+    } finally {
+      state.uploading -= 1;
+      renderToolbar();
+    }
+  }
+
+  async function uploadAll(fileList) {
     for (const file of fileList) {
       status.textContent = `${file.name} 올리는 중…`;
       status.className = 'drop-status';
@@ -614,12 +628,13 @@ function renderToolbar() {
   if (count) parts.push(`변경 ${count}건`);
   if (changed.length) parts.push(`파일 ${changed.length}개`);
   if (state.assets.length) parts.push(`자산 ${state.assets.length}개`);
+  if (state.uploading) parts.push('업로드 중…');
   document.getElementById('change-count').textContent = parts.length ? parts.join(' · ') : '변경 없음';
 
   const nothing = changed.length === 0 && state.assets.length === 0;
   document.getElementById('btn-diff').disabled = changed.length === 0;
-  document.getElementById('btn-publish').disabled = nothing;
-  document.getElementById('btn-discard').disabled = nothing;
+  document.getElementById('btn-publish').disabled = nothing || state.uploading > 0;
+  document.getElementById('btn-discard').disabled = nothing || state.uploading > 0;
 }
 
 function render() {
@@ -720,6 +735,11 @@ async function showDiff() {
 }
 
 async function publish() {
+  if (state.uploading > 0) {
+    // 버튼이 막혀 있지만, 혹시 눌려도 업로드 결과를 잃지 않게 한 번 더 막는다.
+    alert('첨부 업로드가 끝난 뒤 게시하세요.');
+    return;
+  }
   const changed = dirtyFiles();
   if (!confirm(`게시할까요?\n\n파일 ${changed.length}개, 변경 ${state.changeLog.length}건\n\nmain 에 커밋되고 1~2분 뒤 사이트에 반영됩니다.`)) return;
 
@@ -789,6 +809,7 @@ async function publishNow() {
 }
 
 function discard() {
+  if (state.uploading > 0) return;
   if (!confirm('게시하지 않은 변경을 모두 버릴까요?')) return;
   clearDraft();
   state.draft = clone(state.original);
