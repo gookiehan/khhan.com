@@ -61,6 +61,18 @@ export function isAllowedUrl(url) {
   );
 }
 
+/**
+ * 로컬 자산 경로(assets/…)가 실제로 저장소에 있는지. files[] 뿐 아니라 사진 경로(photoUrl)처럼
+ * url 형식 필드에도 적용한다. 없으면 게시 후 빌드 점검(check:dist)에서 막혀 사이트 갱신이 멈춘다.
+ */
+function checkLocalAsset(value, where, errors, knownAssets) {
+  if (!knownAssets || typeof value !== 'string') return;
+  const v = value.trim();
+  if (!v.startsWith('assets/') && !v.startsWith('/assets/')) return;
+  const key = v.startsWith('/') ? v.slice(1) : v;
+  if (!knownAssets.has(key)) errors.push(`${where}: 저장소에 없는 자산입니다 — ${v}`);
+}
+
 /** 한 항목의 files[] 배열을 검사한다(파일 여러 개를 검사하는 validateFiles 와 다르다). */
 function validateAttachments(files, where, errors, knownAssets) {
   if (files === undefined) return;
@@ -118,8 +130,9 @@ function validateItem(item, section, where, errors, knownAssets) {
       errors.push(`${at}: 문자열이어야 합니다.`);
       continue;
     }
-    if (field.type === 'url' && !isBlank(value) && !isAllowedUrl(value)) {
-      errors.push(`${at}: 허용되지 않는 URL 형식입니다 — ${value}`);
+    if (field.type === 'url' && !isBlank(value)) {
+      if (!isAllowedUrl(value)) errors.push(`${at}: 허용되지 않는 URL 형식입니다 — ${value}`);
+      else checkLocalAsset(value, at, errors, knownAssets);
     }
     checkOption(field, value, at, errors);
     // textarea/text 는 HTML 을 쓰지 않는 필드이므로 richtext 보다 엄격히 볼 수도
@@ -174,8 +187,9 @@ export function validateFile(fileName, data, knownAssets) {
         errors.push(`${where}: 문자열이어야 합니다.`);
       } else {
         if (section.fields[0]?.required && isBlank(value)) errors.push(`${where}: 필수입니다.`);
-        if (section.fields[0]?.type === 'url' && !isBlank(value) && !isAllowedUrl(value)) {
-          errors.push(`${where}: 허용되지 않는 URL 형식입니다 — ${value}`);
+        if (section.fields[0]?.type === 'url' && !isBlank(value)) {
+          if (!isAllowedUrl(value)) errors.push(`${where}: 허용되지 않는 URL 형식입니다 — ${value}`);
+          else checkLocalAsset(value, where, errors, knownAssets);
         }
         checkOption(section.fields[0], value, where, errors);
         checkDangerousHtml(value, where, errors);
