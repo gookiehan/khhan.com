@@ -245,13 +245,8 @@ main { min-width: 0; }
   color: var(--sub);
 }
 .affil li { display: inline; }
-/* 넓은 화면에서는 항목 중간("한국주조공학회 / 부회장")에서 줄이 바뀌지 않게 항목째 넘긴다.
-   휴대폰은 폭을 아끼도록 항목 안에서도 줄바꿈을 허용한다. */
-@media (min-width: 40rem) {
-  .affil li > span { white-space: nowrap; }
-}
-/* 구분선은 항목 글자(span)에 붙여 둔다. 넓은 화면에서 span 이 nowrap 이어도 구분선이
-   항목 끝에 붙은 채로 함께 넘어가, 다음 줄 맨 앞에 구분선이 오지 않는다. */
+/* 구분선은 항목 글자(span)에 붙여 둔다. 줄은 폭에 따라 자연스럽게 바뀌되(강제 줄바꿈 없음),
+   구분선은 항상 앞 항목 끝에 남아 다음 줄 맨 앞에 오지 않는다. */
 .affil li:not(:last-child) > span::after {
   content: '|';
   padding: 0 .55rem;
