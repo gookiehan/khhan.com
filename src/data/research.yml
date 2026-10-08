@@ -11,31 +11,47 @@ researchInterests:
   - Numerical & Combinatorial Optimization
   - Quantum-inspired Evolutionary Algorithm (QEA)
 projects:
-  - period: 2022.~현재
-    title: 1200 리터급 Binder Jetting 방식 3D 프린터 개발
+  - period: 2025.04.~현재
+    title: "V2833: 해경 3000톤급 경비함의 직경 280mm급 V형 엔진 블록과 실린더 헤드 국산화 개발"
+    org: <a href="https://www.smtech.go.kr/front/main/main.do">중소벤처기업부</a>
+    role: 총괄책임자
+  - period: 2024.12.~현재
+    title: "D100: 방산 핵심 부품 생산에 최적화된 적층제조 장비 및 공정 기술 개발"
+    org: 방위사업청
+    role: 총괄책임자
+  - period: 2024.08.~2025.08.
+    title: "DEB: 샌드 3D 프린팅 기반 장갑차용 경량설계 닥타일 엔진블록 제조기술 개발"
+    org: 충남국방벤처센터
+    role: 총괄책임자
+  - period: 2022.04.~2026.06.
+    title: "H100: 1200 리터급 대형 바인더 분사방식 샌드 3D 프린터 및 적층 제조기술 고도화"
     org: <a href="https://www.smtech.go.kr/front/main/main.do">중소벤처기업부</a>
     role: 총괄책임자
     files: []
-  - period: 2022.~현재
-    title: VT903 엔진 블록 샌드 3D 프린팅 하이브리드 금형 적용
+  - period: 2022.04.~2024.07.
+    title: "VTB: VT903 엔진 블록 샌드 3D 프린팅 하이브리드 금형 적용"
     org: <a href="https://www.smtech.go.kr/front/main/main.do">중소벤처기업부</a>
     role: 총괄책임자
     files: []
   - period: 2021.09.~2023.09.
-    title: 340mm급 엔진 피스톤 일체형 중자 DfAM 설계 및 제조 공정 혁신
+    title: "NP: 340mm급 엔진 피스톤 일체형 중자 DfAM 설계 및 제조 공정 혁신"
     org: <a href="https://www.smtech.go.kr/front/main/main.do">중소벤처기업부</a>
     role: 총괄책임자
     files: []
   - period: 2021.05.~2022.06.
-    title: VT903 엔진 실린더 헤드 시제품 개발
+    title: "VTH: VT903 엔진 실린더 헤드 시제품 개발"
     org: 충남국방벤처센터
     role: 총괄책임자
     files: []
-  - period: 2020.11.~현재
-    title: 친환경 피스톤 링 개발
+  - period: 2020.11.~2024.11.
+    title: "PR: 친환경 피스톤 링 개발"
     org: <a href="https://www.smtech.go.kr/front/main/main.do">중소벤처기업부</a>
     role: 총괄책임자
     files: []
+  - period: 2020.06.~2022.05.
+    title: "SG: 내륙발전용 직경 340mm급 친환경 가스엔진 실린더 헤드 국산화 개발"
+    org: <a href="https://www.smtech.go.kr/front/main/main.do">중소벤처기업부</a>
+    role: 총괄책임자
   - period: 2019.05.~2019.12.
     title: 광교 갤러리아 백화점 Smart Notes
     org: 위드웍스 & 3D프리욜 공동 프로젝트
@@ -44,8 +60,12 @@ projects:
       - url: https://www.hankyung.com/article/202310160230i
         icon: 📰
         tip: 한경 기사
+  - period: 2017.08.~2019.08.
+    title: "PI: 직경 460mm 급의 내륙발전용 엔진 피스톤 국산화 개발"
+    org: <a href="https://www.smtech.go.kr/front/main/main.do">중소벤처기업부</a>
+    role: 총괄책임자
   - period: 2017.04.~2021.06.
-    title: 산업용 샌드 3D 프린터 및 하이브리드 주조 공정 개발
+    title: "ATC: 산업용 샌드 3D 프린터 및 하이브리드 주조 공정 개발"
     org: <a href="https://www.keit.re.kr/eng/index.do">KEIT</a> / <a href="http://www.motie.go.kr/www/main.do">산업통상자원부</a>
     role: 총괄책임자
     files:
@@ -59,30 +79,38 @@ projects:
         icon: 📰
         tip: AM뉴스
   - period: 2017.11.~2019.03.
-    title: 스마트 자동점화 캔들 기술 개발
+    title: "SM: 스마트 자동점화 캔들 기술 개발"
     org: <a href="https://www.smtech.go.kr/front/main/main.do">중소벤처기업부</a>
     role: 총괄책임자
     files: []
   - period: 2017.10.~2020.01.
-    title: 화장품 양산용 3D 프린터 개발
+    title: "C3: 화장품 양산용 3D 프린터 개발"
     org: <a href="https://www.mk.co.kr/news/business/view/2019/03/133007/">콜마코리아</a>
     role: 총괄책임자
     files:
       - url: https://www.mk.co.kr/news/business/view/2019/03/133007/
         icon: 📰
         tip: 매경 기사
+  - period: 2017.10.~2019.02.
+    title: "EFG: EFG 형식 전단변형방식 피봇형 고무완충기 핵심원천 기술개발"
+    org: 국토교통부
+    role: Project Lead
   - period: 2015.10.~2018.01.
-    title: 점성식 비틀림 진동 댐퍼(Viscous Torsional Vibration Damper) 개발
+    title: "TV: 점성식 비틀림 진동 댐퍼(Viscous Torsional Vibration Damper) 개발"
     org: <a href="https://www.smtech.go.kr/front/main/main.do">중소벤처기업부</a>
     role: 총괄책임자
     files: []
+  - period: 2015.07.~2017.08.
+    title: "DH: 최적 Swirl형상 에어포트를 갖는 Dual Fuel 엔진용 실린더 헤드 개발"
+    org: <a href="https://www.smtech.go.kr/front/main/main.do">중소벤처기업부</a>
+    role: 총괄책임자
   - period: 2013.01.~2013.05.
-    title: PRESTIGE 럭셔리 UX
+    title: "PRESTIGE: 럭셔리 UX"
     org: <a href="http://www.samsung.com/">삼성전자(주)</a>
     role: Project Lead
     files: []
   - period: 2010.01.~2010.11.
-    title: Orsay 혁신 UX (스마트폰)
+    title: "Orsay: Innovative UX Solutions for Smartphones (스마트폰 혁신 UX 솔루션)"
     org: <a href="http://www.samsung.com/">삼성전자(주)</a>
     role: Project Lead
     files:
@@ -102,7 +130,7 @@ projects:
         icon: 🎬
         tip: Palm Pause
   - period: 2008.12.~2009.12.
-    title: iQ 인터랙션 솔루션
+    title: "iQ: Interaction Solutions for Post-displays (인터랙션 솔루션)"
     org: <a href="http://www.samsung.com/">삼성전자(주)</a>
     role: Project Lead
     files:
@@ -112,20 +140,56 @@ projects:
       - url: https://www.youtube.com/watch?v=H1SoYTCzB6A
         icon: 🎬
         tip: YouTube
+  - period: 2007.12.~2008.11.
+    title: "Simplicity2.0: Sociable Media User Interface Solution (7인치 풀터치 + 7인치 제스처 인식 듀얼 스크린 기반 소셜 커뮤니케이션 디바이스 창안 및 개발)"
+    org: <a href="http://www.samsung.com/">삼성전자(주)</a>
+    role: Project Lead
+  - period: 2007.06.~2007.11.
+    title: "Simplicity: Tangible Multimedia User Interface Solution (12인치 정전식 full 터치 + tangible interface 기반 태블릿형 멀티미디어 디바이스 창안 및 개발)"
+    org: <a href="http://www.samsung.com/">삼성전자(주)</a>
+    role: Project Lead
+  - period: 2007.02.~2007.05.
+    title: Web CE Big Picture TF
+    org: <a href="http://www.samsung.com/">삼성전자(주)</a>
+    role: TF Lead
+  - period: 2006.10.~2007.01.
+    title: Evolutionary Behavior Systems for a Long-term Relationship
+    org: Media Lab, MIT
+    role: Researcher
+  - period: 2006.09.~2006.12.
+    title: New Tangible Interface for Digital Televisions
+    org: Media Lab, MIT
+    role: Project Lead
   - period: 2006.02.~2007.01.
     title: "The Huggable: Therapeutic Robotic Companion — <a href=\"http://www.media.mit.edu/\">MIT Media Lab</a>"
     org: <a href="http://www.mit.edu/">MIT</a>
-    role: Visiting Scientist
+    role: Visiting Scientist / Researcher
     files: []
   - period: 2006.02.~2007.01.
     title: Consumer Electronics 2.0 (CE 2.0) — <a href="http://www.media.mit.edu/">MIT Media Lab</a>
     org: <a href="http://www.mit.edu/">MIT</a>, Samsung, Motorola, Toshiba
     role: Initiative Member
     files: []
+  - period: 2005.04.~2006.02.
+    title: "Technology Intelligence TFs: Home Network Master Plan, Home Agent, 3D Graphics, x86 General Purpose Platform, Blue Ocean, Technology Map, Digital TV Vision 2011"
+    org: <a href="http://www.samsung.com/">삼성전자(주)</a>
+    role: TF 멤버
+  - period: 2004.01.~2005.03.
+    title: "DOVe: Development of Digital TV S/W on VxWorks"
+    org: <a href="http://www.samsung.com/">삼성전자(주)</a>
+    role: Technical Lead
+  - period: 2001.10.~2003.02.
+    title: Human-Robot Interaction for Personal Robot
+    org: 산자부
+    role: 연구원
+  - period: 2001.01.~2002.05.
+    title: Development of Robot Soccer System for Middle League MiroSot
+    org: RIT Lab, KAIST
+    role: Project Lead
   - period: 2000.09.~2003.08.
     title: Development of Stereo Vision Head for Human-Robot Interaction
     org: <a href="http://www.kist.re.kr">KIST</a>
-    role: Researcher
+    role: 연구원
     files:
       - url: assets/images/sample640.jpg
         icon: 🖼️
@@ -139,7 +203,7 @@ projects:
   - period: 2000.04.~2000.12.
     title: Development of USB HUB plus LAN Device
     org: Withus & Innocom
-    role: Developer
+    role: 개발자
     files:
       - url: assets/images/hublan1.jpg
         icon: 🖼️
@@ -147,10 +211,14 @@ projects:
       - url: assets/images/ino.jpg
         icon: 🖼️
         tip: INO
+  - period: 1999.12.~2000.11.
+    title: Development of Hi-Speed Parallel Evolutionary Computation S/W
+    org: KISTEP
+    role: 연구원
   - period: 1998.09.~2000.08.
     title: Development of Internet-based Personal Robot
     org: IITA
-    role: Researcher
+    role: 연구원
     files:
       - url: assets/images/gui.jpg
         icon: 🖼️
@@ -161,7 +229,7 @@ projects:
   - period: 1998.01.~2000.12.
     title: Development of the Optimizer for SMT
     org: <a href="http://www.mirae.co.kr/">Mirae Corporation</a>
-    role: Researcher
+    role: 연구원
     files:
       - url: assets/images/smt.jpg
         icon: 🖼️
