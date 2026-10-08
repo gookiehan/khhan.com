@@ -10,6 +10,7 @@
  *   이 파일에서 innerHTML 은 쓰지 않는다.
  */
 import { loadDraft, saveDraft, clearDraft, makeDraft, rebaseDraft } from './store.js';
+import { itemParts, itemSummary } from './summary.js';
 
 const el = (tag, className, text) => {
   const node = document.createElement(tag);
@@ -109,14 +110,6 @@ function blankItem(section) {
   return item;
 }
 
-function itemSummary(item, section) {
-  if (typeof item === 'string') return item || '(비어 있음)';
-  for (const f of section.fields) {
-    const v = item?.[f.name];
-    if (typeof v === 'string' && v.trim()) return v;
-  }
-  return '(내용 없음)';
-}
 
 // ── 편집 폼 ──────────────────────────────────────────────────────────────
 
@@ -498,7 +491,10 @@ function renderSection(fileSchema, section) {
     const details = el('details', 'item');
     const summary = el('summary');
     summary.appendChild(el('span', 'idx', index + 1));
-    summary.appendChild(el('span', 'summary-text', itemSummary(item, section)));
+    // 접힌 상태에서도 무슨 항목인지 보이게: 기간(있으면) + 제목
+    const parts = itemParts(item, section);
+    if (parts.when) summary.appendChild(el('span', 'summary-when', parts.when));
+    summary.appendChild(el('span', 'summary-text', parts.text));
 
     const tools = el('span', 'tools');
     tools.appendChild(

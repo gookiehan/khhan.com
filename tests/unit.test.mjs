@@ -286,3 +286,52 @@ test('관리 화면 검증: 사진 경로 등 url 필드의 로컬 자산 존재
   // 자산 목록을 모를 때(트리 조회가 잘린 경우)는 막지 않는다
   assert.deepEqual(validateFile('profile.yml', bad, undefined), []);
 });
+
+// ── 관리 화면 목록 요약(summary.js) ─────────────────────
+import { itemParts, itemSummary, plainText as summaryPlain } from '../src/scripts/admin/summary.js';
+import { getSectionScope } from '../src/lib/content-schema.mjs';
+
+test('목록 요약: 기간과 제목을 함께 보여 준다', () => {
+  const edu = SCHEMA.find((f) => f.file === 'education.yml').sections[0];
+  const first = load('education.yml').education[0];
+  const p = itemParts(first, edu);
+  assert.equal(p.when, first.period);
+  assert.ok(p.text.startsWith('박사'), p.text);
+  assert.equal(itemSummary(first, edu), `${first.period} ${p.text}`);
+});
+
+test('목록 요약: 서지정보의 태그는 떼고 글자만', () => {
+  const sec = { fields: [{ name: 'citation' }] };
+  const p = itemParts({ citation: '<b>Kuk-Hyun Han</b>, "A &amp; B," <i>IEEE</i>' }, sec);
+  assert.deepEqual(p, { when: '', text: 'Kuk-Hyun Han, "A & B," IEEE' });
+  assert.equal(summaryPlain('a<br>b'), 'ab');
+});
+
+test('목록 요약: 빈 항목·문자열 항목', () => {
+  const sec = { fields: [{ name: 'period' }, { name: 'title' }] };
+  assert.deepEqual(itemParts({ period: '', title: '' }, sec), { when: '', text: '(내용 없음)' });
+  assert.deepEqual(itemParts({ period: '2025', title: '' }, sec), { when: '2025', text: '' });
+  assert.deepEqual(itemParts('<i>IEEE TEC</i>', sec), { when: '', text: 'IEEE TEC' });
+  assert.deepEqual(itemParts('', sec), { when: '', text: '(비어 있음)' });
+});
+
+test('목록 요약: 실제 데이터의 모든 목록 항목에 내용이 보이고 태그가 남지 않는다', () => {
+  const problems = [];
+  for (const fileSchema of SCHEMA) {
+    const scope = getSectionScope(fileSchema.file, load(fileSchema.file));
+    for (const section of fileSchema.sections) {
+      if (section.kind !== 'list' && section.kind !== 'list-scalar') continue;
+      (scope[section.key] || []).forEach((item, i) => {
+        const { when, text } = itemParts(item, section);
+        const where = `${fileSchema.file}.${section.key}[${i}]`;
+        if (!text || text.startsWith('(')) problems.push(`${where}: 제목 없음`);
+        if (/[<>]/.test(text)) problems.push(`${where}: 태그가 남음 — ${text.slice(0, 40)}`);
+        const hasWhenField = section.fields.some((f) => ['period', 'date', 'year'].includes(f.name));
+        if (hasWhenField && typeof item === 'object' && (item.period || item.date || item.year) && !when) {
+          problems.push(`${where}: 기간이 빠짐`);
+        }
+      });
+    }
+  }
+  assert.deepEqual(problems, []);
+});
